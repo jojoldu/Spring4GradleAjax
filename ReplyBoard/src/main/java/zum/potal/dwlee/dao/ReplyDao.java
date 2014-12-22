@@ -2,11 +2,14 @@ package zum.potal.dwlee.dao;
 
 import java.util.List;
 
+import zum.potal.dwlee.vo.CommonVO;
 import zum.potal.dwlee.vo.ReplyVO;
 
 public interface ReplyDao {
 
 	public List<ReplyVO> getList(ReplyVO listVO) throws Exception;
+	
+	public int getPagingInfo(CommonVO pagingVO) throws Exception;
 	
 	public int add(ReplyVO insertVO) throws Exception;
 	

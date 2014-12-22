@@ -7,14 +7,17 @@ var parent;
 $(function() {
 
 	$("#pageSize").val('10');
+	
 	//댓글 목록조회
-	getList(1);
+	makeListAndPaging(1);
 	
 	//댓글입력 
 	$("#writeBtn").click(addReply);
 	
 	//페이징 사이즈 조절
-	$("#pageSize").change(getList);
+	$("#pageSize").change(function(){
+		makeListAndPaging(1);
+	});
 	
 	
 	
@@ -27,20 +30,13 @@ $(function() {
 	
 });
 
-//페이징정보 설정
-function setPagingInfo(pageIndex){
-	var obj = {
-		pageSize  : $("#pageSize").val(),
-		pageIndex : pageIndex-1
-	}
-	return obj;
-}
 
 //댓글 목록 조회
 function getList(pageIndex){
-	$('#replyList tbody').html('');
-	$('#page'+pageIndex).addClass('active');
 	var pageIndex=pageIndex;
+	$('#page'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
+	
+	$('#replyList tbody').html('');
 	var listVO = setPagingInfo(pageIndex);
 	$.ajax({
 	    headers: { 
@@ -92,8 +88,8 @@ function drawRow(rowData) {
 	//table row 생성
 	var row = $('<tr>')
     $("#replyList tbody").append(row); 
-    row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyFrom+'</div></td>'));
-    //row.append($('<td align="center">' + id + '</td>'));    
+    row.append($('<td align="center"><img src="../images/' + id + '.PNG"></td>'));   
+	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyFrom+'</div></td>'));
     row.append($('<td align="center">' + rowData.writeDate.substr(0,16) + '</td>'));
     row.append($('<td align="center">' + rowData.writer + '</td>'));
     row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment"></span></button></td>'));

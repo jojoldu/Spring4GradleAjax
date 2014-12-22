@@ -3,17 +3,17 @@ package zum.potal.dwlee.vo;
 public class CommonVO {
 
 	private int pageIndex=0;//현재 페이지 
-	private int pageSize=10;//한 화면당 출력될 페이지 숫자
-	private int pageLength=10; // 
+	private int pageSize=10;//한 페이지당 출력된 글 개수
+	private int pageScope=10; // 한번에 출력될 페이지수  
+	private int totalPageCount=0;//총 페이지 개수
+	private int firstRow=0;
 	
 	private int family; //원글번호
 	private int parent; //부모글번호
 	private int depth; //깊이
-	private int indent; //들여쓰기
 	
 	public CommonVO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public int getPageIndex() {
@@ -27,12 +27,6 @@ public class CommonVO {
 	}
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
-	}
-	public int getPageLength() {
-		return pageLength;
-	}
-	public void setPageLength(int pageLength) {
-		this.pageLength = pageLength;
 	}
 	public int getFamily() {
 		return family;
@@ -52,12 +46,30 @@ public class CommonVO {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	public int getIndent() {
-		return indent;
+
+	public int getTotalPageCount() {
+		return totalPageCount;
 	}
-	public void setIndent(int indent) {
-		this.indent = indent;
-	} 
-	
+
+	public void setTotalPageCount(int totalPageCount) {
+		this.totalPageCount = totalPageCount;
+	}
+
+	public void setPageScope(int pageScope) {
+		this.pageScope = pageScope;
+	}
+
+	public int getPageScope() {
+		return pageScope;
+	}
+
+	public int getFirstRow() {
+		return firstRow;
+	}
+
+	public void setFirstRow(int firstRow) {
+		this.firstRow = firstRow;
+	}
+
 	
 }

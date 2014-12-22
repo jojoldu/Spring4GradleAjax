@@ -11,7 +11,6 @@
 	<result property="family" column="family"/>
 	<result property="parent" column="parent"/>
 	<result property="depth" column="depth"/>
-	<result property="indent" column="indent"/>
   </resultMap>
   
   <select id="getList" resultMap="replyVO">
@@ -21,9 +20,13 @@
 	        (SELECT *
 			   FROM reply
 		   ORDER BY family DESC ,  depth ASC) A
-	LIMIT #{pageIndex}, #{pageSize}
+	LIMIT #{firstRow}, #{pageSize}
   </select>
   
+  <select id="getPagingInfo" parameterType="zum.potal.dwlee.vo.CommonVO" resultType="int" >
+  	SELECT count(no)
+  	  FROM reply
+  </select>
   
   <insert id="add" parameterType="zum.potal.dwlee.vo.ReplyVO" ><!-- parameterType를 권장  -->
 	INSERT 

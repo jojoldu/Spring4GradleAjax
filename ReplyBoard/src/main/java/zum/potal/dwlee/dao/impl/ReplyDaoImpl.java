@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import zum.potal.dwlee.dao.ReplyDao;
+import zum.potal.dwlee.vo.CommonVO;
 import zum.potal.dwlee.vo.ReplyVO;
 
 @Repository
@@ -39,6 +40,21 @@ public class ReplyDaoImpl implements ReplyDao {
 		return list;
 	}
 
+	
+	@Override
+	public int getPagingInfo(CommonVO pagingVO) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		int result=0;
+		try{
+			result=session.selectOne("reply.getPagingInfo");
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return result;
+	}
+
 	@Override
 	public int add(ReplyVO insertVO) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
@@ -68,8 +84,16 @@ public class ReplyDaoImpl implements ReplyDao {
 	
 	@Override
 	public ReplyVO getParent(int no) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		SqlSession session = sqlSessionFactory.openSession();
+		ReplyVO result=null;
+		try{
+			result=session.selectOne("reply.getParent", no);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return result;
 	}
 
 	@Override

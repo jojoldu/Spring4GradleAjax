@@ -74,6 +74,8 @@
     <div class="row">
     	<div class="col-md-1" >
     		<select id="pageSize" class="form-control" style='float:right;'>
+    			<option value='2'>2</option>
+    			<option value='3'>3</option>
     			<option value='5'>5</option>
     			<option value='10'>10</option>
     			<option value='15'>15</option>
@@ -114,6 +116,7 @@
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
 			<table class="table table-striped table-hover" id="replyList" style='margin:0px;'>
+				<col width="10%">
 				<col width="*">
 				<col width="10%">
 				<col width="10%">
@@ -136,15 +139,6 @@
 	 			</tbody>
 			</table>
 			<div id="paging">
-				<ul class='pagination pagination' style='float:right; margin:0px;'>
-				  <li><a href="#" onclick="">«</a></li>
-				  <li><a href="#">1</a></li>
-				  <li><a href="#">2</a></li>
-				  <li><a href="#" class="active">3<span class="sr-only">(current)</span></a></li>
-				  <li><a href="#">4</a></li>
-				  <li><a href="#">5</a></li>
-				  <li><a href="#">»</a></li>	
-				</ul>
 			</div>
 		</div>
 	</div>
