@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+<context:component-scan base-package="zum.potal.dwlee" />
+
+<context:property-placeholder location="classpath:config/context/db.properties"/>
+
+ <!-- commons dbcp : 커넥션 풀 사용 (commons-dbcp을 pom.xml에 dependencies 한다.)-->
+ <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"> 
+  <property name="driverClassName" value="${jdbc.driver}"/>
+  <property name="url" value="${jdbc.url}"/>
+  <property name="username" value="${jdbc.user}"/>
+  <property name="password" value="${jdbc.password}"/>
+ </bean>
+ 
+  <!-- MyBatis 맵퍼의 SQL 문장에 대한 파라미터 및 리턴 타입을 담을 클래스를 검색 할 패키지 지정 -->
+ <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  <property name="dataSource" ref="dataSource" />        
+  <property name="mapperLocations" value="classpath:config/sqlmaps/*.xml" />
+ </bean>
+ 
+  <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+  <constructor-arg index="0" ref="sqlSessionFactory" />
+ </bean>
+  
+ <!-- 맵퍼 인터페이스와 맵퍼 XML 파일에 의해 생성되는 맵퍼 클래스를 빈에 주입 할 수 있도록 설정 -->
+ <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+   <property name="basePackage" value="zum.potal.dwlee" />
+ </bean>
+ 
+ <bean id="userService" class="zum.potal.dwlee.service.impl.UserServiceImpl" />
+ <bean id="replyService" class="zum.potal.dwlee.service.impl.ReplyServiceImpl" />
+ 
+ <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 	<property name="defaultEncoding" value="UTF-8"></property>
+ </bean>
+ 
+ <!-- 트랜잭션 관리자. id가 transactionManager이면, 아래 tx:annotation-driven에서 transactionManager 속성을 지정할 필요 없음 -->
+ <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  <property name="dataSource" ref="dataSource"/>
+ </bean>
+  
+ <!-- 애노테이션으로 트랜잭션 설정 할 수 있도록 -->
+ <tx:annotation-driven />
+ 
+ </beans>
