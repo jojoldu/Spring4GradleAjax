@@ -1,4 +1,4 @@
-package spring.config;
+package zum.potal.dwlee.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

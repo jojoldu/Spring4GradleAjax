@@ -1,4 +1,4 @@
-package spring.config;
+package zum.potal.dwlee.config;
 
 import javax.servlet.Filter;
 
