@@ -64,14 +64,17 @@ public class ReplyServiceImpl implements ReplyService {
 		if(image!=null){
 			String originName = image.getOriginalFilename();
 			String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
-	        if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){
+			
+	        if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){//jps, png, gif만 허용
 	        	String fileName = String.valueOf(no);
 	        	File dir = new File(path);
 	        	if(!dir.exists()){
 	        		dir.mkdirs();
 	        	}
-	        	File file = new File(path + fileName+"."+imgExt);
+	        	String imageName=fileName+"."+imgExt;
+	        	File file = new File(path + imageName);
                 image.transferTo(file);
+                insertVO.setImageName(imageName);
 	        }
 		}
 		

@@ -65,7 +65,8 @@ public class ReplyController {
 		UserVO loginVO = (UserVO)session.getAttribute("loginVO");
 		insertVO.setWriter(loginVO.getId());	
 		try{
-			String path = WebUtils.getRealPath(request.getSession().getServletContext(), "/images");
+			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
+			String path="C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
 			Iterator<String> itr =  request.getFileNames();
 			if(itr.hasNext()) {
 				MultipartFile mpf = request.getFile(itr.next());

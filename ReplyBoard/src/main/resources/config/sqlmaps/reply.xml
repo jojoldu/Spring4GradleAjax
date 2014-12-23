@@ -31,8 +31,8 @@
   <insert id="add" parameterType="zum.potal.dwlee.vo.ReplyVO" ><!-- parameterType를 권장  -->
 	INSERT 
 	  INTO 	reply 
-	  		(content,write_date,writer,family,parent,depth) 
-	VALUES	(#{content},NOW(),#{writer},#{family},#{parent},#{depth})
+	  		(content,write_date,writer,family,parent,depth,imageName) 
+	VALUES	(#{content},NOW(),#{writer},#{family},#{parent},#{depth}, #{imageName})
   </insert>
   
   <select id="getNo" resultType="int">

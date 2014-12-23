@@ -88,7 +88,7 @@ function drawRow(rowData) {
 	//table row 생성
 	var row = $('<tr>')
     $("#replyList tbody").append(row); 
-    row.append($('<td align="center"><img src="../images/' + id + '.PNG"></td>'));   
+    row.append($('<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>'));   
 	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyFrom+'</div></td>'));
     row.append($('<td align="center">' + rowData.writeDate.substr(0,16) + '</td>'));
     row.append($('<td align="center">' + rowData.writer + '</td>'));

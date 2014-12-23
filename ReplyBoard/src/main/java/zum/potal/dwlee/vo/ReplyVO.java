@@ -9,6 +9,7 @@ public class ReplyVO extends CommonVO{
 	private String writeDate;
 	private String writer;
 	
+	private String imageName;
 	private MultipartFile image;
 	
 	public ReplyVO() {
@@ -47,6 +48,14 @@ public class ReplyVO extends CommonVO{
 
 	public void setImage(MultipartFile image) {
 		this.image = image;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 	
 	
