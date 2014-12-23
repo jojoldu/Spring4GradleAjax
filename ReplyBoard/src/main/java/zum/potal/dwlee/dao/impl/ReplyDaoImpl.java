@@ -46,7 +46,7 @@ public class ReplyDaoImpl implements ReplyDao {
 	public List<Reply> getList(Reply listVO) throws Exception {
 		List list=null; 
 		try{
-			list=getCriteria().add(criterion) list();
+			list=getCriteria().list();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
