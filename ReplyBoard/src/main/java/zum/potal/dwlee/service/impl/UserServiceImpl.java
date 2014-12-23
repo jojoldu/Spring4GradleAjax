@@ -10,18 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.UserDao;
 import zum.potal.dwlee.service.UserService;
-import zum.potal.dwlee.vo.UserVO;
+import zum.potal.dwlee.vo.User;
 
 @Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserDao userDao;
+	private UserDao userDao;
 	
 	
 	@Override
-	@Transactional	
-	public boolean login(UserVO loginVO) throws Exception {
+	public boolean login(User loginVO) throws Exception {
 		boolean result=false;
 		int checkId= userDao.login(loginVO);
 		if(checkId>0){
@@ -31,14 +30,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
-	public List<UserVO> getList() throws Exception {
+	public List<User> getList() throws Exception {
 		return userDao.getList();
 	}
 
 	@Override
-	@Transactional
-	public int add(UserVO insertVO) throws Exception {
+	public int add(User insertVO) throws Exception {
 		return userDao.add(insertVO);
 	}
 

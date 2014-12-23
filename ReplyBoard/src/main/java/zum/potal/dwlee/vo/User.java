@@ -1,12 +1,22 @@
 package zum.potal.dwlee.vo;
 
-public class UserVO {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import com.sun.istack.internal.NotNull;
 
+@Entity
+public class User {
+	
+	@Id
 	private String id;
+	
+	@NotNull
 	private String password;
+	
+	@NotNull
 	private String email;
 	
-	public UserVO() {
+	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

@@ -2,123 +2,121 @@ package zum.potal.dwlee.dao.impl;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.ReplyDao;
-import zum.potal.dwlee.vo.CommonVO;
-import zum.potal.dwlee.vo.ReplyVO;
+import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.Reply;
+import zum.potal.dwlee.vo.User;
 
 @Repository
+@Transactional
 public class ReplyDaoImpl implements ReplyDao {
 
-	private SqlSessionFactory sqlSessionFactory = null;
+	@Autowired
+	private SessionFactory sessionFactory = null;
 	
+	protected Session getCurrentSession(){
+		return sessionFactory.getCurrentSession();
+	}
+	
+	private Criteria getCriteria(){
+		return getCurrentSession().createCriteria(User.class);
+	}
 	
 	public ReplyDaoImpl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ReplyDaoImpl(SqlSessionFactory sqlSessionFactory) {
+	public ReplyDaoImpl(SessionFactory SessionFactory) {
 		super();
-		this.sqlSessionFactory = sqlSessionFactory;
+		this.sessionFactory = SessionFactory;
 	}
-
+	
+	
 	@Override
-	public List<ReplyVO> getList(ReplyVO listVO) throws Exception {
+	public List<Reply> getList(Reply listVO) throws Exception {
 		List list=null; 
-		SqlSession session = sqlSessionFactory.openSession();
 		try{
-			list=session.selectList("reply.getList", listVO);
+			list=getCriteria().list();
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return list;
 	}
 
 	
 	@Override
-	public int getPagingInfo(CommonVO pagingVO) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
+	public int getPagingInfo(Common pagingVO) throws Exception {
 		int result=0;
 		try{
-			result=session.selectOne("reply.getPagingInfo");
+			result=getCurrentSession().createQuery("select count(no) from Reply").executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return result;
 	}
 
 	@Override
-	public int add(ReplyVO insertVO) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
+	public int add(Reply insertVO) throws Exception {
 		try{
-			session.insert("reply.add", insertVO);
+			getCurrentSession().save(insertVO);
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return 0;
 	}
 	
 	@Override
-	public int update(ReplyVO updateVO) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
+	public int update(Reply updateVO) throws Exception {
 		try{
-			session.update("reply.update", updateVO);
+			getCurrentSession().createQuery("update Reply set content = ? ,modifyDate=now(), imageName=? ")
+							   .setString(0, updateVO.getContent())
+							   .setString(1, updateVO.getImageName())
+							   .executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return 0;
 	}
 
 	@Override
 	public int getNo() throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
 		int result=0;
 		try{
-			result=session.selectOne("reply.getNo");
+			result=getCurrentSession().createQuery("select max(no) from Reply").executeUpdate();
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return result;
 	}
 	
 	@Override
-	public ReplyVO getParent(int no) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
-		ReplyVO result=null;
+	public Reply getParent(int no) throws Exception {
+		Reply result=null;
 		try{
-			result=session.selectOne("reply.getParent", no);
+			result=(Reply)getCriteria().add(Restrictions.eq("no",no)).uniqueResult();
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return result;
 	}
 
 	@Override
-	public int delete(ReplyVO deleteVO) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
+	public int delete(Reply deleteVO) throws Exception {
 		int result=0;
 		try{
-			result=session.delete("reply.delete", deleteVO);
+			getCurrentSession().createQuery("delete from Reply where no = ?").setInteger(0, deleteVO.getNo());
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return result;
 	}

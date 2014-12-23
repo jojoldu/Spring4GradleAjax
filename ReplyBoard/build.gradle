@@ -19,7 +19,8 @@ repositories {
 
 //dependency version
 def version = [
-spring: '4.1.2.RELEASE'
+spring: '4.1.3.RELEASE'
+, springBoot: '1.2.0.RELEASE'
 , junit: '4.11'
 , servletApi: '3.0.1'
 , jstl: '1.2'
@@ -27,8 +28,8 @@ spring: '4.1.2.RELEASE'
 , mockito: '1.9.0'
 , cglib: '2.2.2'
 , logback: '1.0.6'
-, mybatis: '3.2.8'
-, mybatisSpring: '1.2.2'
+, hibernateCore: '4.3.7.Final'
+, javassist: '3.18.2-GA'
 , mysql: '5.1.34'
 , commonsDbcp: '1.4'
 , jackson: '2.4.4'
@@ -39,15 +40,18 @@ spring: '4.1.2.RELEASE'
 //dependency 
 dependencies {
     compile "org.springframework:spring-webmvc:${version.spring}",
+    	  "org.springframework:spring-jdbc:${version.spring}", 
+          "org.springframework:spring-tx:${version.spring}",
+          "org.springframework:spring-context:${version.spring}",
+          "org.springframework:spring-orm:${version.spring}",
+          "org.springframework.boot:spring-boot-starter:${version.springBoot}",
           "cglib:cglib-nodep:${version.cglib}",
           "ch.qos.logback:logback-classic:${version.logback}",
           "org.slf4j:slf4j-api:${version.slf4j}",
           "commons-dbcp:commons-dbcp:${version.commonsDbcp}",
-          "org.mybatis:mybatis:${version.mybatis}", 
-          "org.mybatis:mybatis-spring:${version.mybatisSpring}",  
+          "org.hibernate:hibernate-core:${version.hibernateCore}",
+          "org.javassist:javassist:${version.javassist}", 
           "mysql:mysql-connector-java:${version.mysql}", 
-          "org.springframework:spring-jdbc:${version.spring}", 
-          "org.springframework:spring-tx:${version.spring}",
 		  "com.fasterxml.jackson.core:jackson-annotations:${version.jackson}",
 		  "com.fasterxml.jackson.core:jackson-core:${version.jackson}",
 		  "com.fasterxml.jackson.core:jackson-databind:${version.jackson}",

@@ -9,7 +9,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
       
   @Override
   protected Class<?>[] getRootConfigClasses() {
-	   return new Class<?>[]{ ModuleConfig.class };//ModuleConfig 웹쪽 설정이 아닌 공통으로 쓰일수 있는 부분의 설정
+	   return new Class<?>[]{ PersistenceConfig.class };//ModuleConfig 웹쪽 설정이 아닌 공통으로 쓰일수 있는 부분의 설정
   }
  
   @Override

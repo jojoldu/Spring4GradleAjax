@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,22 +19,22 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import zum.potal.dwlee.service.ReplyService;
-import zum.potal.dwlee.vo.CommonVO;
-import zum.potal.dwlee.vo.ReplyVO;
-import zum.potal.dwlee.vo.UserVO;
+import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.Reply;
+import zum.potal.dwlee.vo.User;
 
 @Controller
 @RequestMapping("/reply")
 public class ReplyController {
 
-	@Resource(name="replyService")
+	@Autowired
 	private ReplyService replyService;
 
 	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
-		UserVO loginVO = (UserVO)session.getAttribute("loginVO");
+		User loginVO = (User)session.getAttribute("loginVO");
 		if(loginVO == null){
 			return "redirect:/";
 		}
@@ -41,7 +42,7 @@ public class ReplyController {
 	}
 
 	@RequestMapping(value="/getList", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody List<ReplyVO> getList(@RequestBody ReplyVO listVO){
+	public @ResponseBody List<Reply> getList(@RequestBody Reply listVO){
 		List list=null;
 		try{
 			list= replyService.getList(listVO);
@@ -52,7 +53,7 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value="/getPagingInfo", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody CommonVO getPagingInfo(@RequestBody CommonVO pagingVO){
+	public @ResponseBody Common getPagingInfo(@RequestBody Common pagingVO){
 		try{
 			replyService.getPagingInfo(pagingVO);
 		}catch(Exception e){
@@ -62,18 +63,18 @@ public class ReplyController {
 	}	
 
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public @ResponseBody boolean add(ReplyVO insertVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
-		UserVO loginVO = (UserVO)session.getAttribute("loginVO");
+	public @ResponseBody boolean add(Reply insertVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
+		User loginVO = (User)session.getAttribute("loginVO");
 		insertVO.setWriter(loginVO.getId());	
 		try{
 			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
 			String path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
+			MultipartFile mpf=null;
 			if(itr.hasNext()) {
-				MultipartFile mpf = request.getFile(itr.next());
-				insertVO.setImage(mpf);
+				 mpf = request.getFile(itr.next());
 			}
-			replyService.add(insertVO,path);
+			replyService.add(insertVO,path,mpf);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -81,18 +82,18 @@ public class ReplyController {
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody boolean update(ReplyVO updateVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
-		UserVO loginVO = (UserVO)session.getAttribute("loginVO");
+	public @ResponseBody boolean update(Reply updateVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
+		User loginVO = (User)session.getAttribute("loginVO");
 		updateVO.setWriter(loginVO.getId());	
 		try{
 			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
 			String path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
+			MultipartFile mpf=null;
 			if(itr.hasNext()) {
-				MultipartFile mpf = request.getFile(itr.next());
-				updateVO.setImage(mpf);
+				mpf = request.getFile(itr.next());
 			}
-			replyService.add(updateVO,path);
+			replyService.add(updateVO,path,mpf);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -100,7 +101,7 @@ public class ReplyController {
 	}	
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean delete(@RequestBody ReplyVO deleteVO) throws Exception{
+	public @ResponseBody boolean delete(@RequestBody Reply deleteVO) throws Exception{
 		try{
 			replyService.delete(deleteVO);
 		}catch(Exception e){

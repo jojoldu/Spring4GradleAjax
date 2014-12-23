@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 //web.xml
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"zum.potal.dwlee.controller"})
+@ComponentScan(basePackages = {"zum.potal.dwlee"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	/**

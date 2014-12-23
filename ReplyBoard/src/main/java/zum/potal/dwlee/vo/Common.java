@@ -1,6 +1,9 @@
 package zum.potal.dwlee.vo;
 
-public class CommonVO {
+import javax.persistence.Entity;
+
+
+public class Common {
 
 	private int pageIndex=0;//현재 페이지 
 	private int pageSize=10;//한 페이지당 출력된 글 개수
@@ -12,7 +15,7 @@ public class CommonVO {
 	private int parent; //부모글번호
 	private int depth; //깊이
 	
-	public CommonVO() {
+	public Common() {
 		super();
 	}
 	

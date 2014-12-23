@@ -1,18 +1,23 @@
 package zum.potal.dwlee.vo;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import org.springframework.web.multipart.MultipartFile;
 
-public class ReplyVO extends CommonVO{
+@Entity
+public class Reply extends Common{
 
+	@Id
 	private int no;//글번호
 	private String content;//글내용
 	private String writeDate;
 	private String writer;
 	
 	private String imageName;
-	private MultipartFile image;
+	//private MultipartFile image;
 	
-	public ReplyVO() {
+	public Reply() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -42,13 +47,13 @@ public class ReplyVO extends CommonVO{
 		this.writer = writer;
 	}
 
-	public MultipartFile getImage() {
-		return image;
-	}
-
-	public void setImage(MultipartFile image) {
-		this.image = image;
-	}
+//	public MultipartFile getImage() {
+//		return image;
+//	}
+//
+//	public void setImage(MultipartFile image) {
+//		this.image = image;
+//	}
 
 	public String getImageName() {
 		return imageName;

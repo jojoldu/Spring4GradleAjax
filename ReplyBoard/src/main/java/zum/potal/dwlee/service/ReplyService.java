@@ -2,25 +2,27 @@ package zum.potal.dwlee.service;
 
 import java.util.List;
 
-import zum.potal.dwlee.vo.CommonVO;
-import zum.potal.dwlee.vo.ReplyVO;
+import org.springframework.web.multipart.MultipartFile;
+
+import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.Reply;
 
 public interface ReplyService {
 
 	//댓글 목록
-	public List<ReplyVO> getList(ReplyVO listVO) throws Exception;
+	public List<Reply> getList(Reply listVO) throws Exception;
 	
 	//댓글 페이징
-	public CommonVO getPagingInfo(CommonVO pagingVO) throws Exception;
+	public Common getPagingInfo(Common pagingVO) throws Exception;
 	
-	public void makeInsertVO(ReplyVO insertVO) throws Exception;
+	public void makeInsertVO(Reply insertVO) throws Exception;
 	
 	//댓글 등록
-	public int add(ReplyVO insertVO, String path) throws Exception;
+	public int add(Reply insertVO, String path, MultipartFile mpf) throws Exception;
 	
 	//댓글 수정
-	public int update(ReplyVO updateVO, String path) throws Exception;
+	public int update(Reply updateVO, String path, MultipartFile mpf) throws Exception;
 	
 	//댓글 삭제
-	public boolean delete(ReplyVO deleteVO) throws Exception;
+	public boolean delete(Reply deleteVO) throws Exception;
 }

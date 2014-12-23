@@ -2,68 +2,81 @@ package zum.potal.dwlee.dao.impl;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.UserDao;
-import zum.potal.dwlee.vo.UserVO;
+import zum.potal.dwlee.vo.User;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
 
-	//Mybatis맵핑
-	private SqlSessionFactory sqlSessionFactory = null;
+	@Autowired
+	private SessionFactory sessionFactory = null;
+	
+	protected Session getCurrentSession(){
+		return sessionFactory.getCurrentSession();
+	}
+	
+	private Criteria getCriteria(){
+		return getCurrentSession().createCriteria(User.class);
+	}
 	
 	public UserDaoImpl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserDaoImpl(SqlSessionFactory sqlSessionFactory) {
+	public UserDaoImpl(SessionFactory sessionFactory) {
 		super();
-		this.sqlSessionFactory = sqlSessionFactory;
+		this.sessionFactory = sessionFactory;
 	}
 
+
+	
 	@Override
-	public int login(UserVO loginVO) throws Exception {
-		int checkLogin=0;
-		SqlSession session = sqlSessionFactory.openSession();
-		
+	@SuppressWarnings("unchecked")
+	public int login(User loginVO) throws Exception {
+		int result=0;
 		try{
-			checkLogin=session.selectOne("user.login", loginVO);
+			List check = getCriteria().add(Restrictions.like("id", loginVO.getId(), MatchMode.ANYWHERE))
+									  .add(Restrictions.like("password", loginVO.getPassword(), MatchMode.ANYWHERE))
+									  .list();
+			if(check == null){
+				result=1;
+			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
-		return checkLogin;
+		return result;
 	}
 
 	@Override
-	public List<UserVO> getList() throws Exception {
-		List list = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		
+	@SuppressWarnings("unchecked")	
+	public List<User> getList() throws Exception {
+		List list=null;
 		try{
-			list=session.selectList("user.getList");
+			list = getCriteria().list();
+									  
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return list;
 	}
 
 	@Override
-	public int add(UserVO insertVO) throws Exception {
-		SqlSession session = sqlSessionFactory.openSession();
+	public int add(User insertVO) throws Exception {
 		try{
-			session.insert("user.add", insertVO);
+			getCurrentSession().save(insertVO);
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			session.close();
 		}
 		return 0;
 	}

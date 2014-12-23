@@ -11,8 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import zum.potal.dwlee.dao.ReplyDao;
 import zum.potal.dwlee.service.ReplyService;
-import zum.potal.dwlee.vo.CommonVO;
-import zum.potal.dwlee.vo.ReplyVO;
+import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.Reply;
 
 @Service
 public class ReplyServiceImpl implements ReplyService {
@@ -23,13 +23,13 @@ public class ReplyServiceImpl implements ReplyService {
 	//private final String FILE_PATH="/";
 	
 	@Override
-	public List<ReplyVO> getList(ReplyVO listVO) throws Exception {
+	public List<Reply> getList(Reply listVO) throws Exception {
 		return replyDao.getList(listVO);
 	}
 	
 	
 	@Override
-	public CommonVO getPagingInfo(CommonVO pagingVO) throws Exception {
+	public Common getPagingInfo(Common pagingVO) throws Exception {
 		int totalRow = replyDao.getPagingInfo(pagingVO);
 		int totalPageCount=totalRow/pagingVO.getPageSize();		
 		if(totalRow%pagingVO.getPageSize() !=0){
@@ -42,11 +42,11 @@ public class ReplyServiceImpl implements ReplyService {
 
 
 	@Override
-	public void makeInsertVO(ReplyVO insertVO) throws Exception{
+	public void makeInsertVO(Reply insertVO) throws Exception{
 		if(insertVO.getParent()==0){//부모코드가 없는경우, 답글이 아닌 일반글
 			insertVO.setFamily(insertVO.getNo());
 		}else{//부모코드가 있는경우, 해당 부모코드의 familyCode와 depth를 사용한다
-			ReplyVO parentVO = replyDao.getParent(insertVO.getParent());
+			Reply parentVO = replyDao.getParent(insertVO.getParent());
 			insertVO.setFamily(parentVO.getFamily());
 			insertVO.setDepth(parentVO.getDepth()+1);
 		}
@@ -54,13 +54,12 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	
 	@Override
-	@Transactional
-	public int add(ReplyVO insertVO, String path) throws Exception {
+	public int add(Reply insertVO, String path, MultipartFile mpf) throws Exception {
 		int no = replyDao.getNo()+1;
 		insertVO.setNo(no);
 		makeInsertVO(insertVO);
 		
-		MultipartFile image = insertVO.getImage();
+		MultipartFile image = mpf;
 		if(image!=null){
 			String originName = image.getOriginalFilename();
 			String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
@@ -82,12 +81,12 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
-	public int update(ReplyVO updateVO, String path) throws Exception {
+	public int update(Reply updateVO, String path, MultipartFile mpf) throws Exception {
 		int no = replyDao.getNo()+1;
 		updateVO.setNo(no);
 		makeInsertVO(updateVO);
 		
-		MultipartFile image = updateVO.getImage();
+		MultipartFile image = mpf;
 		if(image!=null){
 			String originName = image.getOriginalFilename();
 			String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
@@ -110,8 +109,7 @@ public class ReplyServiceImpl implements ReplyService {
 
 
 	@Override
-	@Transactional
-	public boolean delete(ReplyVO deleteVO) throws Exception {
+	public boolean delete(Reply deleteVO) throws Exception {
 		replyDao.delete(deleteVO);
 		return false;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,20 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import zum.potal.dwlee.service.UserService;
-import zum.potal.dwlee.vo.UserVO;
+import zum.potal.dwlee.vo.User;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-	@Resource(name="userService")
+	@Autowired
 	private UserService userServcie;
 	
 //    // 접속하는 사용자에 대한 세션을 보관하기 위해 정의
 //    private SessionManager clients;
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean login(@RequestBody UserVO loginVO, HttpSession session) throws Exception{
+	public @ResponseBody boolean login(@RequestBody User loginVO, HttpSession session) throws Exception{
 		boolean result=false;
 		try{
 			result=userServcie.login(loginVO);
@@ -40,7 +41,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public List<UserVO> getList(Model model){
+	public List<User> getList(Model model){
 		List list=null;
 		try{
 			list= userServcie.getList();
@@ -51,7 +52,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean addUser(@RequestBody UserVO insertVO) throws Exception{
+	public @ResponseBody boolean addUser(@RequestBody User insertVO) throws Exception{
 		try{
 			userServcie.add(insertVO);
 		}catch(Exception e){
