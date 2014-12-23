@@ -98,6 +98,22 @@
 	</div>
 	<br>
 	<br>
+	<div class="row hide"><!-- 글 수정 form -->
+        <form class="form updateForm" enctype="multipart/form-data" >
+	      	<br>
+	       	<div class="row">
+		        <div class="col-md-2 file">
+			       	<input type="file" id="updateImage" name="image">
+			       	<input type="check" id="imageCheck"><label>이미지 삭제</label>
+			    </div>
+		        <div class="col-md-4 col-md-offset-8">
+			        <button type="button" class="btn btn-primary btn-sm" onclick='updateReply(this)'>수정</button>
+			        <button type="button" class="btn btn-danger btn-sm" onclick='closeUpdateForm(this)'>취소</button>
+			    </div>	        	
+	        </div>
+	   </form>	
+	</div>
+	
 	<div class="row hide"><!-- 답글 form -->
         <form class="form replyForm" enctype="multipart/form-data" >
 		    <textarea class="form-control" rows="3" autofocus placeholder="답글을 입력해주세요." id="childContent" name="content"></textarea>	

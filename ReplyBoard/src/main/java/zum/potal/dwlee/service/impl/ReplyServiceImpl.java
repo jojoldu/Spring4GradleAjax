@@ -82,6 +82,34 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
+	public int update(ReplyVO updateVO, String path) throws Exception {
+		int no = replyDao.getNo()+1;
+		updateVO.setNo(no);
+		makeInsertVO(updateVO);
+		
+		MultipartFile image = updateVO.getImage();
+		if(image!=null){
+			String originName = image.getOriginalFilename();
+			String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
+			
+	        if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){//jps, png, gif만 허용
+	        	String fileName = String.valueOf(no);
+	        	File dir = new File(path);
+	        	if(!dir.exists()){
+	        		dir.mkdirs();
+	        	}
+	        	String imageName=fileName+"."+imgExt;
+	        	File file = new File(path + imageName);
+                image.transferTo(file);
+                updateVO.setImageName(imageName);
+	        }
+		}
+		
+		return replyDao.add(updateVO);
+	}
+
+
+	@Override
 	@Transactional
 	public boolean delete(ReplyVO deleteVO) throws Exception {
 		replyDao.delete(deleteVO);

@@ -18,6 +18,9 @@ public interface ReplyService {
 	//댓글 등록
 	public int add(ReplyVO insertVO, String path) throws Exception;
 	
+	//댓글 수정
+	public int update(ReplyVO updateVO, String path) throws Exception;
+	
 	//댓글 삭제
 	public boolean delete(ReplyVO deleteVO) throws Exception;
 }

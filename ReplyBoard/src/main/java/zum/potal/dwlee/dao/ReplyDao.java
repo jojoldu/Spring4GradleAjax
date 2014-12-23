@@ -13,6 +13,8 @@ public interface ReplyDao {
 	
 	public int add(ReplyVO insertVO) throws Exception;
 	
+	public int update(ReplyVO updateVO) throws Exception;
+	
 	public int getNo() throws Exception;
 	
 	public ReplyVO getParent(int no) throws Exception;

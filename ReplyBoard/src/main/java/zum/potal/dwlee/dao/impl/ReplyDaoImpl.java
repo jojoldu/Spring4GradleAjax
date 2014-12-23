@@ -67,6 +67,19 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return 0;
 	}
+	
+	@Override
+	public int update(ReplyVO updateVO) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		try{
+			session.update("reply.update", updateVO);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return 0;
+	}
 
 	@Override
 	public int getNo() throws Exception {

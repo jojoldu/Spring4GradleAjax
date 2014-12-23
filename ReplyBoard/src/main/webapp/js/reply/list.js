@@ -75,13 +75,12 @@ function drawTable(data) {
 function drawRow(rowData) {
 	var id=rowData.no;
 	var formId = 'form'+id;
+	var textId = 'text'+id;
+	var updateId = 'update'+id;
 	var btnHtml = '';
-	var replyFrom = $(".replyForm").html();
-	//댓글 표시
-	var addReplymark="";
-	if(rowData.depth >0){
-		addReplymark="ㄴ";
-	}
+	var replyForm = $(".replyForm").html();
+	var updateForm = $(".updateForm").html();
+	
 	//들여쓰기
 	var depth = (100-(rowData.depth*3))+"%;";
 	
@@ -89,7 +88,7 @@ function drawRow(rowData) {
 	var row = $('<tr>')
     $("#replyList tbody").append(row); 
     row.append($('<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>'));   
-	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyFrom+'</div></td>'));
+	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"id="'+textId+'"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+updateId+'">'+updateForm+'</div><div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyForm+'</div></td>'));
     row.append($('<td align="center">' + rowData.writeDate.substr(0,16) + '</td>'));
     row.append($('<td align="center">' + rowData.writer + '</td>'));
     row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment"></span></button></td>'));
@@ -98,13 +97,10 @@ function drawRow(rowData) {
 
 }
 
-function drawPaging(){
-	
-}
-
 //작성폼 초기화
 function resetForm(){
 	$("#content").val("");
+	$("#image").val("");
 }
 
 //글 작성
@@ -136,21 +132,56 @@ function addReply(e){
 	} );
 }
 
-//글 수정폼 열기
+//답글작성폼 열기
 function openAddForm(no){
 	var formId ='#form'+no;
 	$(formId).removeClass("hide");
 }
-
-
-//답글 수정폼 닫기
+//답글 작성폼 닫기
 function cancleReply(e){
 	$(e).parent().parent().parent().addClass("hide");
 }
 
+//글 수정폼 열기
+function openUpdateForm(no){
+	var textId ='#text'+no;
+	var updateId = '#update'+no;
+	$(textId).prop('readonly',false);
+	$(updateId).removeClass("hide");
+}
+
 //글 수정
 function updateReply(e){
-	$(e).parent().parent();
+	var no = $(e).parent().parent().parent()[0].id.substr(6);
+	
+	var formData = new FormData();
+	formData.append("parent",no);
+	formData.append("content", $("#text"+no).val());
+	formData.append("image", $("#update"+no).children(".row").children(".file").children("input:file")[0].files[0]);
+	
+	$.ajax({
+		type:"POST",
+		url:"update",
+		data:formData,
+		dataType:"json",
+		processData : false,
+	    contentType: false,		
+		success:function(data){
+			if(data===true){
+				alert("댓글이 수정되었습니다!");
+				resetForm();
+				getList(1);
+			}else{
+				alert("댓글 수정이 실패하였습니다.");
+			}
+
+		}
+	} );
+}
+
+function closeUpdateForm(e){
+	$(e).parent().parent().parent().siblings("text").prop("readonly",true);
+	$(e).parent().parent().parent().addClass("hide");
 }
 
 
@@ -167,6 +198,7 @@ function confirmDelete(no){
 //글 삭제
 function deleteReply(no){
 	var no=no;
+	var pageIndex = $(".active").val();
 	
 	var deleteVO = {
 			no:no
@@ -184,7 +216,7 @@ function deleteReply(no){
 		success:function(data){
 			if(data===true){
 				alert("삭제되었습니다.");
-				getList(1);//active 된 pageIndex
+				getList(pageIndex);//active 된 pageIndex
 			}else{
 				alert("삭제가 실패하였습니다.");
 			}

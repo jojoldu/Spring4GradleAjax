@@ -29,6 +29,7 @@ public class ReplyController {
 	@Resource(name="replyService")
 	private ReplyService replyService;
 
+	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
 
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
@@ -66,7 +67,7 @@ public class ReplyController {
 		insertVO.setWriter(loginVO.getId());	
 		try{
 			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
-			String path="C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
+			String path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
 			if(itr.hasNext()) {
 				MultipartFile mpf = request.getFile(itr.next());
@@ -78,6 +79,25 @@ public class ReplyController {
 		}
 		return true;
 	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public @ResponseBody boolean update(ReplyVO updateVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
+		UserVO loginVO = (UserVO)session.getAttribute("loginVO");
+		updateVO.setWriter(loginVO.getId());	
+		try{
+			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
+			String path = FILE_PATH;
+			Iterator<String> itr =  request.getFileNames();
+			if(itr.hasNext()) {
+				MultipartFile mpf = request.getFile(itr.next());
+				updateVO.setImage(mpf);
+			}
+			replyService.add(updateVO,path);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return true;
+	}	
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST, headers="Accept=application/json")
 	public @ResponseBody boolean delete(@RequestBody ReplyVO deleteVO) throws Exception{
