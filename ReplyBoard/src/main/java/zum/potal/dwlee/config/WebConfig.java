@@ -10,12 +10,14 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -76,8 +78,21 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
- 
+        viewResolver.setOrder(2);
         return viewResolver;
+    }
+    
+    @Bean 
+    public ViewResolver BeanNameViewResolver(){
+    	BeanNameViewResolver viewResolver = new BeanNameViewResolver();
+    	viewResolver.setOrder(1);
+    	return viewResolver;
+    }
+    
+    @Bean
+    public MappingJackson2JsonView jsonView(){
+    	MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+    	return jsonView;
     }
  
     @Override

@@ -47,20 +47,17 @@ function getList(pageIndex){
 		data:JSON.stringify(listVO),
 		dataType:"json",
 		success:function(data){
-			drawTable(data.list);
+			drawTable(data.list, data.loginId);
 		}
 	} );
 }
 
 //table 생성
-function drawTable(data) {
-    for (var i = 0; i < data.length; i++) {
-        drawRow(data[i]);
+function drawTable(list, loginId) {
+    for (var i = 0; i < list.length; i++) {
+        drawRow(list[i]);
     }
     
-//	//로그인 유저
-//	var loginId = 'dwlee';//json 전송받은 로그인 유저
-	
 	//로그인 유저
 	var loginId = loginId;//json 전송받은 로그인 유저	
 	
@@ -103,6 +100,7 @@ function drawRow(rowData) {
     row.append($('<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn " onclick="confirmDelete('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-trash"></span></button></td></tr>'));
 
 }
+
 
 //작성폼 초기화
 function resetForm(){
@@ -163,7 +161,7 @@ function updateReply(e){
 	var pageIndex = $(".active").val();
 	
 	var formData = new FormData();
-	formData.append("parent",no);
+	formData.append("no",no);
 	formData.append("content", $("#text"+no).val());
 	formData.append("image", $(e).parent().parent().parent().children(".row").children(".file").children("input:file")[0].files[0]);
 	

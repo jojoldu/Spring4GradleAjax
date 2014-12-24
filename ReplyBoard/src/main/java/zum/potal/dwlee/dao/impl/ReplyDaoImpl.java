@@ -73,7 +73,7 @@ public class ReplyDaoImpl implements ReplyDao {
 		Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",updateVO.getNo())).uniqueResult();
 		originVO.setContent(updateVO.getContent());
 		originVO.setImageName(updateVO.getImageName());
-		getCurrentSession().update(updateVO);
+		getCurrentSession().update(originVO);
 		return 0;
 	}
 

@@ -41,8 +41,23 @@ public class ReplyController {
 		return "reply/list";
 	}
 
-	@RequestMapping(value="/list.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody Model getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
+	
+//	@RequestMapping(value="/list.json", method=RequestMethod.POST, headers="Accept=application/json")
+//	public @ResponseBody Model getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
+//		List list=null;
+//		User loginVO = (User)session.getAttribute("loginVO");
+//		try{
+//			list= replyService.getList(listVO);
+//			model.addAttribute("list", list);
+//			model.addAttribute("loginId", loginVO.getId());
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		return "jsonView";
+//	}
+	
+	@RequestMapping(value="/list", method=RequestMethod.POST, headers="Accept=application/json")
+	public String getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
 		List list=null;
 		User loginVO = (User)session.getAttribute("loginVO");
 		try{
@@ -52,7 +67,7 @@ public class ReplyController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return model;
+		return "jsonView";
 	}
 	
 	@RequestMapping(value="/getPagingInfo", method=RequestMethod.POST, headers="Accept=application/json")
