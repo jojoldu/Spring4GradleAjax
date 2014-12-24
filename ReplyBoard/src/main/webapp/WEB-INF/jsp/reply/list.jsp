@@ -86,10 +86,12 @@
     	<div class="col-md-6 col-md-offset-2" id="form0">
 			<textarea class="form-control" rows="3" autofocus placeholder="댓글을 입력해주세요." id="content" name="content"></textarea>	
 	       	<br>
-	       	<div class="row">
-		       <div class="col-md-2 file">
-			       	<input type="file" id="image" name="image">
-		       </div>
+			<div class="row">
+				<div class="col-md-2 file">
+					<input type="file" id="image" name="image">
+				</div>
+			</div>
+			<div class="row">
 	           <div class="col-md-2 col-md-offset-8">
 		        	<button type="button" class="btn btn-success" onclick='addReply(this)'>글 등록하기</button>
 		       </div>	        	
@@ -104,8 +106,9 @@
 	       	<div class="row">
 		        <div class="col-md-2 file">
 			       	<input type="file" id="updateImage" name="image">
-			       	<input type="check" id="imageCheck"><label>이미지 삭제</label>
 			    </div>
+			</div>
+			<div class="row">
 		        <div class="col-md-4 col-md-offset-8">
 			        <button type="button" class="btn btn-primary btn-sm" onclick='updateReply(this)'>수정</button>
 			        <button type="button" class="btn btn-danger btn-sm" onclick='closeUpdateForm(this)'>취소</button>
@@ -122,6 +125,8 @@
 		        <div class="col-md-2 file">
 			       	<input type="file" id="childImage" name="image">
 			    </div>
+			</div>
+			<div class="row">			    
 		        <div class="col-md-4 col-md-offset-8">
 			        <button type="button" class="btn btn-primary btn-sm" onclick='addReply(this)'>등록</button>
 			        <button type="button" class="btn btn-danger btn-sm" onclick='cancleReply(this)'>취소</button>

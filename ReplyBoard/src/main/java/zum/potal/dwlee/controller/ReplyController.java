@@ -32,7 +32,7 @@ public class ReplyController {
 
 	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
 
-	@RequestMapping(value="/list", method=RequestMethod.GET)
+	@RequestMapping(value="/goTolist", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
 		User loginVO = (User)session.getAttribute("loginVO");
 		if(loginVO == null){
@@ -41,15 +41,18 @@ public class ReplyController {
 		return "reply/list";
 	}
 
-	@RequestMapping(value="/getList", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody List<Reply> getList(@RequestBody PagingInfo listVO){
+	@RequestMapping(value="/list.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public @ResponseBody Model getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
 		List list=null;
+		User loginVO = (User)session.getAttribute("loginVO");
 		try{
 			list= replyService.getList(listVO);
+			model.addAttribute("list", list);
+			model.addAttribute("loginId", loginVO.getId());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return list;
+		return model;
 	}
 	
 	@RequestMapping(value="/getPagingInfo", method=RequestMethod.POST, headers="Accept=application/json")
@@ -96,7 +99,7 @@ public class ReplyController {
 			if(itr.hasNext()) {
 				mpf = request.getFile(itr.next());
 			}
-			replyService.add(updateVO,path,mpf);
+			replyService.update(updateVO,path,mpf);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

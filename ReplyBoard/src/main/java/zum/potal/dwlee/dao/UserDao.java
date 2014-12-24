@@ -6,6 +6,9 @@ import zum.potal.dwlee.vo.User;
 
 public interface UserDao {
 	
+	//ID중복확인
+	public User checkId(User userVO) throws Exception;
+	
 	//로그인
 	public int login(User loginVO) throws Exception;
 	

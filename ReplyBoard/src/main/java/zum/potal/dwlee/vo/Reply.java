@@ -2,17 +2,22 @@ package zum.potal.dwlee.vo;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Reply{
 
 	@Id
 	private int no;//글번호
+	
+	@Size(min=0, max=20000)
 	private String content;//글내용
+	
 	private String writeDate;
+	
 	private String modifyDate;
+	
 	private String writer;
 	
 	private String imageName;

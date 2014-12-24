@@ -3,7 +3,6 @@
  */
 
 var parent;
-
 $(function() {
 
 	$("#pageSize").val('10');
@@ -44,11 +43,11 @@ function getList(pageIndex){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"getList",
+		url:"list.json",
 		data:JSON.stringify(listVO),
 		dataType:"json",
 		success:function(data){
-			drawTable(data);
+			drawTable(data.list);
 		}
 	} );
 }
@@ -59,8 +58,11 @@ function drawTable(data) {
         drawRow(data[i]);
     }
     
+//	//로그인 유저
+//	var loginId = 'dwlee';//json 전송받은 로그인 유저
+	
 	//로그인 유저
-	var loginId = 'dwlee';//json 전송받은 로그인 유저
+	var loginId = loginId;//json 전송받은 로그인 유저	
 	
 	//권한관련
 	$(".authBtn").each(function(){
@@ -87,9 +89,14 @@ function drawRow(rowData) {
 	//table row 생성
 	var row = $('<tr>')
     $("#replyList tbody").append(row); 
-    row.append($('<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>'));   
+	
+	if(rowData.imageName!=null){
+		row.append($('<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>')); 
+	}else{
+		row.append($('<td align="center"></td>')); 
+	}
 	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"id="'+textId+'"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+updateId+'">'+updateForm+'</div><div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyForm+'</div></td>'));
-    row.append($('<td align="center">' + rowData.writeDate.substr(0,16) + '</td>'));
+    row.append($('<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>'));
     row.append($('<td align="center">' + rowData.writer + '</td>'));
     row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment"></span></button></td>'));
     row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn " onclick="openUpdateForm('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-edit"></span></button></td>'));
@@ -110,7 +117,7 @@ function addReply(e){
 	var formData = new FormData();
 	formData.append("parent",no);
 	formData.append("content", $(e).parent().parent().siblings("textarea").val());
-	formData.append("image", $(e).parent().parent().children(".file").children("input:file")[0].files[0]);
+	formData.append("image", $(e).parent().parent().parent().children(".row").children(".file").children("input:file")[0].files[0]);
 	
 	$.ajax({
 		type:"POST",
@@ -153,11 +160,12 @@ function openUpdateForm(no){
 //글 수정
 function updateReply(e){
 	var no = $(e).parent().parent().parent()[0].id.substr(6);
+	var pageIndex = $(".active").val();
 	
 	var formData = new FormData();
 	formData.append("parent",no);
 	formData.append("content", $("#text"+no).val());
-	formData.append("image", $("#update"+no).children(".row").children(".file").children("input:file")[0].files[0]);
+	formData.append("image", $(e).parent().parent().parent().children(".row").children(".file").children("input:file")[0].files[0]);
 	
 	$.ajax({
 		type:"POST",
@@ -170,7 +178,7 @@ function updateReply(e){
 			if(data===true){
 				alert("댓글이 수정되었습니다!");
 				resetForm();
-				getList(1);
+				getList(pageIndex);
 			}else{
 				alert("댓글 수정이 실패하였습니다.");
 			}
@@ -179,6 +187,7 @@ function updateReply(e){
 	} );
 }
 
+//글 수정폼 닫기
 function closeUpdateForm(e){
 	$(e).parent().parent().parent().siblings("text").prop("readonly",true);
 	$(e).parent().parent().parent().addClass("hide");

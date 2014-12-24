@@ -15,6 +15,7 @@ import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
 @Service
+@Transactional
 public class ReplyServiceImpl implements ReplyService {
 	
 	@Autowired
@@ -104,7 +105,7 @@ public class ReplyServiceImpl implements ReplyService {
 	        }
 		}
 		
-		return replyDao.add(updateVO);
+		return replyDao.update(updateVO);
 	}
 
 

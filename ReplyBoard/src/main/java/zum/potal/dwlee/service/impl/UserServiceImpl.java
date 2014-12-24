@@ -13,11 +13,22 @@ import zum.potal.dwlee.service.UserService;
 import zum.potal.dwlee.vo.User;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
 	
+	
+	@Override
+	public boolean checkId(User loginVO) throws Exception {
+		boolean result=false;
+		User checkId= userDao.checkId(loginVO);
+		if(checkId==null){
+			result=true;
+		}
+		return result;
+	}
 	
 	@Override
 	public boolean login(User loginVO) throws Exception {

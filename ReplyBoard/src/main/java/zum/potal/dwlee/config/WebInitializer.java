@@ -20,7 +20,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
   //servlet-mapping
   @Override
   protected String[] getServletMappings() {
-      return new String[] { "/" };
+      return new String[] { "/","*.json"};
   }
  
   @Override
