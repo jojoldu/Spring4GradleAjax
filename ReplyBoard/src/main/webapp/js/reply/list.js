@@ -3,6 +3,7 @@
  */
 
 var parent;
+var validPassword=false;
 $(function() {
 
 	$("#pageSize").val('10');
@@ -17,15 +18,6 @@ $(function() {
 	$("#pageSize").change(function(){
 		makeListAndPaging(1);
 	});
-	
-	
-	
-//	//댓글수정폼 열기
-//	$(".updateFormBtn").click(updateForm);
-//	
-//	//댓글수정
-//	$(".updateBtn").click(updateReply);
-//	
 	
 });
 
@@ -180,7 +172,6 @@ function updateReply(e){
 			}else{
 				alert("댓글 수정이 실패하였습니다.");
 			}
-
 		}
 	} );
 }
@@ -230,5 +221,37 @@ function deleteReply(no){
 
 		}
 	} );
-
 }
+
+//기존 비밀번호 확인
+function checkPassword(){
+	var password = $("#password").val();
+	
+	$.post("user/checkPassword",{password:password},function(data){
+		if(data.resultCode){
+			alert("비밀번호 확인");
+			validPassword=true;
+		}
+	});
+}
+
+//사용자정보 수정
+function updateUserInfo(){
+	var password=$("#newPassword").val();
+	
+	var email=$("#email").val();
+	
+	var updateVO = {
+			password	:password,
+			email		:email
+	}
+	
+	$.post("user/update",updateVO,function(data){
+		
+	});
+}
+
+//탈퇴확인
+
+
+//탈퇴

@@ -20,30 +20,11 @@
 
     <div class="navbar-wrapper">
       <div class="container">
-
-        <div class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">Reply Board</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div> 
     <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
       <div class="carousel-inner">
         <div class="item active">
           <div class="container">
@@ -52,38 +33,108 @@
             </div>
           </div>
         </div>
-        <div class="item">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>줌인터넷</h1>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>서비스개발 파트1</h1>
-            </div>
-          </div>
-        </div>
       </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
     </div><!-- /.carousel -->
     
     <div class="row">
-    	<div class="col-md-1" >
-    		<select id="pageSize" class="form-control" style='float:right;'>
-    			<option value='2'>2</option>
-    			<option value='3'>3</option>
-    			<option value='5'>5</option>
-    			<option value='10'>10</option>
-    			<option value='15'>15</option>
-    			<option value='20'>20</option>
-    			<option value='30'>30</option>    			
-    		</select>
+    	<div class="col-md-3" >
+    		<div class="row">
+        		<div class="col-md-3 col-md-offset-4" style="padding:0px;">
+					<a data-toggle="modal" href="#userInfoForm">
+						<button type="button" class="btn btn-info">회원정보수정</button>
+					</a>
+				</div>
+    			<div class="col-md-3" style="padding:0px;">
+    				<button type="button" class="btn btn-danger">회원탈퇴</button>
+    			</div>		
+    		</div>
+    		<br/>
+			<div class="row">
+	    		<div class="col-md-3 col-md-offset-6" style="padding-left:0px;">
+		    		<select id="pageSize" class="form-control" style='float:right;'>
+		    			<option value='2'>2</option>
+		    			<option value='3'>3</option>
+		    			<option value='5'>5</option>
+		    			<option value='10'>10</option>
+		    			<option value='15'>15</option>
+		    			<option value='20'>20</option>
+		    			<option value='30'>30</option>    			
+		    		</select>
+	    		</div>
+    		</div>
     	</div>
-    	<div class="col-md-6 col-md-offset-2" id="form0">
+    	<div class="modal fade" id="#userInfoForm">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title">회원정보수정</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-3">
+									<label><span class="required">*</span>아이디</label>
+								</div>
+								<div class="col-md-6 col-slim-padding">
+									<input type="text" id="id" class="form-control required"
+										placeholder="" readonly>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<label><span class="required">*</span>기존 비밀번호</label>
+								</div>
+								<div class="col-md-6 col-slim-padding">
+									<input type="password" id="password" class="form-control"
+										placeholder="">
+								</div>
+								<div class="col-md-1 col-slim-padding">
+									<button class="btn btn-danger" id="checkPasswordBtn">비밀번호확인</button>
+								</div>
+							</div>							
+							<div class="row">
+								<div class="col-md-3">
+									<label><span class="required">*</span>새 비밀번호</label>
+								</div>
+								<div class="col-md-6 col-slim-padding">
+									<input type="password" id="newPassword" class="form-control"
+										placeholder="">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<label><span class="required">*</span>새 비밀번호확인</label>
+								</div>
+								<div class="col-md-6 col-slim-padding">
+									<input type="password" id="checkPassword" class="form-control"
+										placeholder="">
+								</div>
+							</div>						
+							<div class="row">
+								<div class="col-md-3">
+									<label><span class="required">*</span>Email</label>							
+								</div>
+								<div class="col-md-6 col-slim-padding">
+									<input type="email" id="email" class="form-control required"
+										placeholder="">
+								</div>							
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="row">
+							<div class="col-md-12">
+								<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+								<button type="button" class="btn btn-primary" id="updateUserBtn">수정완료</button>						
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+    	<div class="col-md-6" id="form0">
 			<textarea class="form-control" rows="3" autofocus placeholder="댓글을 입력해주세요." id="content" name="content"></textarea>	
 	       	<br>
 			<div class="row">
@@ -92,7 +143,7 @@
 				</div>
 			</div>
 			<div class="row">
-	           <div class="col-md-2 col-md-offset-8">
+	           <div class="col-md-2 col-md-offset-10">
 		        	<button type="button" class="btn btn-success" onclick='addReply(this)'>글 등록하기</button>
 		       </div>	        	
 	       </div>
