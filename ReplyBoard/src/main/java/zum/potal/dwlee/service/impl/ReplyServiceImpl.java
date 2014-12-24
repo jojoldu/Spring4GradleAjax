@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import zum.potal.dwlee.dao.ReplyDao;
 import zum.potal.dwlee.service.ReplyService;
-import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
 @Service
@@ -23,13 +23,13 @@ public class ReplyServiceImpl implements ReplyService {
 	//private final String FILE_PATH="/";
 	
 	@Override
-	public List<Reply> getList(Reply listVO) throws Exception {
-		return replyDao.getList(listVO);
+	public List<Reply> getList(PagingInfo pagingInfo) throws Exception {
+		return replyDao.getList(pagingInfo);
 	}
 	
 	
 	@Override
-	public Common getPagingInfo(Common pagingVO) throws Exception {
+	public PagingInfo getPagingInfo(PagingInfo pagingVO) throws Exception {
 		int totalRow = replyDao.getPagingInfo(pagingVO);
 		int totalPageCount=totalRow/pagingVO.getPageSize();		
 		if(totalRow%pagingVO.getPageSize() !=0){

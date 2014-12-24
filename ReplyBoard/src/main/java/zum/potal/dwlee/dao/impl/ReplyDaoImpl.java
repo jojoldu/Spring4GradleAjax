@@ -5,14 +5,16 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import zum.potal.dwlee.controller.Utils;
 import zum.potal.dwlee.dao.ReplyDao;
-import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 import zum.potal.dwlee.vo.User;
 
@@ -43,10 +45,14 @@ public class ReplyDaoImpl implements ReplyDao {
 	
 	
 	@Override
-	public List<Reply> getList(Reply listVO) throws Exception {
+	public List<Reply> getList(PagingInfo pagingInfo) throws Exception {
 		List list=null; 
 		try{
-			list=getCriteria().list();
+			list=getCriteria().addOrder(Order.desc("family"))
+							  .addOrder(Order.asc("depth"))
+							  .setFirstResult(pagingInfo.getFirstRow())
+							  .setMaxResults(pagingInfo.getPageSize())
+							  .list();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -55,10 +61,10 @@ public class ReplyDaoImpl implements ReplyDao {
 
 	
 	@Override
-	public int getPagingInfo(Common pagingVO) throws Exception {
+	public int getPagingInfo(PagingInfo pagingVO) throws Exception {
 		int result=0;
 		try{
-			result=getCurrentSession().createQuery("select count(no) from Reply").executeUpdate();
+			result = ((Number)getCriteria().setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -78,10 +84,10 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int update(Reply updateVO) throws Exception {
 		try{
-			getCurrentSession().createQuery("update Reply set content = ? ,modifyDate=now(), imageName=? ")
-							   .setString(0, updateVO.getContent())
-							   .setString(1, updateVO.getImageName())
-							   .executeUpdate();
+			Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",updateVO.getNo())).uniqueResult();
+			originVO.setContent(updateVO.getContent());
+			originVO.setImageName(updateVO.getImageName());
+			getCurrentSession().update(updateVO);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -91,8 +97,12 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int getNo() throws Exception {
 		int result=0;
+		Criteria criteria = null;
 		try{
-			result=getCurrentSession().createQuery("select max(no) from Reply").executeUpdate();
+			criteria = getCriteria().setProjection(Projections.max("no"));
+			if(criteria != null){
+				result = (Integer)criteria.uniqueResult();
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -114,7 +124,7 @@ public class ReplyDaoImpl implements ReplyDao {
 	public int delete(Reply deleteVO) throws Exception {
 		int result=0;
 		try{
-			getCurrentSession().createQuery("delete from Reply where no = ?").setInteger(0, deleteVO.getNo());
+			getCurrentSession().delete(deleteVO);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import zum.potal.dwlee.vo.Common;
+import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
 public interface ReplyService {
 
 	//댓글 목록
-	public List<Reply> getList(Reply listVO) throws Exception;
+	public List<Reply> getList(PagingInfo pagingInfo) throws Exception;
 	
 	//댓글 페이징
-	public Common getPagingInfo(Common pagingVO) throws Exception;
+	public PagingInfo getPagingInfo(PagingInfo pagingVO) throws Exception;
 	
 	public void makeInsertVO(Reply insertVO) throws Exception;
 	

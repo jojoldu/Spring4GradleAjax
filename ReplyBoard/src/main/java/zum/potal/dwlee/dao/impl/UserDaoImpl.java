@@ -72,6 +72,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public int add(User insertVO) throws Exception {
 		try{
 			getCurrentSession().save(insertVO);

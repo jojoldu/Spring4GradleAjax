@@ -6,16 +6,21 @@ import javax.persistence.Id;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-public class Reply extends Common{
+public class Reply{
 
 	@Id
 	private int no;//글번호
 	private String content;//글내용
 	private String writeDate;
+	private String modifyDate;
 	private String writer;
 	
 	private String imageName;
 	//private MultipartFile image;
+	
+	private int family; //원글번호
+	private int parent; //부모글번호
+	private int depth; //깊이
 	
 	public Reply() {
 		super();
@@ -47,13 +52,29 @@ public class Reply extends Common{
 		this.writer = writer;
 	}
 
-//	public MultipartFile getImage() {
-//		return image;
-//	}
-//
-//	public void setImage(MultipartFile image) {
-//		this.image = image;
-//	}
+	public int getFamily() {
+		return family;
+	}
+
+	public void setFamily(int family) {
+		this.family = family;
+	}
+
+	public int getParent() {
+		return parent;
+	}
+
+	public void setParent(int parent) {
+		this.parent = parent;
+	}
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
 
 	public String getImageName() {
 		return imageName;
@@ -62,7 +83,13 @@ public class Reply extends Common{
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
 	}
-	
-	
+
+	public String getModifyDate() {
+		return modifyDate;
+	}
+
+	public void setModifyDate(String modifyDate) {
+		this.modifyDate = modifyDate;
+	}
 	
 }
