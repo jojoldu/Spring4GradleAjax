@@ -19,8 +19,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({ "classpath:config/context/db.properties" })
-public class PersistenceConfig {
+@PropertySource({ "classpath:datasource.properties" })
+public class DataSourceConfig {
 
 	@Autowired
 	private Environment env;
@@ -28,7 +28,7 @@ public class PersistenceConfig {
 	@Bean
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(restDataSource());
+		sessionFactory.setDataSource(getDataSource());
 		sessionFactory.setPackagesToScan("zum.potal.dwlee");
 		sessionFactory.setHibernateProperties(hibernateProperties());
 
@@ -36,7 +36,7 @@ public class PersistenceConfig {
 	}
 
 	@Bean
-	public DataSource restDataSource() {
+	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
 		dataSource.setUrl(env.getProperty("jdbc.url"));
