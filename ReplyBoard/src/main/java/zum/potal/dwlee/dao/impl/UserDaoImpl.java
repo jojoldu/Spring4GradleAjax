@@ -31,7 +31,6 @@ public class UserDaoImpl implements UserDao {
 
 	public UserDaoImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public UserDaoImpl(SessionFactory sessionFactory) {
@@ -48,18 +47,15 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public int login(User loginVO) throws Exception {
-		int result=1;
-		List check = getCriteria().add(Restrictions.like("id", loginVO.getId(), MatchMode.ANYWHERE))
-				.add(Restrictions.like("password", loginVO.getPassword(), MatchMode.ANYWHERE))
-				.list();
-		result=check.size();
+	public User login(User loginVO) throws Exception {
+		User result=null;
+		result=(User)getCriteria().add(Restrictions.eq("id",loginVO.getId()))
+								  .add(Restrictions.eq("password", loginVO.getPassword()))
+								  .uniqueResult();
 		return result;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")	
 	public List<User> getList() throws Exception {
 		List list=null;
 		list = getCriteria().list();
@@ -67,11 +63,26 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public int add(User insertVO) throws Exception {
+	public void add(User insertVO) throws Exception {
 		getCurrentSession().save(insertVO);
-		return 0;
 	}
 
+	@Override
+	public User checkPassword(User userVO) throws Exception {
+		User result=null;
+		result=(User)getCriteria().add(Restrictions.eq("id",userVO.getId()))
+								  .add(Restrictions.eq("password", userVO.getPassword()))
+								  .uniqueResult();
+		return result;	
+	}
 
+	@Override
+	public void update(User updateVO) throws Exception {
+		getCurrentSession().update(updateVO);
+	}
+
+	@Override
+	public void delete(User deleteVO) throws Exception {
+		getCurrentSession().delete(deleteVO);
+	}
 }

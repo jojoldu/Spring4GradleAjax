@@ -45,7 +45,7 @@
 					</a>
 				</div>
     			<div class="col-md-3" style="padding:0px;">
-    				<button type="button" class="btn btn-danger">회원탈퇴</button>
+    				<button type="button" class="btn btn-danger" id="deleteUserBtn">회원탈퇴</button>
     			</div>		
     		</div>
     		<br/>
@@ -63,7 +63,7 @@
 	    		</div>
     		</div>
     	</div>
-    	<div class="modal fade" id="#userInfoForm">
+    	<div class="modal fade" id="userInfoForm">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -107,7 +107,7 @@
 									<label><span class="required">*</span>새 비밀번호확인</label>
 								</div>
 								<div class="col-md-6 col-slim-padding">
-									<input type="password" id="checkPassword" class="form-control"
+									<input type="password" id="confirmPassword" class="form-control"
 										placeholder="">
 								</div>
 							</div>						

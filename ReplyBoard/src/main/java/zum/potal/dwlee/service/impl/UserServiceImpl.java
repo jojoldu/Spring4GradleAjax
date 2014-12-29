@@ -4,6 +4,9 @@ import java.util.List;
 
 
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +34,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean login(User loginVO) throws Exception {
-		boolean result=false;
-		int checkId= userDao.login(loginVO);
-		if(checkId>0){
-			result=true;
-		}
+	public User login(User loginVO) throws Exception {
+		User result= userDao.login(loginVO);
 		return result;
 	}
 
@@ -46,9 +45,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int add(User insertVO) throws Exception {
-		return userDao.add(insertVO);
+	public void add(User insertVO) throws Exception {
+		userDao.add(insertVO);
 	}
 
-	
+	@Override
+	public boolean checkPassword(User userVO) throws Exception {
+		boolean result=false;
+		User resultVO = null;
+		resultVO=userDao.checkPassword(userVO);
+		if(resultVO !=null){
+			result=true;
+		}
+		return result;
+	}
+
+	@Override
+	public void update(User updateVO) throws Exception {
+		userDao.update(updateVO);
+	}
+
+	@Override
+	public void delete(User deleteVO) throws Exception {
+		userDao.delete(deleteVO);
+	}
 }

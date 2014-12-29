@@ -26,8 +26,8 @@ public class UserController {
 //    // 접속하는 사용자에 대한 세션을 보관하기 위해 정의
 //    private SessionManager clients;
 	
-	@RequestMapping(value="/checkId", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean checkId(@RequestBody User loginVO) throws Exception{
+	@RequestMapping(value="/checkId.json", method=RequestMethod.POST,  headers="Accept=application/json")
+	public @ResponseBody boolean checkId(@RequestBody User loginVO){
 		boolean result=false;
 		try{
 			result=userServcie.checkId(loginVO);
@@ -37,13 +37,15 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean login(@RequestBody User loginVO, HttpSession session) throws Exception{
+	@RequestMapping(value="/login.json", method=RequestMethod.POST,  headers="Accept=application/json")
+	public @ResponseBody boolean login(@RequestBody User loginVO, HttpSession session) {
+		User user;
 		boolean result=false;
 		try{
-			result=userServcie.login(loginVO);
-			if(result){
-				session.setAttribute("loginVO", loginVO);
+			user=userServcie.login(loginVO);
+			if(user!=null){
+				session.setAttribute("loginVO", user);
+				result=true;
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -51,7 +53,7 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value="/list", method=RequestMethod.GET)
+	@RequestMapping(value="/list.json", method=RequestMethod.GET)
 	public List<User> getList(Model model){
 		List list=null;
 		try{
@@ -62,8 +64,8 @@ public class UserController {
 		return list;
 	}
 	
-	@RequestMapping(value="/add", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean addUser(@RequestBody User insertVO) throws Exception{
+	@RequestMapping(value="/add.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public @ResponseBody boolean addUser(@RequestBody User insertVO) {
 		try{
 			userServcie.add(insertVO);
 		}catch(Exception e){
@@ -72,4 +74,39 @@ public class UserController {
 		return true;
 	}
 	
+	@RequestMapping(value="/checkPassword.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public boolean checkPassword(@RequestBody User userVO, Model model){
+		boolean result = false;
+		try{
+			result = userServcie.checkPassword(userVO);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value="/update.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public boolean update(@RequestBody User updateVO, Model model){
+		boolean result = false;
+		try{
+			userServcie.update(updateVO);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@RequestMapping(value="/delete.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public boolean delete(@RequestBody User updateVO, Model model){
+		boolean result = false;
+		try{
+			userServcie.delete(updateVO);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

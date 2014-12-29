@@ -72,7 +72,7 @@ public class ReplyServiceImpl implements ReplyService {
 	        		dir.mkdirs();
 	        	}
 	        	String imageName=fileName+"."+imgExt;
-	        	File file = new File(path + imageName);
+	        	File file = new File(path +"\\"+ imageName);
                 image.transferTo(file);
                 insertVO.setImageName(imageName);
 	        }
@@ -95,7 +95,7 @@ public class ReplyServiceImpl implements ReplyService {
 	        		dir.mkdirs();
 	        	}
 	        	String imageName=fileName+"."+imgExt;
-	        	File file = new File(path + imageName);
+	        	File file = new File(path +"\\"+ imageName);
                 image.transferTo(file);
                 updateVO.setImageName(imageName);
 	        }

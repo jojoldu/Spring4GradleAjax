@@ -10,11 +10,20 @@ public interface UserDao {
 	public User checkId(User userVO) throws Exception;
 	
 	//로그인
-	public int login(User loginVO) throws Exception;
+	public User login(User loginVO) throws Exception;
 	
 	//사용자 목록
 	public List<User> getList() throws Exception;
 	
 	//사용자 등록
-	public int add(User insertVO) throws Exception;
+	public void add(User insertVO) throws Exception;
+	
+	//비밀번호 확인
+	public User checkPassword(User userVO) throws Exception;
+	
+	//회원정보수정
+	public void update(User updateVO) throws Exception;
+	
+	//회원 탈퇴
+	public void delete(User deleteVO) throws Exception;
 }

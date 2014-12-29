@@ -44,7 +44,7 @@ function checkId(){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"user/checkId",
+		url:"user/checkId.json",
 		data:JSON.stringify(userVO),
 		dataType:"json",
 		success:function(data){
@@ -74,7 +74,7 @@ function login(){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"user/login",
+		url:"user/login.json",
 		data:JSON.stringify(loginVO),
 		dataType:"json",
 		success:function(data){
@@ -137,7 +137,7 @@ function signUp(){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"user/add",
+		url:"user/add.json",
 		data:JSON.stringify(insertVO),
 		dataType:"json",
 		success:function(data){

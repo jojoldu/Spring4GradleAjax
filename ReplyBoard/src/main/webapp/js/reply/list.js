@@ -19,6 +19,14 @@ $(function() {
 		makeListAndPaging(1);
 	});
 	
+	//비밀번호 확인
+	$("#checkPasswordBtn").click(checkPassword);
+	
+	//회원정보수정
+	$("#updateUserBtn").click(updateUserInfo);
+	
+	//회원탈퇴 확인
+	$("#deleteUserBtn").click(confirmDeleteUser);
 });
 
 
@@ -39,6 +47,8 @@ function getList(pageIndex){
 		data:JSON.stringify(listVO),
 		dataType:"json",
 		success:function(data){
+			$("#id").val(data.loginId);
+			$("#email").val(data.loginEmail);
 			drawTable(data.list, data.loginId);
 		}
 	} );
@@ -111,7 +121,7 @@ function addReply(e){
 	
 	$.ajax({
 		type:"POST",
-		url:"add",
+		url:"add.json",
 		data:formData,
 		dataType:"json",
 		processData : false,
@@ -159,7 +169,7 @@ function updateReply(e){
 	
 	$.ajax({
 		type:"POST",
-		url:"update",
+		url:"update.json",
 		data:formData,
 		dataType:"json",
 		processData : false,
@@ -208,7 +218,7 @@ function deleteReply(no){
 			'Content-Type': 'application/json' 
 		},
 		type:"POST",
-		url:"delete",
+		url:"delete.json",
 		data:JSON.stringify(deleteVO),
 		dataType:"json",
 		success:function(data){
@@ -225,33 +235,113 @@ function deleteReply(no){
 
 //기존 비밀번호 확인
 function checkPassword(){
+	var id=$("#id").val();
 	var password = $("#password").val();
+	var userVO={
+			id:id,
+			password:password
+	}
 	
-	$.post("user/checkPassword",{password:password},function(data){
-		if(data.resultCode){
-			alert("비밀번호 확인");
-			validPassword=true;
+	$.ajax({
+	    headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		type:"POST",
+		url:"/ReplyBoard/user/checkPassword.json",
+		data:JSON.stringify(userVO),
+		dataType:"json",
+		success:function(data){
+			if(data){
+				alert("비밀번호가 확인되었습니다.");
+				validPassword=true;
+			}else{
+				alert("비밀번호가 잘못되었습니다.");
+			}
 		}
-	});
+	} );
+	
 }
 
 //사용자정보 수정
 function updateUserInfo(){
-	var password=$("#newPassword").val();
+	if(!validPassword){
+		alert("기존 비밀번호를 정확히 입력해주세요");
+		return;
+	}
 	
+	var id=$("#id").val();
+	var password=$("#newPassword").val();
+	var confirmPassword=$("#confirmPassword").val();
 	var email=$("#email").val();
 	
+	if(password !== confirmPassword){
+		alert("새로운 비밀번호를 다시 확인해주세요");
+		return;
+	}
+	
 	var updateVO = {
+			id			:id,
 			password	:password,
 			email		:email
 	}
 	
-	$.post("user/update",updateVO,function(data){
-		
-	});
+	$.ajax({
+	    headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		type:"POST",
+		url:"/ReplyBoard/user/update.json",
+		data:JSON.stringify(updateVO),
+		dataType:"json",
+		success:function(data){
+			if(data){
+				alert("회원정보가 수정되었습니다.");
+				$(".close").trigger("click");
+			}else{
+				alert("회원정보수정이 실패 되었습니다.");
+			}
+			validPassword=false;
+		}
+	} );
 }
 
 //탈퇴확인
-
+function confirmDeleteUser(){
+	bootbox.confirm("탈퇴하시겠습니까?", function(confirmed) {
+		if(confirmed) {
+			deleteUser();
+		}
+	});	
+}
 
 //탈퇴
+function deleteUser(){
+	var id=$("#id").val();
+	
+	var deleteVO = {
+			id:id
+	}
+	
+	$.ajax({
+		headers: { 
+			'Accept': 'application/json',
+			'Content-Type': 'application/json' 
+		},
+		type:"POST",
+		url:"/ReplyBoard/user/delete.json",
+		data:JSON.stringify(deleteVO),
+		dataType:"json",
+		success:function(data){
+			if(data===true){
+				alert("탈퇴되었습니다.");
+				location.href="/ReplyBoard/";
+			}else{
+				alert("탈퇴가 실패하였습니다.");
+			}
+
+		}
+	} );
+}
+

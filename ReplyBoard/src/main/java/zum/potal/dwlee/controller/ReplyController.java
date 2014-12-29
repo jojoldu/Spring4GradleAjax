@@ -30,33 +30,18 @@ public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
 
-	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
+//	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
 
 	@RequestMapping(value="/goTolist", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
-		User loginVO = (User)session.getAttribute("loginVO");
-		if(loginVO == null){
-			return "redirect:/";
-		}
+//		User loginVO = (User)session.getAttribute("loginVO");
+//		if(loginVO == null){
+//			return "redirect:/";
+//		}
 		return "reply/list";
 	}
-
 	
-//	@RequestMapping(value="/list.json", method=RequestMethod.POST, headers="Accept=application/json")
-//	public @ResponseBody Model getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
-//		List list=null;
-//		User loginVO = (User)session.getAttribute("loginVO");
-//		try{
-//			list= replyService.getList(listVO);
-//			model.addAttribute("list", list);
-//			model.addAttribute("loginId", loginVO.getId());
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		return "jsonView";
-//	}
-	
-	@RequestMapping(value="/list", method=RequestMethod.POST, headers="Accept=application/json")
+	@RequestMapping(value="/list.json", method=RequestMethod.POST, headers="Accept=application/json")
 	public String getList(@RequestBody PagingInfo listVO, Model model, HttpSession session){
 		List list=null;
 		User loginVO = (User)session.getAttribute("loginVO");
@@ -64,13 +49,14 @@ public class ReplyController {
 			list= replyService.getList(listVO);
 			model.addAttribute("list", list);
 			model.addAttribute("loginId", loginVO.getId());
+			model.addAttribute("loginEmail",loginVO.getEmail());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "jsonView";
 	}
 	
-	@RequestMapping(value="/getPagingInfo", method=RequestMethod.POST, headers="Accept=application/json")
+	@RequestMapping(value="/getPagingInfo.json", method=RequestMethod.POST, headers="Accept=application/json")
 	public @ResponseBody PagingInfo getPagingInfo(@RequestBody PagingInfo pagingVO){
 		try{
 			replyService.getPagingInfo(pagingVO);
@@ -80,15 +66,16 @@ public class ReplyController {
 		return pagingVO;
 	}	
 
-	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public @ResponseBody boolean add(Reply insertVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
+	@RequestMapping(value="/add.json", method=RequestMethod.POST)
+	public @ResponseBody boolean add(Reply insertVO, HttpSession session, MultipartHttpServletRequest request){
 		User loginVO = (User)session.getAttribute("loginVO");
 		insertVO.setWriter(loginVO.getId());	
 		insertVO.setWriteDate(Utils.getNowTime());
 		insertVO.setModifyDate(Utils.getNowTime());
+		String path="";
 		try{
-			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
-			String path = FILE_PATH;
+			path = request.getSession().getServletContext().getRealPath("\\resources\\images");
+			//path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
 			MultipartFile mpf=null;
 			if(itr.hasNext()) {
@@ -101,14 +88,15 @@ public class ReplyController {
 		return true;
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public @ResponseBody boolean update(Reply updateVO, HttpSession session, MultipartHttpServletRequest request) throws Exception{
+	@RequestMapping(value="/update.json", method=RequestMethod.POST)
+	public @ResponseBody boolean update(Reply updateVO, HttpSession session, MultipartHttpServletRequest request){
 		User loginVO = (User)session.getAttribute("loginVO");
 		updateVO.setWriter(loginVO.getId());	
 		updateVO.setModifyDate(Utils.getNowTime());
+		String path="";
 		try{
-			//String path = request.getSession().getServletContext().getRealPath("/images/");//톰캣용
-			String path = FILE_PATH;
+			path = request.getSession().getServletContext().getRealPath("\\resources\\images");
+			//path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
 			MultipartFile mpf=null;
 			if(itr.hasNext()) {
@@ -121,10 +109,11 @@ public class ReplyController {
 		return true;
 	}	
 	
-	@RequestMapping(value="/delete", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean delete(@RequestBody Reply deleteVO) throws Exception{
+	@RequestMapping(value="/delete.json", method=RequestMethod.POST, headers="Accept=application/json")
+	public @ResponseBody boolean delete(@RequestBody Reply deleteVO, HttpSession session) {
 		try{
 			replyService.delete(deleteVO);
+			session.removeAttribute("loginVO");
 		}catch(Exception e){
 			e.printStackTrace();
 		}

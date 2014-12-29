@@ -10,11 +10,20 @@ public interface UserService {
 	public boolean checkId(User userVO) throws Exception;
 	
 	//로그인
-	public boolean login(User loginVO) throws Exception;
+	public User login(User loginVO) throws Exception;
 	
 	//사용자목록 조회
 	public List<User> getList() throws Exception;
 	
 	//회원가입
-	public int add(User insertVO) throws Exception;
+	public void add(User insertVO) throws Exception;
+	
+	//비밀번호 확인
+	public boolean checkPassword(User userVO) throws Exception;
+	
+	//회원정보 수정
+	public void update(User updateVO) throws Exception;
+	
+	//회원 탈퇴
+	public void delete(User deleteVO) throws Exception;
 }
