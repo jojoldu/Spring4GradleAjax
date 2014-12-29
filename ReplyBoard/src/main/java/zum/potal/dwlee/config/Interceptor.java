@@ -14,7 +14,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
 			if("/ReplyBoard/".equals(reqUrl)){
 				return true;
 			}else{
-				if(reqUrl!=null && reqUrl.matches(".*.json")){ // json 데이터 요청의 경우 통과 
+				if(reqUrl!=null && reqUrl.matches(".*\\.json")){ // json 데이터 요청의 경우 통과 
 					return true; 
 				}else{//페이지 이동의 경우
 					if(request.getSession().getAttribute("loginVO") == null){//세션이 없다면
