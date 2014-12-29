@@ -23,6 +23,9 @@
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/dwlee/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/3.2.5.RELEASE/47624ce0bca40bac9a64276ed36d67be11f133b8/spring-security-web-3.2.5.RELEASE.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/dwlee/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/3.2.5.RELEASE/1286983a3ad4549d7f7fd0f3784e747667b44b70/spring-security-config-3.2.5.RELEASE.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/dwlee/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>

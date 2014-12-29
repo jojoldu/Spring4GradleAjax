@@ -46,6 +46,7 @@ dependencies {
           "org.springframework:spring-context:${version.spring}",
           "org.springframework:spring-orm:${version.spring}",
           "org.springframework.security:spring-security-web:${version.security}",
+          "org.springframework.security:spring-security-config:${version.security}",
           "javax.validation:validation-api:${version.validation}",
           "cglib:cglib-nodep:${version.cglib}",
           "ch.qos.logback:logback-classic:${version.logback}",
