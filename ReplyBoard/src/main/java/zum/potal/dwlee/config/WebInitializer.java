@@ -15,7 +15,8 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
  
   @Override
   protected Class<?>[] getServletConfigClasses() {
-      return new Class<?>[] { WebConfig.class, SecurityConfig.class };
+      //return new Class<?>[] { WebConfig.class, SecurityConfig.class };
+	  return new Class<?>[] { WebConfig.class};
   }
  
   //servlet-mapping
@@ -30,8 +31,9 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
       CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
       characterEncodingFilter.setEncoding("UTF-8");
       
-      DelegatingFilterProxy securityFilterChain = new DelegatingFilterProxy();
-      return new Filter[] { characterEncodingFilter,securityFilterChain};
+//      DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+//      return new Filter[] { characterEncodingFilter,delegatingFilterProxy};
+      return new Filter[] { characterEncodingFilter};
   }
   
   

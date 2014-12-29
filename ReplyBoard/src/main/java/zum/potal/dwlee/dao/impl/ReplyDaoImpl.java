@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import zum.potal.dwlee.controller.Utils;
 import zum.potal.dwlee.dao.ReplyDao;
+import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 import zum.potal.dwlee.vo.User;

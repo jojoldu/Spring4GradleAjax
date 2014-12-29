@@ -24,7 +24,7 @@ function getPagingInfo(pageIndex){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"getPagingInfo",
+		url:"getPagingInfo.json",
 		data:JSON.stringify(pagingVO),
 		dataType:"json",
 		success:function(data){

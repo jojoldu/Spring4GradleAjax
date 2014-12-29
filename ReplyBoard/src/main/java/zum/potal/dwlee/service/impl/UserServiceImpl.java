@@ -7,12 +7,16 @@ import java.util.List;
 
 
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.UserDao;
 import zum.potal.dwlee.service.UserService;
+import zum.potal.dwlee.utils.SeedKey;
+import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.User;
 
 @Service
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User login(User loginVO) throws Exception {
+		Utils.setSecurityPassword(loginVO);
 		User result= userDao.login(loginVO);
 		return result;
 	}
@@ -46,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void add(User insertVO) throws Exception {
+		Utils.setSecurityPassword(insertVO);
 		userDao.add(insertVO);
 	}
 
@@ -53,6 +59,7 @@ public class UserServiceImpl implements UserService {
 	public boolean checkPassword(User userVO) throws Exception {
 		boolean result=false;
 		User resultVO = null;
+		Utils.setSecurityPassword(userVO);
 		resultVO=userDao.checkPassword(userVO);
 		if(resultVO !=null){
 			result=true;
@@ -62,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void update(User updateVO) throws Exception {
+		Utils.setSecurityPassword(updateVO);
 		userDao.update(updateVO);
 	}
 

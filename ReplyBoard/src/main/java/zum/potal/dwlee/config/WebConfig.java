@@ -6,9 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -117,4 +117,10 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         messageSource.setCacheSeconds(0);
         return messageSource;
     }
+    
+//    @Bean
+//    public DelegatingFilterProxy delegatingFilterProxy(){
+//        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy();
+//        return delegatingFilterProxy;
+//    }
 }
