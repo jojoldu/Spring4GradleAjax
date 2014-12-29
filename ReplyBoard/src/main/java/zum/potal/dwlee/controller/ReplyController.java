@@ -110,10 +110,9 @@ public class ReplyController {
 	}	
 	
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean delete(@RequestBody Reply deleteVO, HttpSession session) {
+	public @ResponseBody boolean delete(@RequestBody Reply deleteVO) {
 		try{
 			replyService.delete(deleteVO);
-			session.removeAttribute("loginVO");
 		}catch(Exception e){
 			e.printStackTrace();
 		}

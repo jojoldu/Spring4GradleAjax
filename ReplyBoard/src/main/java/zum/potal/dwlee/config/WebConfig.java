@@ -43,9 +43,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-//        localeChangeInterceptor.setParamName("lang");
-//        registry.addInterceptor(localeChangeInterceptor);
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeChangeInterceptor);
         
         HandlerInterceptorAdapter interceptor = new Interceptor();
         registry.addInterceptor(interceptor);
@@ -97,18 +97,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     public MappingJackson2JsonView jsonView(){
     	MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
     	return jsonView;
-    }
- 
-    @Override
-    public void addViewControllers(org.springframework.web.servlet.config.annotation.ViewControllerRegistry registry) {
- 
-        // 특별히 controller 를 타지 않아도 되는 뷰만 있는 경우 등록
-        // ex) 디자인만 입힌 것들.
-        registry.addViewController("/simpleView").setViewName("/simpleView");
- 
- 
-        // 404 오류가 발생했을때 보여줄 뷰를 등록
-        // registry.addViewController("/page-not-found").setViewName("errors/404");
     }
  
     /**

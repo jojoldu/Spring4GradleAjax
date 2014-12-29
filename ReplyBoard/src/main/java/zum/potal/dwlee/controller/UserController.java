@@ -98,10 +98,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public boolean delete(@RequestBody User updateVO, Model model){
+	public boolean delete(@RequestBody User deleteVO, Model model, HttpSession session){
 		boolean result = false;
 		try{
-			userServcie.delete(updateVO);
+			userServcie.delete(deleteVO);
+			session.removeAttribute("loginVO");
 			result=true;
 		}catch(Exception e){
 			e.printStackTrace();

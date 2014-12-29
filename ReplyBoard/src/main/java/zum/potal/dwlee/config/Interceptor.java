@@ -11,13 +11,18 @@ public class Interceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler){
 		String reqUrl = request.getRequestURI().toString();
 		try{
-			if(!reqUrl.matches(".*.json")){ // json 데이터를 요청하지 않는, 일반적인 페이지 이동은 생략한다. 
-				return true; 
+			if(reqUrl.equals("/ReplyBoard/")){
+				return true;
+			}else{
+				if(reqUrl.matches(".*.json")){ // json 데이터 요청의 경우 통과 
+					return true; 
+				}else{//페이지 이동의 경우
+					if(request.getSession().getAttribute("loginVO") == null){//세션이 없다면
+						response.sendRedirect("/ReplyBoard/");
+						return false;
+					}
+				}
 			}
-//			if(!reqUrl.matches(".*/login.json") && request.getSession().getAttribute("loginVO") == null){
-//				response.sendRedirect("/ReplyBoard/login");
-//				return false;
-//			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

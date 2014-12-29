@@ -3,6 +3,7 @@ package zum.potal.dwlee.config;
 import javax.servlet.Filter;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
  
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -28,8 +29,10 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
  
       CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
       characterEncodingFilter.setEncoding("UTF-8");
-       
-      return new Filter[] { characterEncodingFilter};
-       
+      
+      DelegatingFilterProxy securityFilterChain = new DelegatingFilterProxy();
+      return new Filter[] { characterEncodingFilter,securityFilterChain};
   }
+  
+  
 }
