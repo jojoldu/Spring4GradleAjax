@@ -29,18 +29,14 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean checkId(User loginVO) throws Exception {
-		boolean result=false;
-		User checkId= userDao.checkId(loginVO);
-		if(checkId==null){
-			result=true;
-		}
-		return result;
+		User checkId = userDao.checkId(loginVO);	
+		return checkId == null;
 	}
 	
 	@Override
 	public User login(User loginVO) throws Exception {
 		Utils.setSecurityPassword(loginVO);
-		User result= userDao.login(loginVO);
+		User result = userDao.login(loginVO);
 		return result;
 	}
 
@@ -57,14 +53,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean checkPassword(User userVO) throws Exception {
-		boolean result=false;
-		User resultVO = null;
+	
 		Utils.setSecurityPassword(userVO);
-		resultVO=userDao.checkPassword(userVO);
-		if(resultVO !=null){
-			result=true;
-		}
-		return result;
+		return userDao.checkPassword(userVO) != null;
+		
 	}
 
 	@Override

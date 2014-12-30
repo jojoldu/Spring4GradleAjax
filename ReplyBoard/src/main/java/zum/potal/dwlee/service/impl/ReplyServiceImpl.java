@@ -42,8 +42,7 @@ public class ReplyServiceImpl implements ReplyService {
 
 
 
-	@Override
-	public void makeInsertVO(Reply insertVO) throws Exception{
+	private void makeInsertVO(Reply insertVO) throws Exception{
 		if(insertVO.getParent()==0){//부모코드가 없는경우, 답글이 아닌 일반글
 			insertVO.setFamily(insertVO.getNo());
 		}else{//부모코드가 있는경우, 해당 부모코드의 familyCode와 depth를 사용한다

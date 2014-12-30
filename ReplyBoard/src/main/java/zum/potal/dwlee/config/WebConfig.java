@@ -98,23 +98,4 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     	MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
     	return jsonView;
     }
- 
-//    /**
-//     * message source 들을 등록함
-//     *
-//     * @return
-//     */
-//    @Bean
-//    public MessageSource messageSource() {
-// 
-//        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-//        messageSource.setBasenames("classpath:messages/messages", "classpath:messages/validation");
-//        // if true, the key of the message will be displayed if the key is not
-//        // found, instead of throwing a NoSuchMessageException
-//        messageSource.setUseCodeAsDefaultMessage(true);
-//        messageSource.setDefaultEncoding("UTF-8");
-//        // # -1 : never reload, 0 always reload
-//        messageSource.setCacheSeconds(0);
-//        return messageSource;
-//    }
 }

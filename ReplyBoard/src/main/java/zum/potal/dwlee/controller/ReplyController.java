@@ -78,6 +78,7 @@ public class ReplyController {
 			replyService.add(insertVO,path,mpf);
 		}catch(Exception e){
 			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}

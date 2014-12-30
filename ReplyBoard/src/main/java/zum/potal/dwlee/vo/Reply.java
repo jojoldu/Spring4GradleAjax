@@ -28,11 +28,6 @@ public class Reply{
 	private int depth; //깊이
 	private String path;
 	
-	public Reply() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
 	public int getNo() {
 		return no;
 	}

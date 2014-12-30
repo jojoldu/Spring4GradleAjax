@@ -15,7 +15,6 @@ public interface ReplyService {
 	//댓글 페이징
 	public PagingInfo getPagingInfo(PagingInfo pagingVO) throws Exception;
 	
-	public void makeInsertVO(Reply insertVO) throws Exception;
 	
 	//댓글 등록
 	public void add(Reply insertVO, String path, MultipartFile mpf) throws Exception;
