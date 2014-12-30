@@ -46,8 +46,9 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public List<Reply> getList(PagingInfo pagingInfo) throws Exception {
 		List list=null; 
-		list=getCriteria().addOrder(Order.desc("family"))
-				.addOrder(Order.asc("depth"))
+		list=getCriteria()
+				.addOrder(Order.desc("family"))
+				.addOrder(Order.asc("path"))
 				.setFirstResult(pagingInfo.getFirstRow())
 				.setMaxResults(pagingInfo.getPageSize())
 				.list();

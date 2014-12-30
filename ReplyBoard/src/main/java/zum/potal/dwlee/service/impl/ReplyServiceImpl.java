@@ -96,6 +96,7 @@ public class ReplyServiceImpl implements ReplyService {
 	        	}
 	        	String imageName=fileName+"."+imgExt;
 	        	File file = new File(path +"\\"+ imageName);
+	        	file.delete();
                 image.transferTo(file);
                 updateVO.setImageName(imageName);
 	        }

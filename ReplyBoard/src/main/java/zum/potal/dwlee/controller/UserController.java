@@ -50,6 +50,18 @@ public class UserController {
 		return result;
 	}
 	
+	@RequestMapping(value="/logout.json", method=RequestMethod.POST,  headers="Accept=application/json")
+	public @ResponseBody boolean logout(HttpSession session) {
+		boolean result=false;
+		try{
+			session.removeAttribute("loginVO");
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	@RequestMapping(value="/list.json", method=RequestMethod.GET)
 	public List<User> getList(Model model){
 		List list=null;

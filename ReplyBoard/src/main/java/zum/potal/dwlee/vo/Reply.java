@@ -26,6 +26,7 @@ public class Reply{
 	private int family; //원글번호
 	private int parent; //부모글번호
 	private int depth; //깊이
+	private String path;
 	
 	public Reply() {
 		super();
@@ -95,6 +96,14 @@ public class Reply{
 
 	public void setModifyDate(String modifyDate) {
 		this.modifyDate = modifyDate;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 }

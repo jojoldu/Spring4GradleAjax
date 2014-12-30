@@ -25,6 +25,9 @@ $(function() {
 	//회원정보수정
 	$("#updateUserBtn").click(updateUserInfo);
 	
+	//로그아웃
+	$("#logoutBtn").click(logout);
+	
 	//회원탈퇴 확인
 	$("#deleteUserBtn").click(confirmDeleteUser);
 });
@@ -134,7 +137,6 @@ function addReply(e){
 			}else{
 				alert("댓글 등록이 실패하였습니다.");
 			}
-
 		}
 	} );
 }
@@ -307,6 +309,26 @@ function updateUserInfo(){
 	} );
 }
 
+//로그아웃
+function logout(){
+	$.ajax({
+	    headers: { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+		type:"POST",
+		url:"/ReplyBoard/user/logout.json",
+		success:function(data){
+			if(data){
+				alert("로그아웃 되었습니다.");
+				location.href="/ReplyBoard/";
+			}else{
+				alert("로그아웃이 실패하였습니다.");
+			}
+		}
+	} );
+}
+
 //탈퇴확인
 function confirmDeleteUser(){
 	bootbox.confirm("탈퇴하시겠습니까?", function(confirmed) {
@@ -340,7 +362,6 @@ function deleteUser(){
 			}else{
 				alert("탈퇴가 실패하였습니다.");
 			}
-
 		}
 	} );
 }

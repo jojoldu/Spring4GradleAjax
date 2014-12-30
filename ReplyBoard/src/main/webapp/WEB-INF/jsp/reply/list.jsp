@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>댓글 목록</title>
 <jsp:include page="/WEB-INF/jsp/common/commonHeader.jsp" flush="true" />
 
 <!-- ajax 파일 업로드를 위한 plugin -->
@@ -45,12 +45,15 @@
 					</a>
 				</div>
     			<div class="col-md-3" style="padding:0px;">
-    				<button type="button" class="btn btn-danger" id="deleteUserBtn">회원탈퇴</button>
+    				<button type="button" class="btn btn-default" id="logoutBtn">로그아웃</button>
     			</div>		
     		</div>
     		<br/>
 			<div class="row">
-	    		<div class="col-md-3 col-md-offset-6" style="padding-left:0px;">
+				<div class="col-md-3 col-md-offset-3">
+					<h3 style="margin:0px;"><span class="label label-default">페이징사이즈</span></h3> 
+				</div>
+	    		<div class="col-md-3 col-md-offset-1" style="padding-left:0px;">
 		    		<select id="pageSize" class="form-control" style='float:right;'>
 		    			<option value='2'>2</option>
 		    			<option value='3'>3</option>
@@ -61,6 +64,12 @@
 		    			<option value='30'>30</option>    			
 		    		</select>
 	    		</div>
+    		</div>
+			<br />
+			<div class="row">
+    			<div class="col-md-3 col-md-offset-7" style="padding:0px;">
+    				<button type="button" class="btn btn-danger" id="deleteUserBtn">회원탈퇴</button>
+    			</div>	    		
     		</div>
     	</div>
     	<div class="modal fade" id="userInfoForm">

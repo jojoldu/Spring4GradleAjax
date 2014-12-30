@@ -51,6 +51,7 @@ function makeAjaxPaging(pagingInfo){
 	var pageSize = parseInt(pagingInfo.pageSize);//한 페이지당 보여줄 글개수
 	var pageIndex = parseInt(pagingInfo.pageIndex);//현재 페이지
 	var lastPageIndex=parseInt(pageIndex+pageScope-1);//현재화면에서 마지막 페이지번호
+	
 	if(lastPageIndex>totalPageCount){//전체페이지수 보다 lastPageIndex가 크면
 		lastPageIndex=totalPageCount;
 	}
