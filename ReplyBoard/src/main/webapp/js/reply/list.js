@@ -277,6 +277,10 @@ function updateUserInfo(){
 	var confirmPassword=$("#confirmPassword").val();
 	var email=$("#email").val();
 	
+	if(password===""){
+		alert("비밀번호는 공란이 허용되지 않습니다.");
+		return;
+	}
 	if(password !== confirmPassword){
 		alert("새로운 비밀번호를 다시 확인해주세요");
 		return;
