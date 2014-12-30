@@ -101,3 +101,4 @@ function makeListAndPaging(pageIndex){
 	getPagingInfo(pageIndex);
 	getList(pageIndex);
 }
+
