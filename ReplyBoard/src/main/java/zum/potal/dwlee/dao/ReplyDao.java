@@ -11,13 +11,13 @@ public interface ReplyDao {
 	
 	public int getPagingInfo(PagingInfo pagingVO) throws Exception;
 	
-	public int add(Reply insertVO) throws Exception;
+	public void add(Reply insertVO) throws Exception;
 	
-	public int update(Reply updateVO) throws Exception;
+	public void update(Reply updateVO) throws Exception;
 	
 	public int getNo() throws Exception;
 	
 	public Reply getParent(int no) throws Exception;
 	
-	public int delete(Reply deleteVO) throws Exception;
+	public void delete(Reply deleteVO) throws Exception;
 }

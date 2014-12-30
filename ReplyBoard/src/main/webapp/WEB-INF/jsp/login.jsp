@@ -25,7 +25,7 @@
 <body>
 	<div class="container">
 		<form class="form-signin">
-			<h2 class="form-signin-heading">반응형 게시판</h2>
+			<h2 class="form-signin-heading">댓글 게시판</h2>
 			<input type="text" class="form-control" placeholder="ID" autofocus id="loginId"> 
 			<input type="password" class="form-control" placeholder="Password" id="loginPassword"> 
 			<input type="checkbox" value="remember-me"> 사용자 기억하기

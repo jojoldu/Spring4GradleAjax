@@ -31,14 +31,8 @@ public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
 
-//	private final String FILE_PATH = "C:\\Users\\dwlee\\jojoldu\\ReplyBoard\\src\\main\\webapp\\resources\\images\\";
-
 	@RequestMapping(value="/goTolist", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
-//		User loginVO = (User)session.getAttribute("loginVO");
-//		if(loginVO == null){
-//			return "redirect:/";
-//		}
 		return "reply/list";
 	}
 	
@@ -76,7 +70,6 @@ public class ReplyController {
 		String path="";
 		try{
 			path = request.getSession().getServletContext().getRealPath("\\resources\\images");
-			//path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
 			MultipartFile mpf=null;
 			if(itr.hasNext()) {
@@ -97,7 +90,6 @@ public class ReplyController {
 		String path="";
 		try{
 			path = request.getSession().getServletContext().getRealPath("\\resources\\images");
-			//path = FILE_PATH;
 			Iterator<String> itr =  request.getFileNames();
 			MultipartFile mpf=null;
 			if(itr.hasNext()) {

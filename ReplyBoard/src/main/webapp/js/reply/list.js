@@ -6,7 +6,7 @@ var parent;
 var validPassword=false;
 $(function() {
 
-	$("#pageSize").val('10');
+	$("#pageSize").val('30');
 	
 	//댓글 목록조회
 	makeListAndPaging(1);

@@ -195,18 +195,6 @@
 				<col width="3%">				
 				<col width="3%">
 				<col width="3%">				
-				<!-- 
-				<thead>
-					<tr>
-						<th align="center" id="header-content">내용</th>
-						<th align="center">번호</th>						
-						<th align="center">등록일</th>
-						<th align="center">등록자</th>
-						<th align="center">댓글달기</th>						
-						<th align="center">수정/삭제</th>
-					</tr>
-				</thead>
- -->
 	 			<tbody>
 	 			</tbody>
 			</table>

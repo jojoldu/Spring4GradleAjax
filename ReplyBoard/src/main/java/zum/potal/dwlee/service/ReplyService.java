@@ -18,11 +18,11 @@ public interface ReplyService {
 	public void makeInsertVO(Reply insertVO) throws Exception;
 	
 	//댓글 등록
-	public int add(Reply insertVO, String path, MultipartFile mpf) throws Exception;
+	public void add(Reply insertVO, String path, MultipartFile mpf) throws Exception;
 	
 	//댓글 수정
-	public int update(Reply updateVO, String path, MultipartFile mpf) throws Exception;
+	public void update(Reply updateVO, String path, MultipartFile mpf) throws Exception;
 	
 	//댓글 삭제
-	public boolean delete(Reply deleteVO) throws Exception;
+	public void delete(Reply deleteVO) throws Exception;
 }

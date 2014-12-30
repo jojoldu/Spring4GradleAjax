@@ -57,9 +57,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> getList() throws Exception {
-		List list=null;
-		list = getCriteria().list();
-		return list;
+		return getCriteria().list();
 	}
 
 	@Override

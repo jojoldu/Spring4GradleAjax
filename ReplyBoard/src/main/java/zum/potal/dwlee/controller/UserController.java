@@ -23,9 +23,6 @@ public class UserController {
 	@Autowired
 	private UserService userServcie;
 	
-//    // 접속하는 사용자에 대한 세션을 보관하기 위해 정의
-//    private SessionManager clients;
-	
 	@RequestMapping(value="/checkId.json", method=RequestMethod.POST,  headers="Accept=application/json")
 	public @ResponseBody boolean checkId(@RequestBody User loginVO){
 		boolean result=false;

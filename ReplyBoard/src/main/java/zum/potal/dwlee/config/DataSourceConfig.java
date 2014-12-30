@@ -54,11 +54,6 @@ public class DataSourceConfig {
 		return txManager;
 	}
 
-//	@Bean
-//	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-//		return new PersistenceExceptionTranslationPostProcessor();
-//	}
-
 	Properties hibernateProperties() {
 		return new Properties() {
 			{

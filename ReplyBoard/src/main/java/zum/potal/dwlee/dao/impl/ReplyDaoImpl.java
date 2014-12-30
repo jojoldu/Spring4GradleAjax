@@ -63,18 +63,16 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	@Override
-	public int add(Reply insertVO) throws Exception {
+	public void add(Reply insertVO) throws Exception {
 		getCurrentSession().save(insertVO);
-		return 0;
 	}
 
 	@Override
-	public int update(Reply updateVO) throws Exception {
+	public void update(Reply updateVO) throws Exception {
 		Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",updateVO.getNo())).uniqueResult();
 		originVO.setContent(updateVO.getContent());
 		originVO.setImageName(updateVO.getImageName());
 		getCurrentSession().update(originVO);
-		return 0;
 	}
 
 	@Override
@@ -95,10 +93,8 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	@Override
-	public int delete(Reply deleteVO) throws Exception {
-		int result=0;
+	public void delete(Reply deleteVO) throws Exception {
 		getCurrentSession().delete(deleteVO);
-		return result;
 	}
 
 

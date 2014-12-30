@@ -55,7 +55,7 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	
 	@Override
-	public int add(Reply insertVO, String path, MultipartFile mpf) throws Exception {
+	public void add(Reply insertVO, String path, MultipartFile mpf) throws Exception {
 		int no = replyDao.getNo()+1;
 		insertVO.setNo(no);
 		makeInsertVO(insertVO);
@@ -78,11 +78,11 @@ public class ReplyServiceImpl implements ReplyService {
 	        }
 		}
 		
-		return replyDao.add(insertVO);
+		replyDao.add(insertVO);
 	}
 
 	@Override
-	public int update(Reply updateVO, String path, MultipartFile mpf) throws Exception {
+	public void update(Reply updateVO, String path, MultipartFile mpf) throws Exception {
 		MultipartFile image = mpf;
 		if(image!=null){
 			String originName = image.getOriginalFilename();
@@ -101,14 +101,13 @@ public class ReplyServiceImpl implements ReplyService {
 	        }
 		}
 		
-		return replyDao.update(updateVO);
+		replyDao.update(updateVO);
 	}
 
 
 	@Override
-	public boolean delete(Reply deleteVO) throws Exception {
+	public void delete(Reply deleteVO) throws Exception {
 		replyDao.delete(deleteVO);
-		return false;
 	}
 	
 	
