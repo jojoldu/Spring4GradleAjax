@@ -4,6 +4,8 @@
 
 var parent;
 var validPassword=false;
+var activePageIndex;
+
 $(function() {
 
 	$("#pageSize").val('30');
@@ -36,23 +38,28 @@ $(function() {
 //댓글 목록 조회
 function getList(pageIndex){
 	var pageIndex=pageIndex;
+	activePageIndex = pageIndex;
+	
 	$('#page'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
 	
 	$('#replyList tbody').html('');
-	var listVO = setPagingInfo(pageIndex);
+	
+	var pagingInfo = setPagingInfo(pageIndex);
+	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"list.json",
-		data:JSON.stringify(listVO),
+		data:pagingInfo,
 		dataType:"json",
 		success:function(data){
-			$("#id").val(data.loginId);
-			$("#email").val(data.loginEmail);
-			drawTable(data.list, data.loginId);
+			if(data.result){
+				$("#id").val(data.loginId);
+				$("#email").val(data.loginEmail);
+				drawTable(data.list, data.loginId);				
+			}else{
+				alert("목록을 조회하지 못하였습니다.");
+			}
+
 		}
 	} );
 }
@@ -130,10 +137,10 @@ function addReply(e){
 		processData : false,
 	    contentType: false,		
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				alert("댓글이 등록되었습니다!");
 				resetForm();
-				getList(1);
+				getList(activePageIndex);
 			}else{
 				alert("댓글 등록이 실패하였습니다.");
 			}
@@ -162,7 +169,7 @@ function openUpdateForm(no){
 //글 수정
 function updateReply(e){
 	var no = $(e).parent().parent().parent()[0].id.substr(6);
-	var pageIndex = $(".active").val();
+	var pageIndex = activePageIndex;
 	
 	var formData = new FormData();
 	formData.append("no",no);
@@ -177,7 +184,7 @@ function updateReply(e){
 		processData : false,
 	    contentType: false,		
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				alert("댓글이 수정되었습니다!");
 				resetForm();
 				getList(pageIndex);
@@ -208,23 +215,19 @@ function confirmDelete(no){
 //글 삭제
 function deleteReply(no){
 	var no=no;
-	var pageIndex = $(".active").val();
+	var pageIndex = activePageIndex;
 	
-	var deleteVO = {
+	var user = {
 			no:no
 	}
 	
 	$.ajax({
-		headers: { 
-			'Accept': 'application/json',
-			'Content-Type': 'application/json' 
-		},
 		type:"POST",
 		url:"delete.json",
-		data:JSON.stringify(deleteVO),
+		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				alert("삭제되었습니다.");
 				getList(pageIndex);//active 된 pageIndex
 			}else{
@@ -239,22 +242,18 @@ function deleteReply(no){
 function checkPassword(){
 	var id=$("#id").val();
 	var password = $("#password").val();
-	var userVO={
+	var user={
 			id:id,
 			password:password
 	}
 	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"/ReplyBoard/user/checkPassword.json",
-		data:JSON.stringify(userVO),
+		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data){
+			if(data.result){
 				alert("비밀번호가 확인되었습니다.");
 				validPassword=true;
 			}else{
@@ -286,23 +285,19 @@ function updateUserInfo(){
 		return;
 	}
 	
-	var updateVO = {
+	var user = {
 			id			:id,
 			password	:password,
 			email		:email
 	}
 	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"/ReplyBoard/user/update.json",
-		data:JSON.stringify(updateVO),
+		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data){
+			if(data.result){
 				alert("회원정보가 수정되었습니다.");
 				$(".close").trigger("click");
 			}else{
@@ -315,15 +310,12 @@ function updateUserInfo(){
 
 //로그아웃
 function logout(){
+	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"/ReplyBoard/user/logout.json",
 		success:function(data){
-			if(data){
+			if(data.result){
 				alert("로그아웃 되었습니다.");
 				location.href="/ReplyBoard/";
 			}else{
@@ -346,21 +338,17 @@ function confirmDeleteUser(){
 function deleteUser(){
 	var id=$("#id").val();
 	
-	var deleteVO = {
+	var user = {
 			id:id
 	}
 	
 	$.ajax({
-		headers: { 
-			'Accept': 'application/json',
-			'Content-Type': 'application/json' 
-		},
 		type:"POST",
 		url:"/ReplyBoard/user/delete.json",
-		data:JSON.stringify(deleteVO),
+		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				alert("탈퇴되었습니다.");
 				location.href="/ReplyBoard/";
 			}else{

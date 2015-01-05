@@ -13,15 +13,15 @@ public interface ReplyService {
 	public List<Reply> getList(PagingInfo pagingInfo);
 	
 	//댓글 페이징
-	public PagingInfo getPagingInfo(PagingInfo pagingVO);
+	public PagingInfo getPagingInfo(PagingInfo pagingInfo);
 	
 	
 	//댓글 등록
-	public void add(Reply insertVO, String path, MultipartFile mpf) ;
+	public void add(Reply reply, String path, MultipartFile mpf) ;
 	
 	//댓글 수정
-	public void update(Reply updateVO, String path, MultipartFile mpf) ;
+	public void update(Reply reply, String path, MultipartFile mpf) ;
 	
 	//댓글 삭제
-	public void delete(Reply deleteVO);
+	public void delete(Reply reply);
 }

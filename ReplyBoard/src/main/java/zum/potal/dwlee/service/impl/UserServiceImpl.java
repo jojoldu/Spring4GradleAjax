@@ -28,45 +28,45 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public boolean checkDuplicateId(User loginVO) throws Exception {
-		User checkId = userDao.checkId(loginVO);	
+	public boolean checkDuplicateId(User user)  {
+		User checkId = userDao.checkId(user);	
 		return checkId == null;
 	}
 	
 	@Override
-	public User login(User loginVO) throws Exception {
-		Utils.setSecurityPassword(loginVO);
-		User result = userDao.login(loginVO);
+	public User login(User login) {
+		Utils.setSecurityPassword(login);
+		User result = userDao.login(login);
 		return result;
 	}
 
 	@Override
-	public List<User> getList() throws Exception {
+	public List<User> getList() {
 		return userDao.getList();
 	}
 
 	@Override
-	public void add(User insertVO) throws Exception {
-		Utils.setSecurityPassword(insertVO);
-		userDao.add(insertVO);
+	public void add(User user)  {
+		Utils.setSecurityPassword(user);
+		userDao.add(user);
 	}
 
 	@Override
-	public boolean checkPassword(User userVO) throws Exception {
+	public boolean checkPassword(User user){
 	
-		Utils.setSecurityPassword(userVO);
-		return userDao.checkPassword(userVO) != null;
+		Utils.setSecurityPassword(user);
+		return userDao.checkPassword(user) != null;
 		
 	}
 
 	@Override
-	public void update(User updateVO) throws Exception {
-		Utils.setSecurityPassword(updateVO);
-		userDao.update(updateVO);
+	public void update(User user) {
+		Utils.setSecurityPassword(user);
+		userDao.update(user);
 	}
 
 	@Override
-	public void delete(User deleteVO) throws Exception {
-		userDao.delete(deleteVO);
+	public void delete(User user) {
+		userDao.delete(user);
 	}
 }

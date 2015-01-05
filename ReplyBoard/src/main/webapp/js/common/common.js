@@ -17,18 +17,14 @@ function setPagingInfo(pageIndex){
 
 //페이징 정보 호출
 function getPagingInfo(pageIndex){
-	var pagingVO = setPagingInfo(pageIndex);
+	var pagingInfo = setPagingInfo(pageIndex);
 	$.ajax({
-		headers: { 
-			'Accept': 'application/json',
-			'Content-Type': 'application/json' 
-		},
 		type:"POST",
 		url:"getPagingInfo.json",
-		data:JSON.stringify(pagingVO),
+		data:pagingInfo,
 		dataType:"json",
 		success:function(data){
-			makeAjaxPaging(data);
+			makeAjaxPaging(data.pagingInfo);
 		}
 	} );	
 }
@@ -84,7 +80,7 @@ function makeAjaxPaging(pagingInfo){
 		pagingHtml+='<li><a href="javascript:void(0);" class="disabled"><</a></li>';	
 		for(var i=1;i<=totalPageCount;i++){
 			if(i==pageIndex){//현재 페이지일경우 활성화표시(active)
-				pagingHtml+='<li><a href="javascript:void(0);" onclick="getList('+i+')" class="active" id="'+(pageId+i)+'">'+i+'</a></li>';
+				pagingHtml+='<li><a href="javascript:void(0);" onclick="getList('+i+')" id="'+(pageId+i)+'">'+i+'</a></li>';
 			}else{
 				pagingHtml+='<li><a href="javascript:void(0);" onclick="getList('+i+')" id="'+(pageId+i)+'">'+i+'</a></li>';
 			}

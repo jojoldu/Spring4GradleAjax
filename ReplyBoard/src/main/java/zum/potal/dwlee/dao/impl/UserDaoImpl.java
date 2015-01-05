@@ -40,14 +40,14 @@ public class UserDaoImpl implements UserDao {
 
 
 	@Override
-	public User checkId(User userVO) throws Exception {
+	public User checkId(User userVO){
 		User result=null;
 		result=(User)getCriteria().add(Restrictions.eq("id", userVO.getId())).uniqueResult();
 		return result;
 	}
 
 	@Override
-	public User login(User loginVO) throws Exception {
+	public User login(User loginVO){
 		User result=null;
 		result=(User)getCriteria().add(Restrictions.eq("id",loginVO.getId()))
 								  .add(Restrictions.eq("password", loginVO.getPassword()))
@@ -56,17 +56,17 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<User> getList() throws Exception {
+	public List<User> getList(){
 		return getCriteria().list();
 	}
 
 	@Override
-	public void add(User insertVO) throws Exception {
+	public void add(User insertVO){
 		getCurrentSession().save(insertVO);
 	}
 
 	@Override
-	public User checkPassword(User userVO) throws Exception {
+	public User checkPassword(User userVO){
 		User result=null;
 		result=(User)getCriteria().add(Restrictions.eq("id",userVO.getId()))
 								  .add(Restrictions.eq("password", userVO.getPassword()))
@@ -75,12 +75,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void update(User updateVO) throws Exception {
+	public void update(User updateVO){
 		getCurrentSession().update(updateVO);
 	}
 
 	@Override
-	public void delete(User deleteVO) throws Exception {
+	public void delete(User deleteVO){
 		getCurrentSession().delete(deleteVO);
 	}
 }

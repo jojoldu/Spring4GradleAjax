@@ -7,23 +7,23 @@ import zum.potal.dwlee.vo.User;
 public interface UserService {
 
 	//ID중복 확인
-	public boolean checkDuplicateId(User userVO) throws Exception;
+	public boolean checkDuplicateId(User user);
 	
 	//로그인
-	public User login(User loginVO) throws Exception;
+	public User login(User login);
 	
 	//사용자목록 조회
-	public List<User> getList() throws Exception;
+	public List<User> getList();
 	
 	//회원가입
-	public void add(User insertVO) throws Exception;
+	public void add(User insert);
 	
 	//비밀번호 확인
-	public boolean checkPassword(User userVO) throws Exception;
+	public boolean checkPassword(User user);
 	
 	//회원정보 수정
-	public void update(User updateVO) throws Exception;
+	public void update(User user);
 	
 	//회원 탈퇴
-	public void delete(User deleteVO) throws Exception;
+	public void delete(User user);
 }

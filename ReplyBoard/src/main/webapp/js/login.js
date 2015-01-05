@@ -33,6 +33,7 @@ $(function() {
 			login();
 		}
 	});
+
 });
 
 //ID중복검사
@@ -47,27 +48,23 @@ function checkDuplicateId(){
 	}
 
 	if(flag){
-		var userVO = {
+		var user = {
 				id:id
 		}
 		
-		checkIdFromDB(userVO);
+		checkIdFromDB(user);
 	}
 }
 
-function checkIdFromDB(userVO){
+function checkIdFromDB(user){
 	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"user/checkDuplicateId.json",
-		data:JSON.stringify(userVO),
-		dataType:"json",
+		data:user,
+		dataType:"json",		
 		success:function(data){
-			if(data==true){
+			if(data.result){
 				alert("사용가능한 ID입니다.");
 				inputId=$("#id").val();
 				validId=true;
@@ -82,22 +79,18 @@ function checkIdFromDB(userVO){
 
 //로그인
 function login(){
-	var loginVO = {
+	var login = {
 			id:$("#loginId").val(),
 			password:$("#loginPassword").val()
 	}
 	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"user/login.json",
-		data:JSON.stringify(loginVO),
+		data:login,
 		dataType:"json",
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				$("#loginId").val("");
 				$("#loginPassword").val("");
 				location.href="reply/goTolist";
@@ -117,7 +110,7 @@ function validateObj(){
 	var checkPassword=$("#checkPassword").val();
 	var email=$("#email").val();
 	
-	if(validId==false){
+	if(validId === false){
 		alert("ID중복검사를 해주세요");
 		return false;
 	}
@@ -169,22 +162,20 @@ function resetForm(){
 
 //회원가입
 function signUp(){
-	var insertVO=validateObj();
-	if(insertVO==false){
+	
+	var insert=validateObj();
+	
+	if(insert === false){
 		return;
 	}
 	
 	$.ajax({
-	    headers: { 
-	        'Accept': 'application/json',
-	        'Content-Type': 'application/json' 
-	    },
 		type:"POST",
 		url:"user/add.json",
-		data:JSON.stringify(insertVO),
+		data:insert,
 		dataType:"json",
 		success:function(data){
-			if(data===true){
+			if(data.result){
 				alert("가입이 성공되었습니다.로그인해주세요.");
 				resetForm();
 				$(".close").trigger("click");

@@ -1,12 +1,13 @@
 package zum.potal.dwlee.controller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,35 +23,48 @@ public class UserController {
 
 	@Autowired
 	private UserService userServcie;
-	
-	@RequestMapping(value="/checkDuplicateId.json", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean checkDuplicateId(@RequestBody User loginVO){
+		
+	@RequestMapping(value="/checkDuplicateId.json", method=RequestMethod.POST)
+	public @ResponseBody Map checkDuplicateId(@ModelAttribute User user){
+		Map map = new HashMap();
 		boolean result=false;
+		
 		try{
-			result=userServcie.checkDuplicateId(loginVO);
+			result=userServcie.checkDuplicateId(user);
+	
 		}catch(Exception e){
 			e.printStackTrace();
+			result=false;
+		
+		}finally{
+			
+			map.put("result",result);
 		}
-		return result;
+		return map;
 	}
 	
-	@RequestMapping(value="/login.json", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean login(@RequestBody User loginVO, HttpSession session) {
+	@RequestMapping(value="/login.json", method=RequestMethod.POST)
+	public @ResponseBody Map login(@ModelAttribute User login, HttpSession session) {
 		User user;
 		boolean result=false;
+		Map map = new HashMap();
 		try{
-			user=userServcie.login(loginVO);
+			user=userServcie.login(login);
 			if(user!=null){
 				session.setAttribute("loginVO", user);
 				result=true;
 			}
+
 		}catch(Exception e){
 			e.printStackTrace();
+			result=false;
+		}finally{
+			map.put("result",result);
 		}
-		return result;
+		return map;
 	}
 	
-	@RequestMapping(value="/logout.json", method=RequestMethod.POST,  headers="Accept=application/json")
+	@RequestMapping(value="/logout.json", method=RequestMethod.POST)
 	public @ResponseBody boolean logout(HttpSession session) {
 		boolean result=false;
 		try{
@@ -62,61 +76,86 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping(value="/list.json", method=RequestMethod.GET)
-	public List<User> getList(Model model){
-		List list=null;
+	@RequestMapping(value="/add.json", method=RequestMethod.POST)
+	public @ResponseBody Map addUser(@ModelAttribute User user) {
+		boolean result=false;
+		Map map = new HashMap();
 		try{
-			list= userServcie.getList();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	@RequestMapping(value="/add.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public @ResponseBody boolean addUser(@RequestBody User insertVO) {
-		try{
-			userServcie.add(insertVO);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return true;
-	}
-	
-	@RequestMapping(value="/checkPassword.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public boolean checkPassword(@RequestBody User userVO, Model model){
-		boolean result = false;
-		try{
-			result = userServcie.checkPassword(userVO);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	@RequestMapping(value="/update.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public boolean update(@RequestBody User updateVO, Model model){
-		boolean result = false;
-		try{
-			userServcie.update(updateVO);
+			userServcie.add(user);
 			result=true;
+
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			result=false;
+			
+		}finally{
+			map.put("result", result);
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value="/checkPassword.json", method=RequestMethod.POST)
+	public @ResponseBody Map checkPassword(@ModelAttribute User user){
+		Map map = new HashMap();
+		boolean result=false;
+		
+		try{
+			result=userServcie.checkPassword(user);
+	
 		}catch(Exception e){
 			e.printStackTrace();
+			result=false;
+		
+		}finally{
+			
+			map.put("result",result);
 		}
-		return result;
+		return map;
+	}
+	
+	@RequestMapping(value="/update.json", method=RequestMethod.POST)
+	public @ResponseBody Map update(@ModelAttribute User user){
+		
+		boolean result=false;
+		Map map = new HashMap();
+		try{
+			userServcie.update(user);
+			result=true;
+
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			result=false;
+			
+		}finally{
+			map.put("result", result);
+		}
+		
+		return map;
 	}
 
-	@RequestMapping(value="/delete.json", method=RequestMethod.POST, headers="Accept=application/json")
-	public boolean delete(@RequestBody User deleteVO, Model model, HttpSession session){
-		boolean result = false;
+	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
+	public Map delete(@ModelAttribute User user, HttpSession session){
+		
+		boolean result=false;
+		Map map = new HashMap();
 		try{
-			userServcie.delete(deleteVO);
+			userServcie.delete(user);
 			session.removeAttribute("loginVO");
 			result=true;
+
 		}catch(Exception e){
+			
 			e.printStackTrace();
+			result=false;
+			
+		}finally{
+			map.put("result", result);
 		}
-		return result;
+		
+		return map;
 	}
 
 }

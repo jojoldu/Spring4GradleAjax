@@ -1,12 +1,9 @@
 package zum.potal.dwlee.config;
 
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -22,6 +19,8 @@ import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 //web.xml
 @Configuration
@@ -72,6 +71,24 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         return resolver;
     }
     
+//    @Bean
+//    public ContentNegotiatingViewResolver contentNegotiatingViewResolver(){
+//    	ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
+//    	Map<String, MediaType> map = new HashMap<String, MediaType>();
+//    	map.put("json", new MediaType("application","json"));
+//    	map.put("xml",  new MediaType("application","xml"));
+//    	
+//    	
+//    	ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager(new PathExtensionContentNegotiationStrategy(map));
+//    	
+//    	contentNegotiatingViewResolver.setContentNegotiationManager(contentNegotiationManager);
+//    	
+//    	List list = new ArrayList();
+//    	list.add(jsonView());
+//    	contentNegotiatingViewResolver.setDefaultViews(list);
+//    	return contentNegotiatingViewResolver;
+//    }
+    
     /**
      * JSP를 뷰로 사용하는 뷰 리졸버 등록
      */
@@ -96,6 +113,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     @Bean
     public MappingJackson2JsonView jsonView(){
     	MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+    	jsonView.setObjectMapper(new ObjectMapper());
     	return jsonView;
     }
 }

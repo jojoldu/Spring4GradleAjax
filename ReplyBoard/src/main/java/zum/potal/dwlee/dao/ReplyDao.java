@@ -9,15 +9,15 @@ public interface ReplyDao {
 
 	public List<Reply> getList(PagingInfo pagingInfo);
 	
-	public int getPagingInfo(PagingInfo pagingVO);
+	public int getPagingInfo(PagingInfo pagingInfo);
 	
-	public void add(Reply insertVO);
+	public void add(Reply reply);
 	
-	public void update(Reply updateVO);
+	public void update(Reply reply);
 	
 	public int getNo();
 	
 	public Reply getParent(int no);
 	
-	public void delete(Reply deleteVO);
+	public void delete(Reply reply);
 }

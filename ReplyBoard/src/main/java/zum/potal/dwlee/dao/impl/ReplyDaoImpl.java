@@ -10,13 +10,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.ReplyDao;
-import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
-import zum.potal.dwlee.vo.User;
 
 @Repository
 public class ReplyDaoImpl implements ReplyDao {
@@ -34,7 +31,6 @@ public class ReplyDaoImpl implements ReplyDao {
 
 	public ReplyDaoImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ReplyDaoImpl(SessionFactory SessionFactory) {
@@ -57,22 +53,22 @@ public class ReplyDaoImpl implements ReplyDao {
 
 
 	@Override
-	public int getPagingInfo(PagingInfo pagingVO){
+	public int getPagingInfo(PagingInfo pagingInfo){
 		int result=0;
 		result = ((Number)getCriteria().setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		return result;
 	}
 
 	@Override
-	public void add(Reply insertVO) {
-		getCurrentSession().save(insertVO);
+	public void add(Reply reply) {
+		getCurrentSession().save(reply);
 	}
 
 	@Override
-	public void update(Reply updateVO){
-		Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",updateVO.getNo())).uniqueResult();
-		originVO.setContent(updateVO.getContent());
-		originVO.setImageName(updateVO.getImageName());
+	public void update(Reply reply){
+		Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",reply.getNo())).uniqueResult();
+		originVO.setContent(reply.getContent());
+		originVO.setImageName(reply.getImageName());
 		getCurrentSession().update(originVO);
 	}
 
@@ -94,8 +90,8 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	@Override
-	public void delete(Reply deleteVO) {
-		getCurrentSession().delete(deleteVO);
+	public void delete(Reply reply) {
+		getCurrentSession().delete(reply);
 	}
 
 

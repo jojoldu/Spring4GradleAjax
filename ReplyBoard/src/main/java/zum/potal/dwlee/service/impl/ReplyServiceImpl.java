@@ -34,20 +34,23 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	@Transactional	
-	public PagingInfo getPagingInfo(PagingInfo pagingVO) {
-		int totalRow = replyDao.getPagingInfo(pagingVO);
-		int totalPageCount=totalRow/pagingVO.getPageSize();		
-		if(totalRow%pagingVO.getPageSize() !=0){
-			totalPageCount +=1; 
+	public PagingInfo getPagingInfo(PagingInfo pagingInfo) {
+		
+		int totalRow = replyDao.getPagingInfo(pagingInfo);
+		int totalPageCount=totalRow / pagingInfo.getPageSize();		
+		
+		if(totalRow%pagingInfo.getPageSize() != 0){
+			totalPageCount += 1; 
 		}
-		pagingVO.setTotalPageCount(totalPageCount);
-		return pagingVO;
+		
+		pagingInfo.setTotalPageCount(totalPageCount);
+		return pagingInfo;
 	}
 
 
 
-	private void makeInsertVO(Reply insertVO){
-		String no = String.valueOf(insertVO.getNo());
+	private void makeInsertReply(Reply reply){
+		String no = String.valueOf(reply.getNo());
 		int zeroLength = 5-no.length();//자릿수
 		StringBuffer path = new StringBuffer("0");
 
@@ -55,30 +58,30 @@ public class ReplyServiceImpl implements ReplyService {
 			path.append("0");
 		}
 		path.append(no);
-		insertVO.setPath(path.toString());
+		reply.setPath(path.toString());
 
-		if(insertVO.getParent() == 0){//부모코드가 없는경우, 답글이 아닌 일반글
+		if(reply.getParent() == 0){//부모코드가 없는경우, 답글이 아닌 일반글
 
-			insertVO.setFamily(insertVO.getNo());
+			reply.setFamily(reply.getNo());
 
 		}else{//부모코드가 있는경우, 해당 부모코드의 familyCode와 depth를 사용한다
 
-			Reply parentVO = replyDao.getParent(insertVO.getParent());
-			insertVO.setFamily(parentVO.getFamily());
-			insertVO.setDepth(parentVO.getDepth()+1);
+			Reply parentRepley = replyDao.getParent(reply.getParent());
+			reply.setFamily(parentRepley.getFamily());
+			reply.setDepth(parentRepley.getDepth()+1);
 
 		}
 	}
 
-	private void imageDownload(Reply replyVO, String path, MultipartFile mpf){
+	private void imageDownload(Reply reply, String path, MultipartFile mpf){
 		MultipartFile image = mpf;
 		try{
-			if(image!=null){
+			if(image != null){
 				String originName = image.getOriginalFilename();
 				String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
 
 				if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){//jps, png, gif만 허용
-					String fileName = String.valueOf(replyVO.getNo());
+					String fileName = String.valueOf(reply.getNo());
 					File dir = new File(path);
 					if(!dir.exists()){
 						dir.mkdirs();
@@ -86,7 +89,7 @@ public class ReplyServiceImpl implements ReplyService {
 					String imageName=fileName+"."+imgExt;
 					File file = new File(path +File.separatorChar+ imageName);
 					image.transferTo(file);
-					replyVO.setImageName(imageName);
+					reply.setImageName(imageName);
 				}
 			}
 		}catch(FileNotFoundException fnfe){
@@ -98,29 +101,29 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	@Transactional
-	public void add(Reply insertVO, String path, MultipartFile mpf){
+	public void add(Reply reply, String path, MultipartFile mpf){
 		int no = replyDao.getNo()+1;
-		insertVO.setNo(no);
+		reply.setNo(no);
 
-		makeInsertVO(insertVO);
+		makeInsertReply(reply);
 
-		imageDownload(insertVO,path,mpf);
+		imageDownload(reply,path,mpf);
 
-		replyDao.add(insertVO);
+		replyDao.add(reply);
 	}
 
 	@Override
 	@Transactional
-	public void update(Reply updateVO, String path, MultipartFile mpf) {
-		imageDownload(updateVO,path,mpf);
-		replyDao.update(updateVO);
+	public void update(Reply reply, String path, MultipartFile mpf) {
+		imageDownload(reply,path,mpf);
+		replyDao.update(reply);
 	}
 
 
 	@Override
 	@Transactional			
-	public void delete(Reply deleteVO) {
-		replyDao.delete(deleteVO);
+	public void delete(Reply reply) {
+		replyDao.delete(reply);
 	}
 
 }
