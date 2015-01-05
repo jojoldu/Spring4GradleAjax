@@ -7,17 +7,17 @@ import zum.potal.dwlee.vo.Reply;
 
 public interface ReplyDao {
 
-	public List<Reply> getList(PagingInfo pagingInfo) throws Exception;
+	public List<Reply> getList(PagingInfo pagingInfo);
 	
-	public int getPagingInfo(PagingInfo pagingVO) throws Exception;
+	public int getPagingInfo(PagingInfo pagingVO);
 	
-	public void add(Reply insertVO) throws Exception;
+	public void add(Reply insertVO);
 	
-	public void update(Reply updateVO) throws Exception;
+	public void update(Reply updateVO);
 	
-	public int getNo() throws Exception;
+	public int getNo();
 	
-	public Reply getParent(int no) throws Exception;
+	public Reply getParent(int no);
 	
-	public void delete(Reply deleteVO) throws Exception;
+	public void delete(Reply deleteVO);
 }

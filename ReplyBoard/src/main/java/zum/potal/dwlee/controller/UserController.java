@@ -27,7 +27,7 @@ public class UserController {
 	public @ResponseBody boolean checkId(@RequestBody User loginVO){
 		boolean result=false;
 		try{
-			result=userServcie.checkId(loginVO);
+			result=userServcie.checkDuplicateId(loginVO);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

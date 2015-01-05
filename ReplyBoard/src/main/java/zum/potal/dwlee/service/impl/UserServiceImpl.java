@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public boolean checkId(User loginVO) throws Exception {
+	public boolean checkDuplicateId(User loginVO) throws Exception {
 		User checkId = userDao.checkId(loginVO);	
 		return checkId == null;
 	}

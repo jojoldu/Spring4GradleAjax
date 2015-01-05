@@ -6,16 +6,12 @@
 <!-- Bootstrap css -->
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-<!-- jui css -->
-<link href="../jui/jui.min.css" rel="stylesheet" type="text/css" />
-
 <!-- common css -->
 <link href="../css/constant.css" rel="stylesheet" type="text/css" />
 
 <!-- 각 페이지에서 사용될 javascript 파일 -->
-<script type="text/javascript" src="../plugins/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="../plugins/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../bootstrap/bootbox/bootbox.min.js"></script>
-<script type="text/javascript" src="../jui/jui.min.js"></script>
-<script type="text/javascript" src="../js/common/constant.js"></script>
+<script type="text/javascript" src="../js/common/common.js"></script>
 <script type="text/javascript" src="../js/${fn:replace(fn:substringAfter(pageContext.request.requestURI, '/WEB-INF/jsp/'), '.jsp', '.js')}"></script>

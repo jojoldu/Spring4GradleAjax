@@ -60,6 +60,7 @@ public class ReplyController {
 		}
 		return pagingVO;
 	}	
+	
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
 	public @ResponseBody boolean add(Reply insertVO, HttpSession session, MultipartHttpServletRequest request){
@@ -68,6 +69,7 @@ public class ReplyController {
 		insertVO.setWriteDate(Utils.getNowTime());
 		insertVO.setModifyDate(Utils.getNowTime());
 		String path="";
+		
 		try{
 			path = request.getSession().getServletContext().getRealPath("\\resources\\images");
 			Iterator<String> itr =  request.getFileNames();

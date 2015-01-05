@@ -7,7 +7,7 @@ import zum.potal.dwlee.vo.User;
 public interface UserService {
 
 	//ID중복 확인
-	public boolean checkId(User userVO) throws Exception;
+	public boolean checkDuplicateId(User userVO) throws Exception;
 	
 	//로그인
 	public User login(User loginVO) throws Exception;

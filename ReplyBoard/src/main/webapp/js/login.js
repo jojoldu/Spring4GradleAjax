@@ -2,6 +2,8 @@
  * 로그인 관련 자바스크립트
  */
 var validId=false;
+var inputId="";
+
 $(function() {
 	//중복검사 이벤트
 	$("#checkIdBtn").click(checkId);
@@ -35,9 +37,26 @@ $(function() {
 
 //ID중복검사
 function checkId(){
-	var userVO = {
-			id:$("#id").val()	
+	var id=$("#id").val();
+	var flag=true;
+	
+	if(!checkEng(id)){//영문, 숫자만 있는지 체크
+		alert("ID에 특수문자 및 공백은 포함될 수 없습니다.");
+		flag=false;
+		return false;
 	}
+
+	if(flag){
+		var userVO = {
+				id:id
+		}
+		
+		checkIdFromDB(userVO);
+	}
+}
+
+function checkIdFromDB(userVO){
+	
 	$.ajax({
 	    headers: { 
 	        'Accept': 'application/json',
@@ -50,16 +69,16 @@ function checkId(){
 		success:function(data){
 			if(data==true){
 				alert("사용가능한 ID입니다.");
+				inputId=$("#id").val();
 				validId=true;
 			}else{
 				alert("사용이 불가능한 ID입니다.");
 				validId=false;
 			}
-
 		}
 	} );
-	
 }
+
 
 //로그인
 function login(){
@@ -92,20 +111,42 @@ function login(){
 
 //회원가입 입령항목 체크
 function validateObj(){
-
-	if(validId==false){
-		alert("ID중복검사를 해주세요");
-		return false;
-	}
 	
 	var id=$("#id").val();
 	var password=$("#password").val();
 	var checkPassword=$("#checkPassword").val();
 	var email=$("#email").val();
 	
-	if(password !== checkPassword){
-		alert("비밀번호를 잘못입력하였습니다.");
+	if(validId==false){
+		alert("ID중복검사를 해주세요");
 		return false;
+	}
+	
+	if(id !== inputId){// 미중복 ID 입력후 중복검사 없이 ID수정하여 중복ID로 회원가입시  
+		alert("ID변경시에는 다시 중복검사를 해야합니다.");
+		return false;
+	}
+	
+	if(password === ""){
+		alert("비밀번호에 공란이 올 수 없습니다.");
+		return false;
+	}
+	
+	if(password !== checkPassword){
+		alert("새 비밀번호를 확인해주세요.");
+		return false;
+	}
+	
+	if(email === ""){
+		alert("email을 입력해주세요.");
+		return false;
+	}
+	
+	var reg_email=/^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}$/;	// 인자 email_address를 정규식 format 으로 검색
+	
+	if (email.search(reg_email) == -1){
+	   alert("email형식에 맞춰 입력해주세요.");
+	   return false;
 	}
 	
 	var obj={
@@ -115,6 +156,8 @@ function validateObj(){
 	}
 	return obj;
 }
+
+
 
 //가입폼 초기화
 function resetForm(){

@@ -10,14 +10,11 @@
 <!-- Bootstrap -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
-<!-- jui css -->
-<link href="jui/jui.min.css" rel="stylesheet" type="text/css" />
 
 <!-- 각 페이지에서 사용될 javascript 파일 -->
-<script type="text/javascript" src="plugins/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="plugins/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="jui/jui.min.js"></script>
-<script type="text/javascript" src="js/common/constant.js"></script>
+<script type="text/javascript" src="js/common/common.js"></script>
 <script type="text/javascript" src="js/login.js"></script>
 
 <link rel="stylesheet" href="css/signin.css">
