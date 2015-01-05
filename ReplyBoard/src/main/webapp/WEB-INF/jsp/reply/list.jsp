@@ -144,7 +144,7 @@
 			<!-- /.modal-content -->
 		</div>
     	<div class="col-md-6" id="form0">
-			<textarea class="form-control" rows="3" autofocus placeholder="댓글을 입력해주세요." id="content" name="content"></textarea>	
+			<textarea class="form-control" rows="3" autofocus placeholder="댓글을 입력해주세요." id="content" name="content" onKeyDown="limitText(this,10000)"></textarea>	
 	       	<br>
 			<div class="row">
 				<div class="col-md-2 file">
@@ -179,7 +179,7 @@
 	
 	<div class="row hide"><!-- 답글 form -->
         <form class="form replyForm" enctype="multipart/form-data" >
-		    <textarea class="form-control" rows="3" autofocus placeholder="답글을 입력해주세요." id="childContent" name="content" ></textarea>	
+		    <textarea class="form-control" rows="3" autofocus placeholder="답글을 입력해주세요." id="childContent" name="content" onKeyDown="limitText(this,10000)"></textarea>	
 	      	<br>
 	       	<div class="row">
 		        <div class="col-md-2 file">

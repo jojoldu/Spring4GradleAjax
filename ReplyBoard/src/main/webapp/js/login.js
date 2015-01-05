@@ -6,10 +6,10 @@ var inputId="";
 
 $(function() {
 	//중복검사 이벤트
-	$("#checkIdBtn").click(checkId);
+	$("#checkIdBtn").click(checkDuplicateId);
 	$("#id").keypress(function(event) {
 		if(event.keyCode == 13) {
-			checkId();
+			checkDuplicateId();
 		}
 	});
 	
@@ -36,7 +36,7 @@ $(function() {
 });
 
 //ID중복검사
-function checkId(){
+function checkDuplicateId(){
 	var id=$("#id").val();
 	var flag=true;
 	
@@ -63,7 +63,7 @@ function checkIdFromDB(userVO){
 	        'Content-Type': 'application/json' 
 	    },
 		type:"POST",
-		url:"user/checkId.json",
+		url:"user/checkDuplicateId.json",
 		data:JSON.stringify(userVO),
 		dataType:"json",
 		success:function(data){

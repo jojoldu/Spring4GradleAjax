@@ -23,8 +23,8 @@ public class UserController {
 	@Autowired
 	private UserService userServcie;
 	
-	@RequestMapping(value="/checkId.json", method=RequestMethod.POST,  headers="Accept=application/json")
-	public @ResponseBody boolean checkId(@RequestBody User loginVO){
+	@RequestMapping(value="/checkDuplicateId.json", method=RequestMethod.POST,  headers="Accept=application/json")
+	public @ResponseBody boolean checkDuplicateId(@RequestBody User loginVO){
 		boolean result=false;
 		try{
 			result=userServcie.checkDuplicateId(loginVO);

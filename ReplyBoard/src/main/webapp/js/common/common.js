@@ -111,3 +111,13 @@ function checkEng(str) {
 	}
 	return flag;
 }
+
+
+//댓글등록시 글자수 제한
+function limitText(limitField, limitCount){
+	if (limitField.value.length > limitCount) {
+		limitField.value = limitField.value.substring(0, limitCount);
+		alert("댓글은 10,000자 이하로만 입력이 가능합니다.");
+	} 
+}
+
