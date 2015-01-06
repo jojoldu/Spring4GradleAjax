@@ -23,8 +23,6 @@ public class ReplyServiceImpl implements ReplyService {
 	@Autowired
 	private ReplyDao replyDao;
 
-	//private final String FILE_PATH="/";
-
 	@Override
 	@Transactional
 	public List<Reply> getList(PagingInfo pagingInfo) {

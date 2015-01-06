@@ -153,7 +153,7 @@
 			</div>
 			<div class="row">
 	           <div class="col-md-2 col-md-offset-10">
-		        	<button type="button" class="btn btn-success" onclick='addReply(this)'>글 등록하기</button>
+		        	<button type="button" class="btn btn-success" id="writeBtn">글 등록하기</button>
 		       </div>	        	
 	       </div>
 		</div>

@@ -14,7 +14,7 @@ $(function() {
 	makeListAndPaging(1);
 	
 	//댓글입력 
-	$("#writeBtn").click(addReply);
+	$("#writeBtn").click(writeReply);
 	
 	//페이징 사이즈 조절
 	$("#pageSize").change(function(){
@@ -107,8 +107,8 @@ function drawRow(rowData) {
 	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"id="'+textId+'"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+updateId+'">'+updateForm+'</div><div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyForm+'</div></td>'));
     row.append($('<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>'));
     row.append($('<td align="center">' + rowData.writer + '</td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment"></span></button></td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn " onclick="openUpdateForm('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-edit"></span></button></td>'));
+    row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment addReplyBtn"></span></button></td>'));
+    row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn " onclick="openUpdateForm('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-edit updateReplyBtn"></span></button></td>'));
     row.append($('<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn " onclick="confirmDelete('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-trash"></span></button></td></tr>'));
 
 }
@@ -120,14 +120,33 @@ function resetForm(){
 	$("#image").val("");
 }
 
-//글 작성
-function addReply(e){
-	var no = $(e).parent().parent().parent()[0].id.substr(4);
+//메인 글 작성
+function writeReply(){
+	var no = 0;
 	
 	var formData = new FormData();
 	formData.append("parent",no);
-	formData.append("content", $(e).parent().parent().siblings("textarea").val());
-	formData.append("image", $(e).parent().parent().parent().children(".row").children(".file").children("input:file")[0].files[0]);
+	formData.append("content", $("#form0 textarea").val());
+	formData.append("image", $("#form0 input:file")[0].files[0]);
+	
+	addReplyToAjax(formData);
+}
+
+//답글 작성
+function addReply(){
+	var no = $(".openAddForm").prop("id").substr(4);
+	
+	var formData = new FormData();
+	formData.append("parent",no);
+	formData.append("content", $(".openAddForm textarea").val());
+	formData.append("image", $(".openAddForm input:file")[0].files[0]);
+
+	addReplyToAjax(formData);
+}
+
+//글&답글 등록
+function addReplyToAjax(formData){
+	var formData = formData;
 	
 	$.ajax({
 		type:"POST",
@@ -152,10 +171,14 @@ function addReply(e){
 function openAddForm(no){
 	var formId ='#form'+no;
 	$(formId).removeClass("hide");
+	$(formId).addClass("openAddForm");
+	$(".addReplyBtn").prop("disabled", true);//하나의 답글폼 open시 다른 답글폼 open 못하도록 방지
 }
 //답글 작성폼 닫기
 function cancleReply(e){
-	$(e).parent().parent().parent().addClass("hide");
+	$(".openAddForm").addClass("hide");
+	$(".openAddForm").removeClass("openAddForm");
+	$(".addReplyBtn").prop("disabled", false);
 }
 
 //글 수정폼 열기
@@ -164,17 +187,18 @@ function openUpdateForm(no){
 	var updateId = '#update'+no;
 	$(textId).prop('readonly',false);
 	$(updateId).removeClass("hide");
+	$(updateId).addClass("openUpdateForm");
+	$(".updateReplyBtn").prop("disabled", true);
 }
 
 //글 수정
 function updateReply(e){
-	var no = $(e).parent().parent().parent()[0].id.substr(6);
-	var pageIndex = activePageIndex;
+	var no = $(".openUpdateForm").prop("id").substr(6);
 	
 	var formData = new FormData();
 	formData.append("no",no);
 	formData.append("content", $("#text"+no).val());
-	formData.append("image", $(e).parent().parent().parent().children(".row").children(".file").children("input:file")[0].files[0]);
+	formData.append("image", $(".openUpdateForm input:file")[0].files[0]);
 	
 	$.ajax({
 		type:"POST",
@@ -187,7 +211,7 @@ function updateReply(e){
 			if(data.result){
 				alert("댓글이 수정되었습니다!");
 				resetForm();
-				getList(pageIndex);
+				getList(activePageIndex);
 			}else{
 				alert("댓글 수정이 실패하였습니다.");
 			}
@@ -197,8 +221,13 @@ function updateReply(e){
 
 //글 수정폼 닫기
 function closeUpdateForm(e){
-	$(e).parent().parent().parent().siblings("text").prop("readonly",true);
-	$(e).parent().parent().parent().addClass("hide");
+	
+	var no = $(".openUpdateForm").prop("id").substr(6);
+	$("#text"+no).prop("readonly",true);
+	
+	$(".openUpdateForm").addClass("hide");
+	$(".openUpdateForm").removeClass("openUpdateForm");
+	$(".updateReplyBtn").prop("disabled", false);
 }
 
 
@@ -215,7 +244,6 @@ function confirmDelete(no){
 //글 삭제
 function deleteReply(no){
 	var no=no;
-	var pageIndex = activePageIndex;
 	
 	var user = {
 			no:no
@@ -229,7 +257,7 @@ function deleteReply(no){
 		success:function(data){
 			if(data.result){
 				alert("삭제되었습니다.");
-				getList(pageIndex);//active 된 pageIndex
+				getList(activePageIndex);//active 된 pageIndex
 			}else{
 				alert("삭제가 실패하였습니다.");
 			}
