@@ -71,7 +71,7 @@ public class ReplyServiceImpl implements ReplyService {
 		}
 	}
 
-	private void imageDownload(Reply reply, String path, MultipartFile mpf){
+	private boolean imageDownload(Reply reply, String path, MultipartFile mpf){
 		MultipartFile image = mpf;
 		try{
 			if(image != null){
@@ -90,31 +90,42 @@ public class ReplyServiceImpl implements ReplyService {
 					reply.setImageName(imageName);
 				}
 			}
-		}catch(FileNotFoundException fnfe){
-			fnfe.printStackTrace();
+			return true;
 		}catch(IOException ioe){
 			ioe.printStackTrace();
+			return false;
 		}
+
 	}
 
 	@Override
 	@Transactional
-	public void add(Reply reply, String path, MultipartFile mpf){
+	public boolean add(Reply reply, String path, MultipartFile mpf){
 		int no = replyDao.getNo()+1;
 		reply.setNo(no);
 
 		makeInsertReply(reply);
 
-		imageDownload(reply,path,mpf);
+		if(!imageDownload(reply,path,mpf)){
+			return false;
+		};
 
 		replyDao.add(reply);
+		return true;
 	}
 
 	@Override
 	@Transactional
-	public void update(Reply reply, String path, MultipartFile mpf) {
-		imageDownload(reply,path,mpf);
-		replyDao.update(reply);
+	public boolean update(Reply reply, String path, MultipartFile mpf) {
+		if(!imageDownload(reply,path,mpf)){
+			return false;
+		};
+		Reply update = replyDao.getReply(reply.getNo());
+		update.setContent(reply.getContent());
+		update.setImageName(reply.getImageName());
+		
+		replyDao.update(update);
+		return true;
 	}
 
 

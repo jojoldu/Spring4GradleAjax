@@ -13,6 +13,8 @@ public interface ReplyDao {
 	
 	public void add(Reply reply);
 	
+	public Reply getReply(int no);
+	
 	public void update(Reply reply);
 	
 	public int getNo();

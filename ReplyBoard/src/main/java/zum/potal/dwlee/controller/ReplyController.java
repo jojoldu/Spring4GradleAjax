@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ import zum.potal.dwlee.vo.User;
 @RequestMapping("/reply")
 public class ReplyController {
 
+	private final Logger logger = LoggerFactory.getLogger(ReplyController.class);
+	
 	@Autowired
 	private ReplyService replyService;
 
@@ -43,43 +47,40 @@ public class ReplyController {
 	public @ResponseBody Map getList(@ModelAttribute PagingInfo pagingInfo, HttpSession session){
 		Map map = new HashMap();
 		List list=null;
-		boolean result=false;
 		User login = (User)session.getAttribute("loginVO");
 		
 		try{
 			list= replyService.getList(pagingInfo);
+			
 			map.put("list", list);
 			map.put("loginId", login.getId());
 			map.put("loginEmail",login.getEmail());
-			result=true;
-		
+			map.put("result", true);
+			
+			return map;
+			
 		}catch(Exception e){
-			e.printStackTrace();
-			result=false;
-		
-		}finally{
-			map.put("result", result);
+			logger.debug(e.getMessage());
+			map.put("result", false);
+			return map;
 		}
-		return map;
 	}
 	
 	@RequestMapping(value="/getPagingInfo.json", method=RequestMethod.POST)
 	public @ResponseBody Map getPagingInfo(@ModelAttribute PagingInfo pagingInfo){
 		Map map = new HashMap();
-		boolean result=false;
 
 		try{
 			map.put("pagingInfo", replyService.getPagingInfo(pagingInfo));
-			result=true;
+			map.put("result", true);
+			
+			return map;
 		
 		}catch(Exception e){
-			e.printStackTrace();
-			result=false;
-		
-		}finally{
-			map.put("result", result);
+			logger.debug(e.getMessage());
+			map.put("result", false);
+			return map;
 		}
-		return map;
 	}	
 	
 	private MultipartFile getMultipartFile(Reply reply, HttpSession session, MultipartHttpServletRequest request){
@@ -105,69 +106,62 @@ public class ReplyController {
 		
 		reply.setWriteDate(Utils.getNowTime());
 		String path="";
-		boolean result=false;
 		Map map = new HashMap();
 		
 		try{
 			
 			path = getPath(request);
-			replyService.add(reply,path,getMultipartFile(reply,session,request));
-			result=true;
+			map.put("result", replyService.add(reply,path,getMultipartFile(reply,session,request)));
+			
+			return map;
 			
 		}catch(Exception e){
-			e.printStackTrace();
-			result=false;
+			logger.debug(e.getMessage());
 			
-		}finally{
-			map.put("result", result);
+			map.put("result", false);
+			
+			return map;
 		}
-		
-		return map;
 	}
 	
 	@RequestMapping(value="/update.json", method=RequestMethod.POST)
 	public @ResponseBody Map update(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
 		String path="";
-		boolean result=false;
 		Map map = new HashMap();
 		
 		try{
 			
 			path = getPath(request);
-			replyService.update(reply,path,getMultipartFile(reply,session,request));
-			result=true;
+			map.put("result", replyService.update(reply,path,getMultipartFile(reply,session,request)));
+			
+			return map;
 			
 		}catch(Exception e){
-			e.printStackTrace();
-			result=false;
+			logger.debug(e.getMessage());
+			map.put("result", false);
 			
-		}finally{
-			map.put("result", result);
+			return map;
 		}
-		
-		return map;
 	}	
 	
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
 	public @ResponseBody Map delete(@ModelAttribute Reply reply) {
 		
-		boolean result=false;
 		Map map = new HashMap();
 		
 		try{
 			replyService.delete(reply);
-			result=true;
+			map.put("result", true);
+			
+			return map;
 
 		}catch(Exception e){
 			
-			e.printStackTrace();
-			result=false;
+			logger.debug(e.getMessage());
+			map.put("result", false);
 			
-		}finally{
-			map.put("result", result);
+			return map;
 		}
-		
-		return map;
 	}
 }

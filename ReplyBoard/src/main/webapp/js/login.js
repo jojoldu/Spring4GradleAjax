@@ -7,7 +7,7 @@ var inputId="";
 $(function() {
 	//중복검사 이벤트
 	$("#checkIdBtn").click(checkDuplicateId);
-	$("#id").keypress(function(event) {
+	$("#id").keyup(function(event) {
 		if(event.keyCode == 13) {
 			checkDuplicateId();
 		}
@@ -15,20 +15,20 @@ $(function() {
 	
 	//회원가입 이벤트
 	$("#signUpBtn").click(signUp);
-	$("#email").keypress(function(event) {
+	$("#email").keyup(function(event) {
 		if(event.keyCode == 13) {
 			signUp();
 		}
 	});
-
+ 
 	//로그인 이벤트
 	$("#loginBtn").click(login);
-	$("#loginId").keypress(function(event) {
+	$("#loginId").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#loginPassword").focus();
 		}
 	});
-	$("#loginPassword").keypress(function(event) {
+	$("#loginPassword").keyup(function(event) {
 		if(event.keyCode == 13) {
 			login();
 		}

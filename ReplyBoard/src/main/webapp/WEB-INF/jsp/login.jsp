@@ -21,7 +21,7 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin">
+		<form class="form-signin" id="loginForm">
 			<h2 class="form-signin-heading">댓글 게시판</h2>
 			<input type="text" class="form-control" placeholder="ID" autofocus id="loginId"> 
 			<input type="password" class="form-control" placeholder="Password" id="loginPassword"> 

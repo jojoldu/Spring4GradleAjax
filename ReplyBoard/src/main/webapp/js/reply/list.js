@@ -59,7 +59,6 @@ function getList(pageIndex){
 			}else{
 				alert("목록을 조회하지 못하였습니다.");
 			}
-
 		}
 	} );
 }

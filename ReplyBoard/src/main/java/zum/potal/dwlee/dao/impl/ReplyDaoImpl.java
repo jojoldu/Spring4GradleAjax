@@ -41,22 +41,17 @@ public class ReplyDaoImpl implements ReplyDao {
 
 	@Override
 	public List<Reply> getList(PagingInfo pagingInfo) {
-		List list=null; 
-		list=getCriteria()
-				.addOrder(Order.desc("family"))
+		return getCriteria().addOrder(Order.desc("family"))
 				.addOrder(Order.asc("path"))
 				.setFirstResult(pagingInfo.getFirstRow())
 				.setMaxResults(pagingInfo.getPageSize())
 				.list();
-		return list;
 	}
 
 
 	@Override
 	public int getPagingInfo(PagingInfo pagingInfo){
-		int result=0;
-		result = ((Number)getCriteria().setProjection(Projections.rowCount()).uniqueResult()).intValue();
-		return result;
+		return ((Number)getCriteria().setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
 	@Override
@@ -64,12 +59,13 @@ public class ReplyDaoImpl implements ReplyDao {
 		getCurrentSession().save(reply);
 	}
 
+	public Reply getReply(int no){
+		return (Reply)getCriteria().add(Restrictions.eq("no",no)).uniqueResult();
+	}
+	
 	@Override
 	public void update(Reply reply){
-		Reply originVO = (Reply)getCriteria().add(Restrictions.eq("no",reply.getNo())).uniqueResult();
-		originVO.setContent(reply.getContent());
-		originVO.setImageName(reply.getImageName());
-		getCurrentSession().update(originVO);
+		getCurrentSession().update(reply);
 	}
 
 	@Override
