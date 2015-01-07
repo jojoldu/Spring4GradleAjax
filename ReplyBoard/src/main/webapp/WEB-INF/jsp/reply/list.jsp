@@ -207,7 +207,7 @@
 	 			<tbody>
 	 			</tbody>
 			</table>
-			<div id="paging">
+			<div id="pagination">
 			</div>
 		</div>
 	</div>

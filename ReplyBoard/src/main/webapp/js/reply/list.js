@@ -40,7 +40,7 @@ function getList(pageIndex){
 	var pageIndex=pageIndex;
 	activePageIndex = pageIndex;
 	
-	$('#page'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
+	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
 	
 	$('#replyList tbody').html('');
 	
