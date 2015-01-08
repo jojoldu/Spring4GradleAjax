@@ -2,20 +2,18 @@ package zum.potal.dwlee.config;
 
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+
 
 @Configuration
 @EnableTransactionManagement
@@ -37,7 +35,7 @@ public class DataSourceConfig {
 
 	@Bean
 	public DataSource getDataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
+		DataSource dataSource = new DataSource();
 		dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
 		dataSource.setUrl(env.getProperty("jdbc.url"));
 		dataSource.setUsername(env.getProperty("jdbc.user"));

@@ -46,8 +46,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
         
-        HandlerInterceptorAdapter interceptor = new Interceptor();
-        registry.addInterceptor(interceptor);
+//        HandlerInterceptorAdapter interceptor = new Interceptor();
+//        registry.addInterceptor(interceptor);
     }
     
  
@@ -71,49 +71,14 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         return resolver;
     }
     
-//    @Bean
-//    public ContentNegotiatingViewResolver contentNegotiatingViewResolver(){
-//    	ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
-//    	Map<String, MediaType> map = new HashMap<String, MediaType>();
-//    	map.put("json", new MediaType("application","json"));
-//    	map.put("xml",  new MediaType("application","xml"));
-//    	
-//    	
-//    	ContentNegotiationManager contentNegotiationManager = new ContentNegotiationManager(new PathExtensionContentNegotiationStrategy(map));
-//    	
-//    	contentNegotiatingViewResolver.setContentNegotiationManager(contentNegotiationManager);
-//    	
-//    	List list = new ArrayList();
-//    	list.add(jsonView());
-//    	contentNegotiatingViewResolver.setDefaultViews(list);
-//    	return contentNegotiatingViewResolver;
-//    }
-    
     /**
      * JSP를 뷰로 사용하는 뷰 리졸버 등록
      */
     @Bean
     public ViewResolver viewResolver() {
- 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/jsp/");
         viewResolver.setSuffix(".jsp");
-        viewResolver.setOrder(2);
         return viewResolver;
-    }
-    
-    @Bean 
-    public ViewResolver BeanNameViewResolver(){
-    	BeanNameViewResolver viewResolver = new BeanNameViewResolver();
-    	viewResolver.setOrder(1);
-    	return viewResolver;
-    }
-    
-    @Bean
-    public MappingJackson2JsonView jsonView(){
-    	MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-    	jsonView.setObjectMapper(new ObjectMapper());
-    	return jsonView;
     }
 }

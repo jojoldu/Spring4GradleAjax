@@ -296,7 +296,7 @@ function checkPassword(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/ReplyBoard/user/checkPassword.json",
+		url:"/user/checkPassword.json",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -340,7 +340,7 @@ function updateUserInfo(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/ReplyBoard/user/update.json",
+		url:"/user/update.json",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -360,11 +360,11 @@ function logout(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/ReplyBoard/user/logout.json",
+		url:"/user/logout.json",
 		success:function(data){
 			if(data.result){
 				alert("로그아웃 되었습니다.");
-				location.href="/ReplyBoard/";
+				location.href="/";
 			}else{
 				alert("로그아웃이 실패하였습니다.");
 			}
@@ -391,13 +391,13 @@ function deleteUser(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/ReplyBoard/user/delete.json",
+		url:"/user/delete.json",
 		data:user,
 		dataType:"json",
 		success:function(data){
 			if(data.result){
 				alert("탈퇴되었습니다.");
-				location.href="/ReplyBoard/";
+				location.href="/";
 			}else{
 				alert("탈퇴가 실패하였습니다.");
 			}
