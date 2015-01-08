@@ -69,17 +69,17 @@ function makeAjaxPaging(pagingInfo){
 	
 	$("#"+pageIndex).addClass("active");//현재페이지 활성화
 	
-	$('.pageNo').each(function(){//각 페이지번호마다 클릭이벤트 할당
-		$(this).click(getList(this.id));
-	})
-	
 	if(totalPageCount > (pageIndex + pageScope - 1)){//현재 페이지범위보다 전체페이지개수가 더 클경우
 		$("#next").removeClass("disabled");
-		$("#next").click(makeListAndPaging(lastPageIndex+1));
+		$("#next").click(function(){
+			makeListAndPaging(lastPageIndex+1);
+		});
 	}
 	if(pageIndex > pageScope){//현재페이지가 pageScope 보다 클경우
 		$("#prev").removeClass("disabled");
-		$("#prev").click(makeListAndPaging(pageIndex-pageScope));
+		$("#prev").click(function(){
+			makeListAndPaging(pageIndex-pageScope);
+		});
 	}
 }
 

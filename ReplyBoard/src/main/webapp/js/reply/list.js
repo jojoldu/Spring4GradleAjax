@@ -14,11 +14,16 @@ $(function() {
 	makeListAndPaging(1);
 	
 	//댓글입력 
-	$("#writeBtn").click(writeReply);
+	$("#writeBtn").click(addReply);
+	
+	//페이징
+	$("#pagination").on('click','.pageNo',function(){
+		getList(this.id);
+	});
 	
 	//페이징 사이즈 조절
 	$("#pageSize").change(function(){
-		makeListAndPaging(1);
+		makeListAndPaging(activePageIndex);
 	});
 	
 	//비밀번호 확인
@@ -32,6 +37,45 @@ $(function() {
 	
 	//회원탈퇴 확인
 	$("#deleteUserBtn").click(confirmDeleteUser);
+	
+	//답글 열기 버튼
+    $('#replyList').on('click', '.openAddFormBtn', function(){
+    	openAddForm($(this).parents("tr").prop("id"));
+    });
+    
+    //수정폼 열기버튼
+    $('#replyList').on('click', '.openUpdateFormBtn', function(){
+    	openUpdateForm($(this).parents("tr").prop("id"));
+    });
+    
+    //글 삭제 버튼
+    $('#replyList').on('click', '.deleteReplyBtn', function(){
+    	confirmDelete($(this).parents("tr").prop("id"));
+    });
+    
+    //답글 등록 버튼
+    $('#replyList').on('click', '.addReplyBtn', function(){
+    	addReply(this);
+    });
+    
+    //답글폼 취소버튼
+    $('#replyList').on('click', '.closeAddFormBtn', function(){
+    	$(this).closest(".addForm").addClass("hide");
+    	$(".openAddFormBtn").prop("disabled", false);
+    });
+    
+    //글 수정완료 버튼
+    $('#replyList').on('click', '.updateReplyBtn', function(){
+    	updateReply(this);
+    });
+    
+    //수정폼 취소버튼
+    $('#replyList').on('click', '.closeUpdateFormBtn', function(){
+    	$(this).closest(".updateForm").addClass("hide");
+    	$(this).closest(".inputForm").find("input[type=text]").prop("readonly", true);
+    	$(".openUpdateFormBtn").prop("disabled", false);
+    });
+    
 });
 
 
@@ -74,7 +118,7 @@ function drawTable(list, loginId) {
 	
 	//권한관련
 	$(".authBtn").each(function(){
-		var writer = $(this).prop("name");
+		var writer = $(this).parent().siblings(".writer").text();
 		if(loginId !== writer){
 			$(this).addClass("hide");
 		}
@@ -84,10 +128,8 @@ function drawTable(list, loginId) {
 //table row 생성
 function drawRow(rowData) {
 	var id=rowData.no;
-	var formId = 'form'+id;
-	var textId = 'text'+id;
-	var updateId = 'update'+id;
-	var btnHtml = '';
+	var replyId = 'reply'+id;
+
 	var replyForm = $(".replyForm").html();
 	var updateForm = $(".updateForm").html();
 	
@@ -95,7 +137,7 @@ function drawRow(rowData) {
 	var depth = (100-(rowData.depth*3))+"%;";
 	
 	//table row 생성
-	var row = $('<tr>')
+	var row = $('<tr class="inputForm" id="'+replyId+'">')
     $("#replyList tbody").append(row); 
 	
 	if(rowData.imageName!=null){
@@ -103,13 +145,14 @@ function drawRow(rowData) {
 	}else{
 		row.append($('<td align="center"></td>')); 
 	}
-	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control" readonly value="'+ rowData.content + '"id="'+textId+'"></div><br>'+'<div class="row hide" style="float:right; width:'+depth+'"id="'+updateId+'">'+updateForm+'</div><div class="row hide" style="float:right; width:'+depth+'"id="'+formId+'">'+replyForm+'</div></td>'));
-    row.append($('<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>'));
-    row.append($('<td align="center">' + rowData.writer + '</td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm" onclick="openAddForm('+id+')" ><span class="glyphicon glyphicon-comment addReplyBtn"></span></button></td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn " onclick="openUpdateForm('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-edit updateReplyBtn"></span></button></td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn " onclick="confirmDelete('+id+')" name="'+rowData.writer+'"><span class="glyphicon glyphicon-trash"></span></button></td></tr>'));
 
+	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control content" readonly value="'+ rowData.content +'"></div><br>'+'<div class="row hide updateForm" style="float:right; width:'+depth+'">'+updateForm+'</div><div class="row hide addForm" style="float:right; width:'+depth+'">'+replyForm+'</div></td>'));
+    row.append($('<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>'));
+    row.append($('<td align="center" class="writer">' + rowData.writer + '</td>'));
+    row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm openAddFormBtn" ><span class="glyphicon glyphicon-comment"></span></button></td>'));
+    row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn openUpdateFormBtn" ><span class="glyphicon glyphicon-edit "></span></button></td>'));
+    row.append($('<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn deleteReplyBtn" ><span class="glyphicon glyphicon-trash"></span></button></td></tr>'));
+    
 }
 
 
@@ -119,26 +162,22 @@ function resetForm(){
 	$("#image").val("");
 }
 
-//메인 글 작성
-function writeReply(){
-	var no = 0;
-	
-	var formData = new FormData();
-	formData.append("parent",no);
-	formData.append("content", $("#form0 textarea").val());
-	formData.append("image", $("#form0 input:file")[0].files[0]);
-	
-	addReplyToAjax(formData);
-}
-
 //답글 작성
-function addReply(){
-	var no = $(".openAddForm").prop("id").substr(4);
+function addReply(e){
+	var no;
+	if(this.id === "writeBtn"){
+		no = 0;
+	}else{
+		no = $(e).closest(".inputForm").prop("id").substr(5);
+	}
+	var $parent = $(e).closest(".addForm");
+	var content =$parent.find(".content").val();
+	var file =  $parent.find("input[type=file]")[0].files[0];
 	
 	var formData = new FormData();
 	formData.append("parent",no);
-	formData.append("content", $(".openAddForm textarea").val());
-	formData.append("image", $(".openAddForm input:file")[0].files[0]);
+	formData.append("content", content);
+	formData.append("image", file);
 
 	addReplyToAjax(formData);
 }
@@ -167,37 +206,30 @@ function addReplyToAjax(formData){
 }
 
 //답글작성폼 열기
-function openAddForm(no){
-	var formId ='#form'+no;
-	$(formId).removeClass("hide");
-	$(formId).addClass("openAddForm");
-	$(".addReplyBtn").prop("disabled", true);//하나의 답글폼 open시 다른 답글폼 open 못하도록 방지
-}
-//답글 작성폼 닫기
-function cancleReply(e){
-	$(".openAddForm").addClass("hide");
-	$(".openAddForm").removeClass("openAddForm");
-	$(".addReplyBtn").prop("disabled", false);
+function openAddForm(trId){
+	
+	$("#"+trId).find(".addForm").removeClass("hide");
+	$(".openAddFormBtn").prop("disabled", true);//하나의 답글폼 open시 다른 답글폼 open 못하도록 방지
 }
 
 //글 수정폼 열기
-function openUpdateForm(no){
-	var textId ='#text'+no;
-	var updateId = '#update'+no;
-	$(textId).prop('readonly',false);
-	$(updateId).removeClass("hide");
-	$(updateId).addClass("openUpdateForm");
-	$(".updateReplyBtn").prop("disabled", true);
+function openUpdateForm(trId){
+	$('#'+trId).find('.updateForm').removeClass('hide');
+	$('#'+trId).find('.content').prop('readonly',false);
+	$(".openUpdateFormBtn").prop("disabled", true);
 }
 
 //글 수정
 function updateReply(e){
-	var no = $(".openUpdateForm").prop("id").substr(6);
+	var $parent = $(e).closest(".inputForm");
+	var no = $parent.prop("id").substr(5);
+	var content =$parent.find(".content").val();
+	var file =  $parent.find("input[type=file]")[0].files[0];
 	
 	var formData = new FormData();
 	formData.append("no",no);
-	formData.append("content", $("#text"+no).val());
-	formData.append("image", $(".openUpdateForm input:file")[0].files[0]);
+	formData.append("content", content);
+	formData.append("image", file);
 	
 	$.ajax({
 		type:"POST",
@@ -218,21 +250,9 @@ function updateReply(e){
 	} );
 }
 
-//글 수정폼 닫기
-function closeUpdateForm(e){
-	
-	var no = $(".openUpdateForm").prop("id").substr(6);
-	$("#text"+no).prop("readonly",true);
-	
-	$(".openUpdateForm").addClass("hide");
-	$(".openUpdateForm").removeClass("openUpdateForm");
-	$(".updateReplyBtn").prop("disabled", false);
-}
-
-
 //댓글 삭제 확인
-function confirmDelete(no){
-	var no=no;
+function confirmDelete(trId){
+	var no=trId.substr(5);
 	bootbox.confirm("삭제하시겠습니까?", function(confirmed) {
 		if(confirmed) {
 			deleteReply(no);

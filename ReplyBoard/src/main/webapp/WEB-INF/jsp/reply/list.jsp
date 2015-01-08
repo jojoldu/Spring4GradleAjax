@@ -143,8 +143,8 @@
 			</div>
 			<!-- /.modal-content -->
 		</div>
-    	<div class="col-md-6" id="form0">
-			<textarea class="form-control" rows="3" autofocus placeholder="댓글을 입력해주세요." id="content" name="content" onKeyDown="limitText(this,10000)"></textarea>	
+    	<div class="col-md-6 addForm" id="reply0" >
+			<textarea class="form-control content" rows="3" autofocus placeholder="댓글을 입력해주세요." onKeyDown="limitText(this,10000)"></textarea>	
 	       	<br>
 			<div class="row">
 				<div class="col-md-2 file">
@@ -165,13 +165,13 @@
 	      	<br>
 	       	<div class="row">
 		        <div class="col-md-2 file">
-			       	<input type="file" id="updateImage" name="image">
+			       	<input type="file" >
 			    </div>
 			</div>
 			<div class="row">
 		        <div class="col-md-4 col-md-offset-8">
-			        <button type="button" class="btn btn-primary btn-sm" onclick='updateReply(this)'>수정</button>
-			        <button type="button" class="btn btn-danger btn-sm" onclick='closeUpdateForm(this)'>취소</button>
+			        <button type="button" class="btn btn-primary btn-sm updateReplyBtn" >수정</button>
+			        <button type="button" class="btn btn-danger btn-sm closeUpdateFormBtn" >취소</button>
 			    </div>	        	
 	        </div>
 	   </form>	
@@ -179,17 +179,17 @@
 	
 	<div class="row hide"><!-- 답글 form -->
         <form class="form replyForm" enctype="multipart/form-data" >
-		    <textarea class="form-control" rows="3" autofocus placeholder="답글을 입력해주세요." id="childContent" name="content" onKeyDown="limitText(this,10000)"></textarea>	
+		    <textarea class="form-control content" rows="3" autofocus placeholder="답글을 입력해주세요." onKeyDown="limitText(this,10000)"></textarea>	
 	      	<br>
 	       	<div class="row">
 		        <div class="col-md-2 file">
-			       	<input type="file" id="childImage" name="image">
+			       	<input type="file" >
 			    </div>
 			</div>
 			<div class="row">			    
 		        <div class="col-md-4 col-md-offset-8">
-			        <button type="button" class="btn btn-primary btn-sm" onclick='addReply(this)'>등록</button>
-			        <button type="button" class="btn btn-danger btn-sm" onclick='cancleReply(this)'>취소</button>
+			        <button type="button" class="btn btn-primary btn-sm addReplyBtn" >등록</button>
+			        <button type="button" class="btn btn-danger btn-sm closeAddFormBtn" >취소</button>
 			    </div>	        	
 	        </div>
 	   </form>	
