@@ -17,7 +17,7 @@ public class Utils {
 	}
 	
 	public static void setSecurityPassword(User user){
-		String password = SeedKey.getPbCipher(user.getPassword());
+		String password = SHA256.getPbCipher(user.getPassword());
 		user.setPassword(password);
 	}
 	
