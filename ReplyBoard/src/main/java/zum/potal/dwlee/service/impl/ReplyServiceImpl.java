@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import zum.potal.dwlee.dao.ReplyDao;
 import zum.potal.dwlee.service.ReplyService;
+import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
@@ -70,8 +71,9 @@ public class ReplyServiceImpl implements ReplyService {
 
 		}
 	}
-
-	private boolean imageDownload(Reply reply, String path, MultipartFile mpf){
+	
+	@Override
+	public boolean uploadImage(Reply reply, String path, MultipartFile mpf){
 		MultipartFile image = mpf;
 		try{
 			if(image != null){
@@ -100,15 +102,13 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	@Transactional
-	public boolean add(Reply reply, String path, MultipartFile mpf){
+	public boolean add(Reply reply){
 		int no = replyDao.getNo()+1;
 		reply.setNo(no);
-
+		reply.setWriteDate(Utils.getNowTime());
+		reply.setModifyDate(Utils.getNowTime());
+		
 		makeInsertReply(reply);
-
-		if(!imageDownload(reply,path,mpf)){
-			return false;
-		};
 
 		replyDao.add(reply);
 		return true;
@@ -116,15 +116,12 @@ public class ReplyServiceImpl implements ReplyService {
 
 	@Override
 	@Transactional
-	public boolean update(Reply reply, String path, MultipartFile mpf) {
-		if(!imageDownload(reply,path,mpf)){
-			return false;
-		};
+	public boolean update(Reply reply) {
 		Reply update = replyDao.getReply(reply.getNo());
+		update.setModifyDate(Utils.getNowTime());
 		update.setContent(reply.getContent());
 		update.setImageName(reply.getImageName());
 		
-		replyDao.update(update);
 		return true;
 	}
 

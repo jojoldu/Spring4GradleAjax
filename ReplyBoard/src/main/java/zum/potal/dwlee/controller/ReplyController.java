@@ -1,12 +1,11 @@
 package zum.potal.dwlee.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.util.WebUtils;
 
 import zum.potal.dwlee.service.ReplyService;
 import zum.potal.dwlee.utils.Utils;
@@ -86,7 +83,6 @@ public class ReplyController {
 	private MultipartFile getMultipartFile(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		User login = (User)session.getAttribute("loginVO");
 		reply.setWriter(login.getId());	
-		reply.setModifyDate(Utils.getNowTime());
 		
 		Iterator<String> itr =  request.getFileNames();
 		MultipartFile mpf=null;
@@ -97,21 +93,21 @@ public class ReplyController {
 	}
 	
 	private String getPath(MultipartHttpServletRequest request){
-		String path = request.getSession().getServletContext().getRealPath("\\resources\\images");
+		String path = request.getSession().getServletContext().getRealPath(File.separator+"resources"+File.separator+"images");
 		return path;
 	}
 	
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
 	public @ResponseBody Map add(Reply reply, HttpSession session, MultipartHttpServletRequest request){
-		
-		reply.setWriteDate(Utils.getNowTime());
+
 		String path="";
 		Map map = new HashMap();
 		
 		try{
 			
 			path = getPath(request);
-			map.put("result", replyService.add(reply,path,getMultipartFile(reply,session,request)));
+			replyService.uploadImage(reply, path, getMultipartFile(reply,session,request));
+			map.put("result", replyService.add(reply));
 			
 			return map;
 			
@@ -133,7 +129,8 @@ public class ReplyController {
 		try{
 			
 			path = getPath(request);
-			map.put("result", replyService.update(reply,path,getMultipartFile(reply,session,request)));
+			replyService.uploadImage(reply, path, getMultipartFile(reply,session,request));
+			map.put("result", replyService.update(reply));
 			
 			return map;
 			

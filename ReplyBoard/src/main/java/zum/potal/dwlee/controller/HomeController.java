@@ -10,7 +10,6 @@ public class HomeController {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public String home(){
-		System.out.println("ㅎㅇ");
 		return "login";
 	}
 }

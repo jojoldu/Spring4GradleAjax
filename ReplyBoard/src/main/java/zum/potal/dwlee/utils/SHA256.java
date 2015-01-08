@@ -16,7 +16,6 @@ public class SHA256 {
 				sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
 			}
 			SHA = sb.toString();
-			
 		}catch(NoSuchAlgorithmException e){
 			e.printStackTrace(); 
 			SHA = null; 

@@ -15,12 +15,14 @@ public interface ReplyService {
 	//댓글 페이징
 	public PagingInfo getPagingInfo(PagingInfo pagingInfo);
 	
+	//이미지 업로드
+	public boolean uploadImage(Reply reply, String path, MultipartFile mpf);
 	
 	//댓글 등록
-	public boolean add(Reply reply, String path, MultipartFile mpf) ;
+	public boolean add(Reply reply) ;
 	
 	//댓글 수정
-	public boolean update(Reply reply, String path, MultipartFile mpf) ;
+	public boolean update(Reply reply) ;
 	
 	//댓글 삭제
 	public void delete(Reply reply);
