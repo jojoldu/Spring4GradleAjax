@@ -1,12 +1,10 @@
 package zum.potal.dwlee.service.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,16 +76,17 @@ public class ReplyServiceImpl implements ReplyService {
 		try{
 			if(image != null){
 				String originName = image.getOriginalFilename();
-				String imgExt = originName.substring(originName.lastIndexOf(".")+1, originName.length());
-
-				if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){//jps, png, gif만 허용
+				Tika tika = new Tika();
+				String imgExt = tika.detect(image.getInputStream()).split("/")[1];
+				
+				if(imgExt.equalsIgnoreCase("JPG") || imgExt.equalsIgnoreCase("PNG") || imgExt.equalsIgnoreCase("GIF")){//jpg, png, gif만 허용
 					String fileName = String.valueOf(reply.getNo());
 					File dir = new File(path);
 					if(!dir.exists()){
 						dir.mkdirs();
 					}
 					String imageName=fileName+"."+imgExt;
-					File file = new File(path +File.separatorChar+ imageName);
+					File file = new File(path + File.separatorChar + imageName);
 					image.transferTo(file);
 					reply.setImageName(imageName);
 				}

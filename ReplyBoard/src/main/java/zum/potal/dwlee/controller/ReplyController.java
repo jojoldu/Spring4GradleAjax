@@ -93,8 +93,7 @@ public class ReplyController {
 	}
 	
 	private String getPath(MultipartHttpServletRequest request){
-		String path = request.getSession().getServletContext().getRealPath(File.separator+"resources"+File.separator+"images");
-		return path;
+		return request.getSession().getServletContext().getRealPath(File.separator+"resources"+File.separator+"images");
 	}
 	
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
