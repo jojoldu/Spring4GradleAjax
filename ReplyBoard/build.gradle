@@ -1,0 +1,61 @@
+buildscript {
+	ext {
+		springBootVersion = '1.2.0.RELEASE'
+	}
+	repositories {
+		// NOTE: You should declare only repositories that you need here
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'spring-boot'
+
+//java version
+sourceCompatibility = 1.8
+//application version
+version = '1.0'
+
+jar {
+	baseName = 'spring-boot-sample-simple'
+	version =  '0.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+//dependency 
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+   	compile("org.springframework:spring-orm")    	  
+    compile("org.hibernate:hibernate-core:4.3.7.Final")
+    compile("mysql:mysql-connector-java") 
+	compile("com.fasterxml.jackson.core:jackson-annotations")
+	compile("com.fasterxml.jackson.core:jackson-core")
+	compile("com.fasterxml.jackson.core:jackson-databind")
+	compile("commons-fileupload:commons-fileupload")
+	compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+	compile("org.apache.tika:tika-parsers:1.6")
+	compile("org.apache.tika:tika-core:1.6")
+	compile("org.aspectj:aspectjweaver")
+		  
+		  
+ 
+  runtime "javax.servlet:jstl"
+}
+
+// logback(slf4j)를 사용하기 때문에 모든 의존성에서 commons-logging는 제외
+[configurations.runtime, configurations.default]*.exclude(module: 'commons-logging')
+ 
+// JAVA 컴파일시 인코딩 설정
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
