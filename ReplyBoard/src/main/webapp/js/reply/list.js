@@ -14,7 +14,9 @@ $(function() {
 	makeListAndPaging(1);
 	
 	//댓글입력 
-	$("#writeBtn").click(addReply);
+	$('#writeBtn').click(function(){
+		addReply(this);
+	});
 	
 	//페이징
 	$("#pagination").on('click','.pageNo',function(){
@@ -38,39 +40,41 @@ $(function() {
 	//회원탈퇴 확인
 	$("#deleteUserBtn").click(confirmDeleteUser);
 	
+	var $replyList=$('#replyList');
+	
 	//답글 열기 버튼
-    $('#replyList').on('click', '.openAddFormBtn', function(){
+	$replyList.on('click', '.openAddFormBtn', function(){
     	openAddForm($(this).parents("tr").prop("id"));
     });
     
     //수정폼 열기버튼
-    $('#replyList').on('click', '.openUpdateFormBtn', function(){
+	$replyList.on('click', '.openUpdateFormBtn', function(){
     	openUpdateForm($(this).parents("tr").prop("id"));
     });
     
     //글 삭제 버튼
-    $('#replyList').on('click', '.deleteReplyBtn', function(){
+	$replyList.on('click', '.deleteReplyBtn', function(){
     	confirmDelete($(this).parents("tr").prop("id"));
     });
     
     //답글 등록 버튼
-    $('#replyList').on('click', '.addReplyBtn', function(){
+	$replyList.on('click', '.addReplyBtn', function(){
     	addReply(this);
     });
     
     //답글폼 취소버튼
-    $('#replyList').on('click', '.closeAddFormBtn', function(){
+	$replyList.on('click', '.closeAddFormBtn', function(){
     	$(this).closest(".addForm").addClass("hide");
     	$(".openAddFormBtn").prop("disabled", false);
     });
     
     //글 수정완료 버튼
-    $('#replyList').on('click', '.updateReplyBtn', function(){
+	$replyList.on('click', '.updateReplyBtn', function(){
     	updateReply(this);
     });
     
     //수정폼 취소버튼
-    $('#replyList').on('click', '.closeUpdateFormBtn', function(){
+	$replyList.on('click', '.closeUpdateFormBtn', function(){
     	$(this).closest(".updateForm").addClass("hide");
     	$(this).closest(".inputForm").find("input[type=text]").prop("readonly", true);
     	$(".openUpdateFormBtn").prop("disabled", false);
@@ -85,9 +89,7 @@ function getList(pageIndex){
 	activePageIndex = pageIndex;
 	
 	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
-	
-	$('#replyList tbody').html('');
-	
+
 	var pagingInfo = setPagingInfo(pageIndex);
 	
 	$.ajax({
@@ -97,7 +99,7 @@ function getList(pageIndex){
 		dataType:"json",
 		success:function(data){
 			if(data.result){
-				$("#id").val(data.loginId);
+				$("#loginId").val(data.loginId);
 				$("#email").val(data.loginEmail);
 				drawTable(data.list, data.loginId);				
 			}else{
@@ -109,10 +111,17 @@ function getList(pageIndex){
 
 //table 생성
 function drawTable(list, loginId) {
-    for (var i = 0; i < list.length; i++) {
-        drawRow(list[i]);
-    }
+	
+	var $tbody = $("#replyList tbody");
+	var row='';
     
+	for (var i = 0; i < list.length; i++) {
+        row+=drawRow(list[i]);
+    }
+	
+	$tbody.html('');
+	$tbody.append(row); 
+	
 	//로그인 유저
 	var loginId = loginId;//json 전송받은 로그인 유저	
 	
@@ -129,30 +138,29 @@ function drawTable(list, loginId) {
 function drawRow(rowData) {
 	var id=rowData.no;
 	var replyId = 'reply'+id;
+	var replyForm = $(".replyForm").html(); //댓글 입력폼
+	var updateForm = $(".updateForm").html(); //수정폼
 
-	var replyForm = $(".replyForm").html();
-	var updateForm = $(".updateForm").html();
+	var depth = (100-(rowData.depth*3))+"%;";	//들여쓰기
+
+    var row='<tr class="inputForm" id="'+replyId+'">';
 	
-	//들여쓰기
-	var depth = (100-(rowData.depth*3))+"%;";
-	
-	//table row 생성
-	var row = $('<tr class="inputForm" id="'+replyId+'">')
-    $("#replyList tbody").append(row); 
-	
-	if(rowData.imageName!=null){
-		row.append($('<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>')); 
+    if(rowData.imageName!=null){
+		row+='<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>'; 
 	}else{
-		row.append($('<td align="center"></td>')); 
+		row+='<td align="center"></td>';
 	}
-
-	row.append($('<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control content" readonly value="'+ rowData.content +'"></div><br>'+'<div class="row hide updateForm" style="float:right; width:'+depth+'">'+updateForm+'</div><div class="row hide addForm" style="float:right; width:'+depth+'">'+replyForm+'</div></td>'));
-    row.append($('<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>'));
-    row.append($('<td align="center" class="writer">' + rowData.writer + '</td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-info btn-sm openAddFormBtn" ><span class="glyphicon glyphicon-comment"></span></button></td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn openUpdateFormBtn" ><span class="glyphicon glyphicon-edit "></span></button></td>'));
-    row.append($('<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn deleteReplyBtn" ><span class="glyphicon glyphicon-trash"></span></button></td></tr>'));
-    
+	
+	row+='<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control content" readonly value="'+ rowData.content +'"></div>';
+	row+='<br><div class="row hide updateForm" style="float:right; width:'+depth+'">'+updateForm+'</div>';
+	row+='<div class="row hide addForm" style="float:right; width:'+depth+'">'+replyForm+'</div></td>';
+	row+='<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>';
+	row+='<td align="center" class="writer">' + rowData.writer + '</td>';
+	row+='<td align="center"><button type="button" class="btn btn-info btn-sm openAddFormBtn" ><span class="glyphicon glyphicon-comment"></span></button></td>';
+	row+='<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn openUpdateFormBtn" ><span class="glyphicon glyphicon-edit "></span></button></td>';
+	row+='<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn deleteReplyBtn" ><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
+	
+	return row;
 }
 
 
@@ -164,13 +172,14 @@ function resetForm(){
 
 //답글 작성
 function addReply(e){
+	var $e = $(e);
 	var no;
-	if(this.id === "writeBtn"){
+	if($e.prop("id") === "writeBtn"){
 		no = 0;
 	}else{
-		no = $(e).closest(".inputForm").prop("id").substr(5);
+		no = $e.closest(".inputForm").prop("id").substr(5);
 	}
-	var $parent = $(e).closest(".addForm");
+	var $parent = $e.closest(".addForm");
 	var content =$parent.find(".content").val();
 	var file =  $parent.find("input[type=file]")[0].files[0];
 	
@@ -214,8 +223,9 @@ function openAddForm(trId){
 
 //글 수정폼 열기
 function openUpdateForm(trId){
-	$('#'+trId).find('.updateForm').removeClass('hide');
-	$('#'+trId).find('.content').prop('readonly',false);
+	$tr = $('#'+trId);
+	$tr.find('.updateForm').removeClass('hide');
+	$tr.find('.content').prop('readonly',false);
 	$(".openUpdateFormBtn").prop("disabled", true);
 }
 
@@ -287,7 +297,7 @@ function deleteReply(no){
 
 //기존 비밀번호 확인
 function checkPassword(){
-	var id=$("#id").val();
+	var id=$("#loginId").val();
 	var password = $("#password").val();
 	var user={
 			id:id,
@@ -318,7 +328,7 @@ function updateUserInfo(){
 		return;
 	}
 	
-	var id=$("#id").val();
+	var id=$("#loginId").val();
 	var password=$("#newPassword").val();
 	var confirmPassword=$("#confirmPassword").val();
 	var email=$("#email").val();
@@ -383,7 +393,7 @@ function confirmDeleteUser(){
 
 //탈퇴
 function deleteUser(){
-	var id=$("#id").val();
+	var id=$("#loginId").val();
 	
 	var user = {
 			id:id

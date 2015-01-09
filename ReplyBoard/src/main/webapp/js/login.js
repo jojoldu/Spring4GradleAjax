@@ -8,7 +8,7 @@ $(function() {
 	//중복검사 이벤트
 	$("#checkIdBtn").click(checkDuplicateId);
 	$("#id").keyup(function(event) {
-		if(event.keyCode == 13) {
+		if(event.keyCode === 13) {
 			checkDuplicateId();
 		}
 	});
@@ -16,7 +16,7 @@ $(function() {
 	//회원가입 이벤트
 	$("#signUpBtn").click(signUp);
 	$("#email").keyup(function(event) {
-		if(event.keyCode == 13) {
+		if(event.keyCode === 13) {
 			signUp();
 		}
 	});
@@ -24,12 +24,12 @@ $(function() {
 	//로그인 이벤트
 	$("#loginBtn").click(login);
 	$("#loginId").keyup(function(event) {
-		if(event.keyCode == 13) {
+		if(event.keyCode === 13) {
 			$("#loginPassword").focus();
 		}
 	});
 	$("#loginPassword").keyup(function(event) {
-		if(event.keyCode == 13) {
+		if(event.keyCode === 13) {
 			login();
 		}
 	});
@@ -79,9 +79,11 @@ function checkIdFromDB(user){
 
 //로그인
 function login(){
+	var $loginId = $("#loginId");
+	var $loginPassword = $("#loginPassword");
 	var login = {
-			id:$("#loginId").val(),
-			password:$("#loginPassword").val()
+			id: $loginId.val(),
+			password: $loginPassword.val()
 	}
 	
 	$.ajax({
@@ -91,8 +93,8 @@ function login(){
 		dataType:"json",
 		success:function(data){
 			if(data.result){
-				$("#loginId").val("");
-				$("#loginPassword").val("");
+				$loginId.val("");
+				$loginId.val("");
 				location.href="reply/goTolist";
 			}else{
 				alert("아이디와 패스워드를 확인해주세요.");

@@ -86,7 +86,7 @@
 									<label><span class="required">*</span>아이디</label>
 								</div>
 								<div class="col-md-6 col-slim-padding">
-									<input type="text" id="id" class="form-control required"
+									<input type="text" id="loginId" class="form-control required"
 										placeholder="" readonly>
 								</div>
 							</div>
