@@ -1,6 +1,37 @@
 /**
  * 공통유틸 자바스크립트
  */
+$(function(){
+	
+	//ajax error handler
+	$.ajaxSetup({
+		error:function(e, xhr, settings, exception){
+		    var message = '';
+
+		    if (xhr.status === 0) {
+		        message = '인터넷 연결을 확인해주세요.';
+		    }
+		    else if (xhr.status === 401) {
+		    	message = '권한이 없습니다.';
+		    }
+		    else if (xhr.status === 403) {
+		    	message = '서버가 요청을 금지하였습니다.';
+		    }
+		    else if (xhr.status === 404) {
+		        message = '페이지를 찾을 수 없습니다.';
+		    }
+		    else if (xhr.status === 500) {
+		        message = '내부서버오류 \n';
+		    }
+		    else {
+		        message = ('Ajax 요청에 알 수 없는 에러가 발생하였습니다.\n');
+		    }
+		    
+		    alert(message);			
+		}
+	});
+	
+});
 
 
 //페이징정보 설정
@@ -112,4 +143,7 @@ function limitText(limitField, limitCount){
 		alert("댓글은 10,000자 이하로만 입력이 가능합니다.");
 	} 
 }
+
+
+
 

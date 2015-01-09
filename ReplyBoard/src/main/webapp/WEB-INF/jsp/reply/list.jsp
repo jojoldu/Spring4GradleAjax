@@ -54,14 +54,14 @@
 					<h3 style="margin:0px;"><span class="label label-default">페이징사이즈</span></h3> 
 				</div>
 	    		<div class="col-md-3 col-md-offset-1" style="padding-left:0px;">
-		    		<select id="pageSize" class="form-control" style='float:right;'>
-		    			<option value='2'>2</option>
-		    			<option value='3'>3</option>
-		    			<option value='5'>5</option>
-		    			<option value='10'>10</option>
-		    			<option value='15'>15</option>
-		    			<option value='20'>20</option>
-		    			<option value='30'>30</option>    			
+		    		<select id="pageSize" class="form-control" style="float:right;">
+		    			<option value="2">2</option>
+		    			<option value="3">3</option>
+		    			<option value="5">5</option>
+		    			<option value="10">10</option>
+		    			<option value="15">15</option>
+		    			<option value="20">20</option>
+		    			<option value="30">30</option>    			
 		    		</select>
 	    		</div>
     		</div>

@@ -52,7 +52,7 @@ public class DataSourceConfig {
 		return txManager;
 	}
 
-	Properties hibernateProperties() {
+	private Properties hibernateProperties() {
 		return new Properties() {
 			{
 				setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
