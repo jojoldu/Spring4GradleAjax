@@ -42,43 +42,40 @@ $(function() {
 	
 	var $replyList=$('#replyList');
 	
-	//답글 열기 버튼
-	$replyList.on('click', '.openAddFormBtn', function(){
+	//replyList 클릭이벤트 동적 binding
+	$replyList.on('click', '.openAddFormBtn', function(){	//답글 열기 버튼
+		
     	openAddForm($(this).parents("tr").prop("id"));
-    });
-    
-    //수정폼 열기버튼
-	$replyList.on('click', '.openUpdateFormBtn', function(){
+    	
+    }).on('click', '.openUpdateFormBtn', function(){ 		//수정폼 열기버튼
+    	
     	openUpdateForm($(this).parents("tr").prop("id"));
-    });
-    
-    //글 삭제 버튼
-	$replyList.on('click', '.deleteReplyBtn', function(){
+    	
+    }).on('click', '.deleteReplyBtn', function(){  			//글 삭제 버튼
+    	
     	confirmDelete($(this).parents("tr").prop("id"));
-    });
-    
-    //답글 등록 버튼
-	$replyList.on('click', '.addReplyBtn', function(){
+    	
+    }).on('click', '.addReplyBtn', function(){    			//답글 등록 버튼
+    	
     	addReply(this);
-    });
-    
-    //답글폼 취소버튼
-	$replyList.on('click', '.closeAddFormBtn', function(){
+    	
+    }).on('click', '.closeAddFormBtn', function(){    		//답글폼 취소버튼
+    	
     	$(this).closest(".addForm").addClass("hide");
     	$(".openAddFormBtn").prop("disabled", false);
-    });
-    
-    //글 수정완료 버튼
-	$replyList.on('click', '.updateReplyBtn', function(){
+    	
+    }).on('click', '.updateReplyBtn', function(){   	 	//글 수정완료 버튼
+    	
     	updateReply(this);
-    });
-    
-    //수정폼 취소버튼
-	$replyList.on('click', '.closeUpdateFormBtn', function(){
+    	
+    }).on('click', '.closeUpdateFormBtn', function(){    	//수정폼 취소버튼
+    	
     	$(this).closest(".updateForm").addClass("hide");
     	$(this).closest(".inputForm").find("input[type=text]").prop("readonly", true);
     	$(".openUpdateFormBtn").prop("disabled", false);
+    	
     });
+    
     
 });
 
