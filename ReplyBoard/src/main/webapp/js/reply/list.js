@@ -114,10 +114,10 @@ function drawTable(list, loginId) {
 	
 	var $tbody = $("#replyList tbody");
 	var row='';
-    
-	for (var i = 0; i < list.length; i++) {
-        row+=drawRow(list[i]);
-    }
+	
+	$.each(list, function(index, value){
+		row+=drawRow(value);
+	});
 	
 	$tbody.html('');
 	$tbody.append(row); 
@@ -127,9 +127,10 @@ function drawTable(list, loginId) {
 	
 	//권한관련
 	$(".authBtn").each(function(){
-		var writer = $(this).parent().siblings(".writer").text();
+		var $e = $(this);
+		var writer = $e.parent().siblings(".writer").text();
 		if(loginId !== writer){
-			$(this).addClass("hide");
+			$e.addClass("hide");
 		}
 	});
 }
