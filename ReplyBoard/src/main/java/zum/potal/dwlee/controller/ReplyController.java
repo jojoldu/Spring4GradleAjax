@@ -35,12 +35,12 @@ public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
 
-	@RequestMapping(value="/list", method=RequestMethod.GET)
+	@RequestMapping(value="/move/list", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
 		return "reply/list";
 	}
 
-	@RequestMapping(value="/get-list.json", method=RequestMethod.POST)
+	@RequestMapping(value="/list.json", method=RequestMethod.POST)
 	@ResponseBody
 	public Map getList(@ModelAttribute PagingInfo pagingInfo, HttpSession session){
 		Map map = new HashMap();
@@ -59,7 +59,7 @@ public class ReplyController {
 		return map;
 	}
 
-	@RequestMapping(value="/get-paginginfo.json", method=RequestMethod.POST)
+	@RequestMapping(value="/paginginfo.json", method=RequestMethod.POST)
 	@ResponseBody 
 	public PagingInfo getPagingInfo(@ModelAttribute PagingInfo pagingInfo){
 		return replyService.getPagingInfo(pagingInfo);

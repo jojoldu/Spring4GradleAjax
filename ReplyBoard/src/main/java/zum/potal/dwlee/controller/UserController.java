@@ -24,7 +24,7 @@ public class UserController {
 	@Autowired
 	private UserService userServcie;
 
-	@RequestMapping(value="/check-duplicate-id.json", method=RequestMethod.POST)
+	@RequestMapping(value="/check/duplicate-id.json", method=RequestMethod.POST)
 	public ResponseObject checkDuplicateId(@ModelAttribute User user){
 		return new ResponseObject(userServcie.checkDuplicateId(user));
 	}
@@ -53,7 +53,7 @@ public class UserController {
 		return new ResponseObject(userServcie.add(user));
 	}
 
-	@RequestMapping(value="/check-password.json", method=RequestMethod.POST)
+	@RequestMapping(value="/check/password.json", method=RequestMethod.POST)
 	public ResponseObject checkPassword(@ModelAttribute User user){
 		return new ResponseObject(userServcie.checkPassword(user));
 	}

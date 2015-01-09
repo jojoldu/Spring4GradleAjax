@@ -94,7 +94,7 @@ function getList(pageIndex){
 	
 	$.ajax({
 		type:"POST",
-		url:"get-list.json",
+		url:"list.json",
 		data:pagingInfo,
 		dataType:"json",
 		success:function(data){
@@ -303,7 +303,7 @@ function checkPassword(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/user/checkPassword.json",
+		url:"/user/check/password.json",
 		data:user,
 		dataType:"json",
 		success:function(data){

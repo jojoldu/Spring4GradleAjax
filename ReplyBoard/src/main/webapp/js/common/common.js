@@ -20,7 +20,7 @@ function getPagingInfo(pageIndex){
 	var pagingInfo = setPagingInfo(pageIndex);
 	$.ajax({
 		type:"POST",
-		url:"get-paginginfo.json",
+		url:"paginginfo.json",
 		data:pagingInfo,
 		dataType:"json",
 		success:function(pagingInfo){

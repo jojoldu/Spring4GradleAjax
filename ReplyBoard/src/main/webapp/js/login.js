@@ -60,7 +60,7 @@ function checkIdFromDB(user){
 	
 	$.ajax({
 		type:"POST",
-		url:"user/check-duplicate-id.json",
+		url:"user/check/duplicate-id.json",
 		data:user,
 		dataType:"json",		
 		success:function(data){
