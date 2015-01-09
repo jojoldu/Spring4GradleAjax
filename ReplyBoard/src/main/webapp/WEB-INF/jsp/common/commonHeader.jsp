@@ -7,7 +7,7 @@
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 
 <!-- common css -->
-<link href="../css/constant.css" rel="stylesheet" type="text/css" />
+<link href="../css/common.css" rel="stylesheet" type="text/css" />
 
 <!-- 각 페이지에서 사용될 javascript 파일 -->
 <script type="text/javascript" src="../plugins/jquery-1.11.2.min.js"></script>

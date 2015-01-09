@@ -35,7 +35,7 @@ public class ReplyController {
 	@Autowired
 	private ReplyService replyService;
 
-	@RequestMapping(value="/move/list", method=RequestMethod.GET)
+	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model, HttpSession session){
 		return "reply/list";
 	}
