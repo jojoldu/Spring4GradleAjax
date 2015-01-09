@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import zum.potal.dwlee.service.UserService;
 import zum.potal.dwlee.utils.CommonConstants;
+import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.ResponseObject;
 import zum.potal.dwlee.vo.User;
 
@@ -50,6 +51,11 @@ public class UserController {
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
 	public ResponseObject addUser(@ModelAttribute User user) {
+		
+		if(Utils.checkValidUser(user)){
+			return new ResponseObject(false);
+		}
+		
 		return new ResponseObject(userServcie.add(user));
 	}
 

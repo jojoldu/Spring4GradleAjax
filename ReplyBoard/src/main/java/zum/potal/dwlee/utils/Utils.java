@@ -2,6 +2,8 @@ package zum.potal.dwlee.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import zum.potal.dwlee.vo.User;
 
@@ -20,6 +22,19 @@ public class Utils {
 		}
 		user.setPassword(password);
 		return true;
+	}
+	
+	public static boolean checkValidUser(User user){
+		Pattern pId = Pattern.compile("^[0-9a-z]$");
+		Matcher mId = pId.matcher(user.getId());
+		
+		Pattern pEmail = Pattern.compile("^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}$");
+		Matcher mEmail = pEmail.matcher(user.getEmail());
+		
+		if(mId.matches() && mEmail.matches()){
+			return true;
+		}
+		return false;
 	}
 
 }

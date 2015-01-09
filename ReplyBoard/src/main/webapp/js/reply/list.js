@@ -2,7 +2,6 @@
  * 댓글 관련 자바스크립트
  */
 
-var parent;
 var validPassword=false;
 var activePageIndex;
 
