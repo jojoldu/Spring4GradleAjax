@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.tika.Tika;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import zum.potal.dwlee.controller.ReplyController;
 import zum.potal.dwlee.dao.ReplyDao;
 import zum.potal.dwlee.service.ReplyService;
 import zum.potal.dwlee.utils.Utils;
@@ -19,6 +22,8 @@ import zum.potal.dwlee.vo.Reply;
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
+	private final Logger logger = LoggerFactory.getLogger(ReplyController.class);
+	
 	@Autowired
 	private ReplyDao replyDao;
 
@@ -45,17 +50,9 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 
-
+	//db에 등록할 reply 만들기
 	private void makeInsertReply(Reply reply){
-		String no = String.valueOf(reply.getNo());
-		int zeroLength = 5-no.length();//자릿수
-		StringBuffer path = new StringBuffer("0");
-
-		for(int i=0;i<zeroLength;i++){
-			path.append("0");
-		}
-		path.append(no);
-		reply.setPath(path.toString());
+		reply.setPath(String.format("%06d", reply.getNo()));
 
 		if(reply.getParent() == 0){//부모코드가 없는경우, 답글이 아닌 일반글
 
@@ -75,7 +72,6 @@ public class ReplyServiceImpl implements ReplyService {
 		MultipartFile image = mpf;
 		try{
 			if(image != null){
-				String originName = image.getOriginalFilename();
 				Tika tika = new Tika();
 				String imgExt = tika.detect(image.getInputStream()).split("/")[1];
 				
@@ -93,7 +89,7 @@ public class ReplyServiceImpl implements ReplyService {
 			}
 			return true;
 		}catch(IOException ioe){
-			ioe.printStackTrace();
+			logger.error("ReplyServiceImpl 에러: ", ioe);
 			return false;
 		}
 

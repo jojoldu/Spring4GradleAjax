@@ -16,13 +16,13 @@ public interface UserService {
 	public List<User> getList();
 	
 	//회원가입
-	public void add(User insert);
+	public boolean add(User insert);
 	
 	//비밀번호 확인
 	public boolean checkPassword(User user);
 	
 	//회원정보 수정
-	public void update(User user);
+	public boolean update(User user);
 	
 	//회원 탈퇴
 	public void delete(User user);

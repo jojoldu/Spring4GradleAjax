@@ -20,11 +20,11 @@ function getPagingInfo(pageIndex){
 	var pagingInfo = setPagingInfo(pageIndex);
 	$.ajax({
 		type:"POST",
-		url:"getPagingInfo.json",
+		url:"get-paginginfo.json",
 		data:pagingInfo,
 		dataType:"json",
-		success:function(data){
-			makeAjaxPaging(data.pagingInfo);
+		success:function(pagingInfo){
+			makeAjaxPaging(pagingInfo);
 		}
 	} );	
 }
@@ -47,6 +47,7 @@ function makeAjaxPaging(pagingInfo){
 	var pageSize = parseInt(pagingInfo.pageSize);//한 페이지당 보여줄 글개수
 	var pageIndex = parseInt(pagingInfo.pageIndex);//현재 페이지
 	var lastPageIndex=parseInt(pageIndex+pageScope-1);//현재화면에서 나와야할 마지막 페이지번호
+	
 	var $pagination = $('#pagination');
 	
 	if(lastPageIndex>totalPageCount){//전체페이지수 보다 lastPageIndex가 크면
@@ -71,12 +72,14 @@ function makeAjaxPaging(pagingInfo){
 	
 	var $next=$("#next");
 	var $prev=$("#prev");
+	
 	if(totalPageCount > (pageIndex + pageScope - 1)){//현재 페이지범위보다 전체페이지개수가 더 클경우
 		$next.removeClass("disabled");
 		$next.click(function(){
 			makeListAndPaging(lastPageIndex+1);
 		});
 	}
+	
 	if(pageIndex > pageScope){//현재페이지가 pageScope 보다 클경우
 		$prev.removeClass("disabled");
 		$prev.click(function(){

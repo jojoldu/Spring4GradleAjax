@@ -46,8 +46,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
         
-//        HandlerInterceptorAdapter interceptor = new Interceptor();
-//        registry.addInterceptor(interceptor);
+        HandlerInterceptorAdapter interceptor = new Interceptor();
+        registry.addInterceptor(interceptor);
     }
     
  

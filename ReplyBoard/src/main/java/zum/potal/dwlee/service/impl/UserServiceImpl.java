@@ -35,9 +35,11 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User login(User login) {
-		Utils.setSecurityPassword(login);
-		User result = userDao.login(login);
-		return result;
+		
+		if(!Utils.setSecurityPassword(login)){
+			return null;
+		}
+		return userDao.login(login);
 	}
 
 	@Override
@@ -46,23 +48,33 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void add(User user)  {
-		Utils.setSecurityPassword(user);
+	public boolean add(User user)  {
+		if(!Utils.setSecurityPassword(user)){
+			return false;
+		}
 		userDao.add(user);
+		return true;
 	}
 
 	@Override
 	public boolean checkPassword(User user){
 	
-		Utils.setSecurityPassword(user);
-		return userDao.checkPassword(user) != null;
+		if(!Utils.setSecurityPassword(user)){
+			return false;
+		}
 		
+		return userDao.checkPassword(user) != null;
 	}
 
 	@Override
-	public void update(User user) {
-		Utils.setSecurityPassword(user);
+	public boolean update(User user) {
+		
+		if(!Utils.setSecurityPassword(user)){
+			return false;
+		}
+		
 		userDao.update(user);
+		return true;
 	}
 
 	@Override

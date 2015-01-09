@@ -7,15 +7,19 @@ import zum.potal.dwlee.vo.User;
 
 public class Utils {
 	
-	public static String getNowTime(){
-		long time = System.currentTimeMillis(); 
+	public static String getNowTime() {
+		long time = System.currentTimeMillis();
 		SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		return dayTime.format(new Date(time));
 	}
-	
-	public static void setSecurityPassword(User user){
+
+	public static boolean setSecurityPassword(User user) {
 		String password = SHA256.getPbCipher(user.getPassword());
+		if(password==null){
+			return false;
+		}
 		user.setPassword(password);
+		return true;
 	}
-	
+
 }

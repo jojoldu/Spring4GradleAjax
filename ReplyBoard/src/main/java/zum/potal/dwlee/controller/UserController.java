@@ -1,8 +1,5 @@
 package zum.potal.dwlee.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import zum.potal.dwlee.service.UserService;
+import zum.potal.dwlee.utils.CommonConstants;
+import zum.potal.dwlee.vo.ResponseObject;
 import zum.potal.dwlee.vo.User;
 
 @RestController
@@ -22,133 +20,53 @@ import zum.potal.dwlee.vo.User;
 public class UserController {
 
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+
 	@Autowired
 	private UserService userServcie;
-		
-	@RequestMapping(value="/checkDuplicateId.json", method=RequestMethod.POST)
-	public @ResponseBody Map checkDuplicateId(@ModelAttribute User user){
-		Map map = new HashMap();
-		
-		try{
-			map.put("result", userServcie.checkDuplicateId(user));
-			
-			return map;
-		}catch(Exception e){
-			logger.info(e.getMessage());
-			map.put("result", false);
-			
-			return map;		
-		}
+
+	@RequestMapping(value="/check-duplicate-id.json", method=RequestMethod.POST)
+	public ResponseObject checkDuplicateId(@ModelAttribute User user){
+		return new ResponseObject(userServcie.checkDuplicateId(user));
 	}
-	
+
 	@RequestMapping(value="/login.json", method=RequestMethod.POST)
-	public @ResponseBody Map login(@ModelAttribute User login, HttpSession session) {
-		User user;
-		Map map = new HashMap();
-		try{
-			user=userServcie.login(login);
-			if(user!=null){
-				session.setAttribute("loginVO", user);
-				map.put("result", true);
-			}
-			
-			return map;	
-		}catch(Exception e){
-			logger.debug(e.getMessage());
-			map.put("result", false);
-			
-			return map;	
+	public ResponseObject login(@ModelAttribute User login, HttpSession session) {
+		User user= userServcie.login(login);
+		ResponseObject result = new ResponseObject(); 
+
+		if(user != null){
+			session.setAttribute(CommonConstants.LOGIN_SESSION, user);
+			result.setResult(true);
 		}
+
+		return result;
 	}
-	
+
 	@RequestMapping(value="/logout.json", method=RequestMethod.POST)
-	public @ResponseBody boolean logout(HttpSession session) {
-		try{
-			session.removeAttribute("loginVO");
-			
-			return true;	
-		}catch(Exception e){
-			logger.debug(e.getMessage());
-			
-			return false;
-		}
+	public boolean logout(HttpSession session) {
+		session.removeAttribute(CommonConstants.LOGIN_SESSION);
+		return true;	
 	}
-	
+
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
-	public @ResponseBody Map addUser(@ModelAttribute User user) {
-		Map map = new HashMap();
-		
-		try{
-			userServcie.add(user);
-			map.put("result", true);
-			
-			return map;	
+	public ResponseObject addUser(@ModelAttribute User user) {
+		return new ResponseObject(userServcie.add(user));
+	}
 
-		}catch(Exception e){
-			
-			logger.debug(e.getMessage());
-			map.put("result", false);
-			
-			return map;	
-		}
+	@RequestMapping(value="/check-password.json", method=RequestMethod.POST)
+	public ResponseObject checkPassword(@ModelAttribute User user){
+		return new ResponseObject(userServcie.checkPassword(user));
 	}
-	
-	@RequestMapping(value="/checkPassword.json", method=RequestMethod.POST)
-	public @ResponseBody Map checkPassword(@ModelAttribute User user){
-		Map map = new HashMap();
-		
-		try{
-			map.put("result", userServcie.checkPassword(user));
-			
-			return map;	
-		}catch(Exception e){
-			logger.debug(e.getMessage());
-			map.put("result", false);
-			
-			return map;	
-		}
-	}
-	
+
 	@RequestMapping(value="/update.json", method=RequestMethod.POST)
-	public @ResponseBody Map update(@ModelAttribute User user){
-		
-		Map map = new HashMap();
-		try{
-			userServcie.update(user);
-			map.put("result", true);
-			
-			return map;	
-
-		}catch(Exception e){
-			
-			logger.debug(e.getMessage());
-			map.put("result", false);
-			
-			return map;	
-			
-		}
+	public ResponseObject update(@ModelAttribute User user){
+		return new ResponseObject(userServcie.update(user));
 	}
 
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
-	public Map delete(@ModelAttribute User user, HttpSession session){
-		
-		Map map = new HashMap();
-		try{
-			userServcie.delete(user);
-			session.removeAttribute("loginVO");
-			map.put("result", true);
-			
-			return map;	
- 
-		}catch(Exception e){
-			
-			logger.debug(e.getMessage());
-			map.put("result", false);
-			
-			return map;	
-			
-		}
+	public void delete(@ModelAttribute User user, HttpSession session){
+		userServcie.delete(user);
+		session.removeAttribute(CommonConstants.LOGIN_SESSION);
 	}
 
 }

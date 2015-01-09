@@ -94,7 +94,7 @@ function getList(pageIndex){
 	
 	$.ajax({
 		type:"POST",
-		url:"list.json",
+		url:"get-list.json",
 		data:pagingInfo,
 		dataType:"json",
 		success:function(data){
@@ -206,7 +206,7 @@ function addReplyToAjax(formData){
 			if(data.result){
 				alert("댓글이 등록되었습니다!");
 				resetForm();
-				getList(activePageIndex);
+				makeListAndPaging(activePageIndex);
 			}else{
 				alert("댓글 등록이 실패하였습니다.");
 			}
@@ -284,15 +284,12 @@ function deleteReply(no){
 		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data.result){
-				alert("삭제되었습니다.");
-				getList(activePageIndex);//active 된 pageIndex
-			}else{
-				alert("삭제가 실패하였습니다.");
-			}
-
+			alert("삭제되었습니다.");
+			getList(activePageIndex);//active 된 pageIndex
 		}
-	} );
+	} ).error(function(){
+		alert("삭제가 실패하였습니다.");
+	});
 }
 
 //기존 비밀번호 확인
@@ -405,13 +402,11 @@ function deleteUser(){
 		data:user,
 		dataType:"json",
 		success:function(data){
-			if(data.result){
-				alert("탈퇴되었습니다.");
-				location.href="/";
-			}else{
-				alert("탈퇴가 실패하였습니다.");
-			}
+			alert("탈퇴되었습니다.");
+			location.href="/";
 		}
-	} );
+	} ).error(function(){
+		alert("탈퇴가 실패하였습니다.");
+	});
 }
 

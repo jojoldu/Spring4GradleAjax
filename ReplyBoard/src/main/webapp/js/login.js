@@ -60,7 +60,7 @@ function checkIdFromDB(user){
 	
 	$.ajax({
 		type:"POST",
-		url:"user/checkDuplicateId.json",
+		url:"user/check-duplicate-id.json",
 		data:user,
 		dataType:"json",		
 		success:function(data){
@@ -95,7 +95,7 @@ function login(){
 			if(data.result){
 				$loginId.val("");
 				$loginId.val("");
-				location.href="reply/goTolist";
+				location.href="reply/list";
 			}else{
 				alert("아이디와 패스워드를 확인해주세요.");
 			}
