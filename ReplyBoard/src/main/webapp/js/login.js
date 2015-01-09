@@ -1,5 +1,7 @@
 /**
  * 로그인 관련 자바스크립트
+ * 
+ * Branch 시작
  */
 var validId=false;
 var inputId="";
