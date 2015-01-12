@@ -44,9 +44,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/logout.json", method=RequestMethod.POST)
-	public boolean logout(HttpSession session) {
+	public ResponseObject logout(HttpSession session) {
 		session.removeAttribute(CommonConstants.LOGIN_SESSION);
-		return true;	
+		return new ResponseObject(true);	
 	}
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)

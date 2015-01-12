@@ -1,10 +1,7 @@
 /**
  * 로그인 관련 자바스크립트
  * 
- * Branch 시작
  */
-var validId=false;
-var inputId="";
 
 $(function() {
 	//중복검사 이벤트
@@ -35,8 +32,37 @@ $(function() {
 			login();
 		}
 	});
+	
+	$("#closeForm").click(resetForm);
 
 });
+
+//가입용 id
+var inputId = (function(){
+
+	var id;
+	var valid;
+	
+	return {
+		get_id: function(){
+			return id;
+		},
+		
+		set_id: function(i){
+			id = i;
+		},
+		
+		get_valid: function(){
+			return valid;
+		},
+		
+		set_valid: function(v){
+			valid = v;
+		}
+	}
+}());
+
+
 
 //ID중복검사
 function checkDuplicateId(){
@@ -68,11 +94,11 @@ function checkIdFromDB(user){
 		success:function(data){
 			if(data.result){
 				alert("사용가능한 ID입니다.");
-				inputId=$("#id").val();
-				validId=true;
+				inputId.set_id($("#id").val());
+				inputId.set_valid(true);
 			}else{
 				alert("사용이 불가능한 ID입니다.");
-				validId=false;
+				inputId.set_valid(false);
 			}
 		}
 	} );
@@ -114,12 +140,12 @@ function validateObj(){
 	var checkPassword=$("#checkPassword").val();
 	var email=$("#email").val();
 	
-	if(validId === false){
+	if(inputId.get_valid() === false){
 		alert("ID중복검사를 해주세요");
 		return false;
 	}
 	
-	if(id !== inputId){// 미중복 ID 입력후 중복검사 없이 ID수정하여 중복ID로 회원가입시  
+	if(id !== inputId.get_id()){// 미중복 ID 입력후 중복검사 없이 ID수정하여 중복ID로 회원가입시  
 		alert("ID변경시에는 다시 중복검사를 해야합니다.");
 		return false;
 	}
@@ -162,6 +188,9 @@ function resetForm(){
 	$("#password").val("");
 	$("#checkPassword").val("");
 	$("#email").val("");
+	
+	inputId.set_id("");
+	inputId.set_valid(false);
 }
 
 //회원가입

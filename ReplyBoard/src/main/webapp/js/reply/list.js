@@ -2,9 +2,6 @@
  * 댓글 관련 자바스크립트
  */
 
-var validPassword=false;
-var activePageIndex;
-
 $(function() {
 
 	$("#pageSize").val('30');
@@ -24,7 +21,7 @@ $(function() {
 	
 	//페이징 사이즈 조절
 	$("#pageSize").change(function(){
-		makeListAndPaging(activePageIndex);
+		makeListAndPaging(activePage.get_index());
 	});
 	
 	//비밀번호 확인
@@ -79,10 +76,42 @@ $(function() {
 });
 
 
+//유효한 비밀번호
+var validPassword = (function(){
+	
+	var valid;
+	
+	return {
+		get_valid: function(){
+			return valid;
+		},
+		set_valid: function(v){
+			valid = v;
+		}
+	}
+}());
+
+//활성화된 페이지
+var activePage = (function(){
+
+	var index=1;
+	
+	return {
+		get_index: function(){
+			return index;
+		},
+		set_index: function(i){
+			index = i;
+		}
+	}
+}());
+
+
+
 //댓글 목록 조회
 function getList(pageIndex){
 	var pageIndex=pageIndex;
-	activePageIndex = pageIndex;
+	activePage.set_index(pageIndex);
 	
 	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
 
@@ -203,7 +232,7 @@ function addReplyToAjax(formData){
 			if(data.result){
 				alert("댓글이 등록되었습니다!");
 				resetForm();
-				makeListAndPaging(activePageIndex);
+				makeListAndPaging(activePage.get_index());
 			}else{
 				alert("댓글 등록이 실패하였습니다.");
 			}
@@ -249,7 +278,7 @@ function updateReply(e){
 			if(data.result){
 				alert("댓글이 수정되었습니다!");
 				resetForm();
-				getList(activePageIndex);
+				getList(activePage.get_index());
 			}else{
 				alert("댓글 수정이 실패하였습니다.");
 			}
@@ -282,7 +311,7 @@ function deleteReply(no){
 		dataType:"json",
 		success:function(data){
 			alert("삭제되었습니다.");
-			getList(activePageIndex);//active 된 pageIndex
+			getList(activePage.get_index());//active 된 pageIndex
 		}
 	} ).error(function(){
 		alert("삭제가 실패하였습니다.");
@@ -306,7 +335,7 @@ function checkPassword(){
 		success:function(data){
 			if(data.result){
 				alert("비밀번호가 확인되었습니다.");
-				validPassword=true;
+				validPassword.set_valid(true);
 			}else{
 				alert("비밀번호가 잘못되었습니다.");
 			}
@@ -317,7 +346,7 @@ function checkPassword(){
 
 //사용자정보 수정
 function updateUserInfo(){
-	if(!validPassword){
+	if(!validPassword.get_valid()){
 		alert("기존 비밀번호를 정확히 입력해주세요");
 		return;
 	}
@@ -354,7 +383,7 @@ function updateUserInfo(){
 			}else{
 				alert("회원정보수정이 실패 되었습니다.");
 			}
-			validPassword=false;
+			validPassword.set_valid(false);
 		}
 	} );
 }

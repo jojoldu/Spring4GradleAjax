@@ -87,7 +87,7 @@
 				<div class="modal-footer">
 					<div class="row">
 						<div class="col-md-12">
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal" id="closeForm">닫기</button>
 							<button type="button" class="btn btn-primary" id="signUpBtn">회원가입</button>						
 						</div>
 					</div>
