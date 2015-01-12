@@ -85,7 +85,13 @@ public class ReplyController {
 	}
 
 	private String getPath(MultipartHttpServletRequest request){
-		return request.getSession().getServletContext().getRealPath(File.separator+"resources"+File.separator+"images");
+		String fileSeparator=File.separator;
+		
+		if(fileSeparator.equals("\\")){
+			fileSeparator="/";
+		}
+				
+		return request.getSession().getServletContext().getRealPath(fileSeparator+"resources"+fileSeparator+"images");
 	}
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
@@ -93,7 +99,7 @@ public class ReplyController {
 	public ResponseObject add(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
 		setWriter(reply, session);
-		
+		reply.setNo(replyService.getLastNo()+1);
 		boolean resultUpload = replyService.uploadImage(reply, getPath(request), getMultipartFile(request));
 		boolean resultAdd = replyService.add(reply);
 		
@@ -109,9 +115,8 @@ public class ReplyController {
 	public ResponseObject update(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
 		setWriter(reply, session);
-		
 		boolean resultUpload = replyService.uploadImage(reply, getPath(request), getMultipartFile(request));
-		boolean resultUpdate = replyService.update(reply);
+		boolean resultUpdate = replyService.update(reply);	
 		
 		if(resultUpload && resultUpdate){
 			return new ResponseObject(true);

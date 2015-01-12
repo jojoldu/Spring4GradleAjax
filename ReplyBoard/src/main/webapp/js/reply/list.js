@@ -313,9 +313,7 @@ function deleteReply(no){
 			alert("삭제되었습니다.");
 			getList(activePage.get_index());//active 된 pageIndex
 		}
-	} ).error(function(){
-		alert("삭제가 실패하였습니다.");
-	});
+	} )
 }
 
 //기존 비밀번호 확인

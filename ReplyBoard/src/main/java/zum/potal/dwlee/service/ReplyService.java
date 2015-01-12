@@ -15,6 +15,9 @@ public interface ReplyService {
 	//댓글 페이징
 	public PagingInfo getPagingInfo(PagingInfo pagingInfo);
 	
+	//마지막 게시글 번호
+	public int getLastNo();
+	
 	//이미지 업로드
 	public boolean uploadImage(Reply reply, String path, MultipartFile mpf);
 	

@@ -68,6 +68,12 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 	
 	@Override
+	@Transactional
+	public int getLastNo() {
+		return replyDao.getNo();
+	};
+	
+	@Override
 	public boolean uploadImage(Reply reply, String path, MultipartFile mpf){
 		MultipartFile image = mpf;
 		try{
@@ -98,8 +104,6 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	@Transactional
 	public boolean add(Reply reply){
-		int no = replyDao.getNo()+1;
-		reply.setNo(no);
 		reply.setWriteDate(Utils.getNowTime());
 		reply.setModifyDate(Utils.getNowTime());
 		
