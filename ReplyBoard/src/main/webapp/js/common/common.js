@@ -8,19 +8,19 @@ $(function(){
 		error:function(e, xhr, settings, exception){
 		    var message = '';
 
-		    if (xhr.status === 0) {
+		    if (xhr.status == 0) {
 		        message = '인터넷 연결을 확인해주세요.';
 		    }
-		    else if (xhr.status === 401) {
+		    else if (xhr.status == 401) {
 		    	message = '권한이 없습니다.';
 		    }
-		    else if (xhr.status === 403) {
+		    else if (xhr.status == 403) {
 		    	message = '서버가 요청을 금지하였습니다.';
 		    }
-		    else if (xhr.status === 404) {
+		    else if (xhr.status == 404) {
 		        message = '페이지를 찾을 수 없습니다.';
 		    }
-		    else if (xhr.status === 500) {
+		    else if (xhr.status == 500) {
 		        message = '내부서버오류 \n';
 		    }
 		    else {

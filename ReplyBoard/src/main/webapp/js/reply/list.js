@@ -7,7 +7,7 @@ $(function() {
 	$("#pageSize").val('30');
 	
 	//댓글 목록조회
-	makeListAndPaging(1);
+	makeListAndPaging(activePage.get_index());
 	
 	//댓글입력 
 	$('#writeBtn').click(function(){
@@ -71,8 +71,6 @@ $(function() {
     	$(".openUpdateFormBtn").prop("disabled", false);
     	
     });
-    
-    
 });
 
 
@@ -110,13 +108,14 @@ var activePage = (function(){
 
 //댓글 목록 조회
 function getList(pageIndex){
+	
 	var pageIndex=pageIndex;
+	var pagingInfo = setPagingInfo(pageIndex);
+	
 	activePage.set_index(pageIndex);
 	
 	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
 
-	var pagingInfo = setPagingInfo(pageIndex);
-	
 	$.ajax({
 		type:"POST",
 		url:"list.json",
@@ -162,6 +161,7 @@ function drawTable(list, loginId) {
 
 //table row 생성
 function drawRow(rowData) {
+	
 	var id=rowData.no;
 	var replyId = 'reply'+id;
 	var replyForm = $(".replyForm").html(); //댓글 입력폼
@@ -200,16 +200,18 @@ function resetForm(){
 function addReply(e){
 	var $e = $(e);
 	var no;
+	var $parent = $e.closest(".addForm");
+	var content =$parent.find(".content").val();
+	var file =  $parent.find("input[type=file]")[0].files[0];
+	var formData = new FormData();
+	
 	if($e.prop("id") === "writeBtn"){
 		no = 0;
 	}else{
 		no = $e.closest(".inputForm").prop("id").substr(5);
 	}
-	var $parent = $e.closest(".addForm");
-	var content =$parent.find(".content").val();
-	var file =  $parent.find("input[type=file]")[0].files[0];
 	
-	var formData = new FormData();
+
 	formData.append("parent",no);
 	formData.append("content", content);
 	formData.append("image", file);

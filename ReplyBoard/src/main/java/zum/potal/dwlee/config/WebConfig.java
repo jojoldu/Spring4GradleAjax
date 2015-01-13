@@ -46,10 +46,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
         
-        HandlerInterceptorAdapter interceptor = new Interceptor();
-        registry.addInterceptor(interceptor);
+//        HandlerInterceptorAdapter interceptor = new Interceptor();
+//        registry.addInterceptor(interceptor);
     }
-    
  
     /**
      * locale resolver
@@ -63,6 +62,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
         return cookieLocaleResolver;
     }
+    
     
     @Bean(name = "multipartResolver")
     public MultipartResolver multipartResolver() {

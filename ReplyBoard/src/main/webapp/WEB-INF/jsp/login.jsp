@@ -23,8 +23,8 @@
 	<div class="container">
 		<form class="form-signin" id="loginForm">
 			<h2 class="form-signin-heading">댓글 게시판</h2>
-			<input type="text" class="form-control" placeholder="ID" autofocus id="loginId"> 
-			<input type="password" class="form-control" placeholder="Password" id="loginPassword"> 
+			<input type="text" class="form-control" placeholder="ID" autofocus id="loginId" name="loginId"> 
+			<input type="password" class="form-control" placeholder="Password" id="loginPassword" name="loginPassword"> 
 			<button class="btn btn-lg btn-success btn-block" type="button" id="loginBtn">로그인</button>
 			<br>
 			<a data-toggle="modal" href="#signUpForm">

@@ -42,8 +42,8 @@ public class ReplyController {
 
 	@RequestMapping(value="/list.json", method=RequestMethod.POST)
 	@ResponseBody
-	public Map getList(@ModelAttribute PagingInfo pagingInfo, HttpSession session){
-		Map map = new HashMap();
+	public Map<String, Object> getList(@ModelAttribute PagingInfo pagingInfo, HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
 		User login = (User)session.getAttribute(CommonConstants.LOGIN_SESSION);
 		
 		if(login == null){

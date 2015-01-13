@@ -37,6 +37,7 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-security")
    	compile("org.springframework:spring-orm")    	  
     compile("org.hibernate:hibernate-core:4.3.7.Final")
     compile("mysql:mysql-connector-java") 

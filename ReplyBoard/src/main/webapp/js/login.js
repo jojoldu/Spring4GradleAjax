@@ -122,7 +122,7 @@ function login(){
 		success:function(data){
 			if(data.result){
 				$loginId.val("");
-				$loginId.val("");
+				$loginPassword.val("");
 				location.href="reply/list";
 			}else{
 				alert("아이디와 패스워드를 확인해주세요.");
