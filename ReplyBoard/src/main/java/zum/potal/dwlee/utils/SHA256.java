@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class SHA256 {
 
-	public static String getPbCipher(String str){
+	public static String encode(String str){
 		String SHA = ""; 
 		try{
 			MessageDigest sh = MessageDigest.getInstance("SHA-256"); 

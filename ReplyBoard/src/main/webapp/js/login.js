@@ -122,7 +122,7 @@ function login(){
 		success:function(data){
 			if(data.result){
 				$loginId.val("");
-				$loginId.val("");
+				$loginPassword.val("");
 				location.href="reply/list";
 			}else{
 				alert("아이디와 패스워드를 확인해주세요.");
@@ -139,6 +139,14 @@ function validateObj(){
 	var password=$("#password").val();
 	var checkPassword=$("#checkPassword").val();
 	var email=$("#email").val();
+	
+	var reg_email=/^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}$/;	// 인자 email_address를 정규식 format 으로 검색
+	
+	var obj={
+			id:id,
+			password:password,
+			email:email
+	}
 	
 	if(inputId.get_valid() === false){
 		alert("ID중복검사를 해주세요");
@@ -165,18 +173,11 @@ function validateObj(){
 		return false;
 	}
 	
-	var reg_email=/^[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[@]{1}[-A-Za-z0-9_]+[-A-Za-z0-9_.]*[.]{1}[A-Za-z]{2,5}$/;	// 인자 email_address를 정규식 format 으로 검색
-	
 	if (email.search(reg_email) == -1){
 	   alert("email형식에 맞춰 입력해주세요.");
 	   return false;
 	}
-	
-	var obj={
-			id:id,
-			password:password,
-			email:email
-	}
+
 	return obj;
 }
 
@@ -215,7 +216,6 @@ function signUp(){
 			}else{
 				alert("가입이 실패하였습니다.");
 			}
-
 		}
 	} );
 }

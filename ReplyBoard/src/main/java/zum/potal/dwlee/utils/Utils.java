@@ -16,7 +16,7 @@ public class Utils {
 	}
 
 	public static boolean setSecurityPassword(User user) {
-		String password = SHA256.getPbCipher(user.getPassword());
+		String password = SHA256.encode(user.getPassword());
 		if(password==null){
 			return false;
 		}

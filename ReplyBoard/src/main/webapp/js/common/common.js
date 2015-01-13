@@ -81,6 +81,9 @@ function makeAjaxPaging(pagingInfo){
 	
 	var $pagination = $('#pagination');
 	
+	var $next=$("#next");
+	var $prev=$("#prev");
+	
 	if(lastPageIndex>totalPageCount){//전체페이지수 보다 lastPageIndex가 크면
 		lastPageIndex=totalPageCount;
 	}
@@ -100,9 +103,6 @@ function makeAjaxPaging(pagingInfo){
 	
 	
 	$("#"+pageIndex).addClass("active");//현재페이지 활성화
-	
-	var $next=$("#next");
-	var $prev=$("#prev");
 	
 	if(totalPageCount > (pageIndex + pageScope - 1)){//현재 페이지범위보다 전체페이지개수가 더 클경우
 		$next.removeClass("disabled");
