@@ -8,19 +8,19 @@ $(function(){
 		error:function(e, xhr, settings, exception){
 		    var message = '';
 
-		    if (xhr.status == 0) {
+		    if (xhr.status === 0) {
 		        message = '인터넷 연결을 확인해주세요.';
 		    }
-		    else if (xhr.status == 401) {
+		    else if (xhr.status === 401) {
 		    	message = '권한이 없습니다.';
 		    }
-		    else if (xhr.status == 403) {
+		    else if (xhr.status === 403) {
 		    	message = '서버가 요청을 금지하였습니다.';
 		    }
-		    else if (xhr.status == 404) {
+		    else if (xhr.status === 404) {
 		        message = '페이지를 찾을 수 없습니다.';
 		    }
-		    else if (xhr.status == 500) {
+		    else if (xhr.status === 500) {
 		        message = '내부서버오류 \n';
 		    }
 		    else {
@@ -81,6 +81,9 @@ function makeAjaxPaging(pagingInfo){
 	
 	var $pagination = $('#pagination');
 	
+	var $next=$("#next");
+	var $prev=$("#prev");
+	
 	if(lastPageIndex>totalPageCount){//전체페이지수 보다 lastPageIndex가 크면
 		lastPageIndex=totalPageCount;
 	}
@@ -100,9 +103,6 @@ function makeAjaxPaging(pagingInfo){
 	
 	
 	$("#"+pageIndex).addClass("active");//현재페이지 활성화
-	
-	var $next=$("#next");
-	var $prev=$("#prev");
 	
 	if(totalPageCount > (pageIndex + pageScope - 1)){//현재 페이지범위보다 전체페이지개수가 더 클경우
 		$next.removeClass("disabled");

@@ -15,12 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 //web.xml
 @Configuration
@@ -46,9 +41,10 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
         
-//        HandlerInterceptorAdapter interceptor = new Interceptor();
-//        registry.addInterceptor(interceptor);
+        HandlerInterceptorAdapter interceptor = new Interceptor();
+        registry.addInterceptor(interceptor);
     }
+    
  
     /**
      * locale resolver
@@ -62,7 +58,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         cookieLocaleResolver.setDefaultLocale(StringUtils.parseLocaleString("en"));
         return cookieLocaleResolver;
     }
-    
     
     @Bean(name = "multipartResolver")
     public MultipartResolver multipartResolver() {
