@@ -37,7 +37,6 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-jdbc")
-    compile("org.springframework.boot:spring-boot-starter-security")
    	compile("org.springframework:spring-orm")    	  
     compile("org.hibernate:hibernate-core:4.3.7.Final")
     compile("mysql:mysql-connector-java") 
@@ -49,7 +48,8 @@ dependencies {
 	compile("org.apache.tika:tika-parsers:1.6")
 	compile("org.apache.tika:tika-core:1.6")
 	compile("org.aspectj:aspectjweaver")
-		  
+	compile("commons-codec:commons-codec:1.10")
+	compile("commons-lang:commons-lang:2.6")
 		  
  
   runtime "javax.servlet:jstl"

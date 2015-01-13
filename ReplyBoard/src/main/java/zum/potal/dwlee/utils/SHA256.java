@@ -3,19 +3,25 @@ package zum.potal.dwlee.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.lang.RandomStringUtils;
+
+import com.coremedia.iso.Hex;
+
 public class SHA256 {
 
 	public static String encode(String str){
 		String SHA = ""; 
+		String salt ="";
 		try{
+			
 			MessageDigest sh = MessageDigest.getInstance("SHA-256"); 
-			sh.update(str.getBytes()); 
+			salt = RandomStringUtils.randomAscii(20);
+			
+			sh.update((str+salt).getBytes()); 
 			byte byteData[] = sh.digest();
-			StringBuffer sb = new StringBuffer(); 
-			for(int i = 0 ; i < byteData.length ; i++){
-				sb.append(Integer.toString((byteData[i]&0xff) + 0x100, 16).substring(1));
-			}
-			SHA = sb.toString();
+			
+			SHA = Hex.encodeHex(byteData);
+			
 		}catch(NoSuchAlgorithmException e){
 			e.printStackTrace(); 
 			SHA = null; 

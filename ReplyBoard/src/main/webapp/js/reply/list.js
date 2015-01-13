@@ -107,7 +107,6 @@ var activePage = (function(){
 }());
 
 
-
 //댓글 목록 조회
 function getList(pageIndex){
 	var pageIndex=pageIndex;

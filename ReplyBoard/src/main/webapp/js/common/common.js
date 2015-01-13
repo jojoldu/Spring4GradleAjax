@@ -119,11 +119,13 @@ function makeAjaxPaging(pagingInfo){
 	}
 }
 
+
 //페이징 생성 및 목록출력
 function makeListAndPaging(pageIndex){
 	getPagingInfo(pageIndex);
 	getList(pageIndex);
 }
+
 
 //영문, 숫자만 입력되었는지 체크
 function checkEng(str) {

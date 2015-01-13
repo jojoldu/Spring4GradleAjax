@@ -104,8 +104,9 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	@Transactional
 	public boolean add(Reply reply){
-		reply.setWriteDate(Utils.getNowTime());
-		reply.setModifyDate(Utils.getNowTime());
+		String date = Utils.getNowTime();
+		reply.setWriteDate(date);
+		reply.setModifyDate(date);
 		
 		makeInsertReply(reply);
 
