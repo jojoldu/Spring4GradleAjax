@@ -19,24 +19,17 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean checkDuplicateId(String id)  {
-		User checkId = userDao.getUser(id);	
-		return checkId == null;
+		return userDao.getUser(id) == null;
 	}
 	
 	@Override
 	public User getUser(User user) {
-		
-		if(!Utils.setSecurityPassword(user)){
-			return null;
-		}
 		return userDao.getUser(user);
 	}
 
 	@Override
 	public boolean add(User user)  {
-		if(!Utils.setSecurityPassword(user)){
-			return false;
-		}
+
 		userDao.add(user);
 		return true;
 	}
@@ -44,19 +37,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean checkPassword(User user){
 	
-		if(!Utils.setSecurityPassword(user)){
-			return false;
-		}
-		
 		return userDao.getUser(user) != null;
 	}
 
 	@Override
 	public boolean update(User user) {
-		
-		if(!Utils.setSecurityPassword(user)){
-			return false;
-		}
 		
 		userDao.update(user);
 		return true;

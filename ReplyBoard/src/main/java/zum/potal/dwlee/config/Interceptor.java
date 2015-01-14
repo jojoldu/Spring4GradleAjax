@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import zum.potal.dwlee.utils.CommonConstants;
+import zum.potal.dwlee.utils.SHA256;
+import zum.potal.dwlee.vo.User;
 
 public class Interceptor extends HandlerInterceptorAdapter {
 
@@ -20,6 +22,14 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		
 		try {
 			if ("/".equals(reqUrl) || (reqUrl != null && reqUrl.matches(".*\\.json"))) { // json 데이터 요청의 경우 통과
+				
+//				String password =(String) request.getParameter("password");
+//				
+//				if("".equals(password)){
+//					return true;
+//				}
+//				
+//				request.setAttribute("password", SHA256.encode(password));
 				
 				return true;
 			

@@ -12,13 +12,15 @@ public class Utils {
 		return new Timestamp(System.currentTimeMillis());
 	}
 	
-	public static boolean setSecurityPassword(User user) {
-		String password = SHA256.encode(user.getPassword());
-		if("".equals(password)){
-			return false;
-		}
-		user.setPassword(password);
-		return true;
-	}
+	
+	
+//	public static boolean setSecurityPassword(User user) {
+//		String password = SHA256.encode(user.getPassword());
+//		if("".equals(password)){
+//			return false;
+//		}
+//		user.setPassword(password);
+//		return true;
+//	}
 
 }

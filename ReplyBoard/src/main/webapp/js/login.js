@@ -110,7 +110,7 @@ function login(){
 	var $loginId = $("#loginId");
 	var $loginPassword = $("#loginPassword");
 	
-	var login = {
+	var user = {
 			id: $loginId.val(),
 			password: $loginPassword.val()
 	}
@@ -118,7 +118,7 @@ function login(){
 	$.ajax({
 		type:"POST",
 		url:"user/login.json",
-		data:login,
+		data:user,
 		dataType:"json",
 		success:function(data){
 			if(data.result){

@@ -14,7 +14,7 @@ public class SHA256 {
 
 	private static final Logger logger = LoggerFactory.getLogger(SHA256.class);
 	
-	public static String encode(String password){
+	public static String encode(String password) throws NoSuchAlgorithmException{
 		String SHA = ""; 
 		String salt ="zuminternet-pilot";
 		try{
@@ -27,7 +27,7 @@ public class SHA256 {
 			
 		}catch(NoSuchAlgorithmException e){
 			logger.error("암호화 error : "+e);
-			return ""; 
+			throw e; 
 		}
 		return SHA;
 	}

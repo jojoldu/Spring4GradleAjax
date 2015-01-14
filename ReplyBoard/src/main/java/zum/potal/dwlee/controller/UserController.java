@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import zum.potal.dwlee.service.UserService;
 import zum.potal.dwlee.utils.CommonConstants;
 import zum.potal.dwlee.utils.Utils;
+import zum.potal.dwlee.vo.EncodeUser;
 import zum.potal.dwlee.vo.ResponseObject;
 import zum.potal.dwlee.vo.User;
 
@@ -41,12 +43,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/login.json", method=RequestMethod.POST)
-	public ResponseObject login(User login, HttpSession session) {
-		User user= userService.getUser(login);
+	public ResponseObject login(@EncodeUser User user, HttpSession session) {
+		User loginInfo= userService.getUser(user);
 		ResponseObject result = new ResponseObject(); 
 
-		if(user != null){
-			session.setAttribute(CommonConstants.LOGIN_SESSION, user);
+		if(loginInfo != null){
+			session.setAttribute(CommonConstants.LOGIN_SESSION, loginInfo);
 			result.setResult(true);
 		}
 
@@ -61,19 +63,19 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
-	public ResponseObject addUser(@Valid User user) {
+	public ResponseObject addUser(@EncodeUser @Valid User user) {
 		
 		return new ResponseObject(userService.add(user));
 	}
 
 	@RequestMapping(value="/check/password.json", method=RequestMethod.POST)
-	public ResponseObject checkPassword(User user){
+	public ResponseObject checkPassword(@EncodeUser User user){
 		
 		return new ResponseObject(userService.checkPassword(user));
 	}
 
 	@RequestMapping(value="/update.json", method=RequestMethod.POST)
-	public ResponseObject update(@Valid User user, HttpSession session){
+	public ResponseObject update(@EncodeUser @Valid User user, HttpSession session){
 		
 		if(checkAuthUser(user,session)){
 			return new ResponseObject(false);
