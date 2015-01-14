@@ -1,11 +1,11 @@
 package zum.potal.dwlee.controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,19 +20,29 @@ import zum.potal.dwlee.vo.User;
 @RequestMapping("/user")
 public class UserController {
 
+	@SuppressWarnings("unused")
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	private UserService userServcie;
+	private UserService userService;
 
+	private boolean checkAuthUser(User user, HttpSession session){
+		User loginUser = (User) session.getAttribute(CommonConstants.LOGIN_SESSION);
+		if(loginUser==null){
+			return false;
+		}
+		return loginUser.getId().equals(user.getId());
+	}
+	
 	@RequestMapping(value="/check/duplicate-id.json", method=RequestMethod.POST)
-	public ResponseObject checkDuplicateId(@ModelAttribute User user){
-		return new ResponseObject(userServcie.checkDuplicateId(user));
+	public ResponseObject checkDuplicateId(User user){
+		
+		return new ResponseObject(userService.checkDuplicateId(user.getId()));
 	}
 
 	@RequestMapping(value="/login.json", method=RequestMethod.POST)
-	public ResponseObject login(@ModelAttribute User login, HttpSession session) {
-		User user= userServcie.login(login);
+	public ResponseObject login(User login, HttpSession session) {
+		User user= userService.getUser(login);
 		ResponseObject result = new ResponseObject(); 
 
 		if(user != null){
@@ -45,34 +55,40 @@ public class UserController {
 
 	@RequestMapping(value="/logout.json", method=RequestMethod.POST)
 	public ResponseObject logout(HttpSession session) {
+		
 		session.removeAttribute(CommonConstants.LOGIN_SESSION);
 		return new ResponseObject(true);	
 	}
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
-	public ResponseObject addUser(@ModelAttribute User user) {
+	public ResponseObject addUser(@Valid User user) {
 		
-		if(Utils.checkValidUser(user)){
-			return new ResponseObject(false);
-		}
-		
-		return new ResponseObject(userServcie.add(user));
+		return new ResponseObject(userService.add(user));
 	}
 
 	@RequestMapping(value="/check/password.json", method=RequestMethod.POST)
-	public ResponseObject checkPassword(@ModelAttribute User user){
-		return new ResponseObject(userServcie.checkPassword(user));
+	public ResponseObject checkPassword(User user){
+		
+		return new ResponseObject(userService.checkPassword(user));
 	}
 
 	@RequestMapping(value="/update.json", method=RequestMethod.POST)
-	public ResponseObject update(@ModelAttribute User user){
-		return new ResponseObject(userServcie.update(user));
+	public ResponseObject update(@Valid User user, HttpSession session){
+		
+		if(checkAuthUser(user,session)){
+			return new ResponseObject(false);
+		}
+		
+		return new ResponseObject(userService.update(user));
 	}
 
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
-	public void delete(@ModelAttribute User user, HttpSession session){
-		userServcie.delete(user);
+	public ResponseObject delete(HttpSession session){
+		
+		userService.delete((User) session.getAttribute(CommonConstants.LOGIN_SESSION));
 		session.removeAttribute(CommonConstants.LOGIN_SESSION);
+		
+		return new ResponseObject(true);
 	}
 
 }

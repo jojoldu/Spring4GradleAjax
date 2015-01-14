@@ -17,9 +17,7 @@ public interface ReplyDao {
 	
 	public void update(Reply reply);
 	
-	public int getNo();
-	
-	public Reply getParent(int no);
+	public int getMaxNo();
 	
 	public void delete(Reply reply);
 }

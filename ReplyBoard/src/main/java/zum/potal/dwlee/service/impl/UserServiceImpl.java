@@ -1,7 +1,5 @@
 package zum.potal.dwlee.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,23 +18,18 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public boolean checkDuplicateId(User user)  {
-		User checkId = userDao.checkId(user);	
+	public boolean checkDuplicateId(String id)  {
+		User checkId = userDao.getUser(id);	
 		return checkId == null;
 	}
 	
 	@Override
-	public User login(User login) {
+	public User getUser(User user) {
 		
-		if(!Utils.setSecurityPassword(login)){
+		if(!Utils.setSecurityPassword(user)){
 			return null;
 		}
-		return userDao.login(login);
-	}
-
-	@Override
-	public List<User> getList() {
-		return userDao.getList();
+		return userDao.getUser(user);
 	}
 
 	@Override
@@ -55,7 +48,7 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		
-		return userDao.checkPassword(user) != null;
+		return userDao.getUser(user) != null;
 	}
 
 	@Override
@@ -71,6 +64,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(User user) {
-		userDao.delete(user);
+		user.setStatus('N');
+		userDao.update(user);
 	}
 }

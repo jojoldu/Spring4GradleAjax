@@ -1,9 +1,14 @@
 package zum.potal.dwlee.vo;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Reply{
@@ -14,19 +19,27 @@ public class Reply{
 	@Size(min=0, max=20000)
 	private String content;//글내용
 	
-	private String writeDate;
+	private Timestamp writeDate;
 	
-	private String modifyDate;
+	private Timestamp modifyDate;
 	
+	@NotNull
 	private String writer;
 	
+	@NotNull
+	private int writerNo;
+	
 	private String imageName;
-	//private MultipartFile image;
 	
 	private int family; //원글번호
 	private int parent; //부모글번호
 	private int depth; //깊이
 	private String path;
+	
+	private char status ='Y';
+	
+	public Reply() {
+	}
 	
 	public int getNo() {
 		return no;
@@ -40,10 +53,11 @@ public class Reply{
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getWriteDate() {
+	
+	public Timestamp getWriteDate() {
 		return writeDate;
 	}
-	public void setWriteDate(String writeDate) {
+	public void setWriteDate(Timestamp writeDate) {
 		this.writeDate = writeDate;
 	}
 	public String getWriter() {
@@ -85,11 +99,11 @@ public class Reply{
 		this.imageName = imageName;
 	}
 
-	public String getModifyDate() {
+	public Timestamp getModifyDate() {
 		return modifyDate;
 	}
 
-	public void setModifyDate(String modifyDate) {
+	public void setModifyDate(Timestamp modifyDate) {
 		this.modifyDate = modifyDate;
 	}
 
@@ -99,6 +113,18 @@ public class Reply{
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public int getWriterNo() {
+		return writerNo;
+	}
+	public void setWriterNo(int writerNo) {
+		this.writerNo = writerNo;
+	}
+	public char getStatus() {
+		return status;
+	}
+	public void setStatus(char status) {
+		this.status = status;
 	}
 	
 }

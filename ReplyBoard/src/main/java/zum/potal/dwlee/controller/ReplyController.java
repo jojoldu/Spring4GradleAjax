@@ -1,8 +1,10 @@
 package zum.potal.dwlee.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -12,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,41 +31,23 @@ import zum.potal.dwlee.vo.User;
 @RequestMapping("/reply")
 public class ReplyController {
 
+	@SuppressWarnings("unused")
 	private final Logger logger = LoggerFactory.getLogger(ReplyController.class);
 
 	@Autowired
 	private ReplyService replyService;
-
-	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String list(Model model, HttpSession session){
-		return "reply/list";
-	}
-
-	@RequestMapping(value="/list.json", method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> getList(@ModelAttribute PagingInfo pagingInfo, HttpSession session){
-		Map<String, Object> map = new HashMap<String, Object>();
-		User login = (User)session.getAttribute(CommonConstants.LOGIN_SESSION);
+	
+	private boolean checkAuthReply(Reply reply, HttpSession session){
+		User loginUser = (User) session.getAttribute(CommonConstants.LOGIN_SESSION);
+		Reply compare = replyService.getReply(reply.getNo());
 		
-		if(login == null){
-			map.put("result", false);
-			return map;
+		if(loginUser==null){
+			return false;
 		}
 		
-		map.put("list", replyService.getList(pagingInfo));
-		map.put("loginId", login.getId());
-		map.put("loginEmail", login.getEmail());
-		map.put("result", true);
-
-		return map;
+		return loginUser.getNo() == compare.getWriterNo();
 	}
-
-	@RequestMapping(value="/paginginfo.json", method=RequestMethod.POST)
-	@ResponseBody 
-	public PagingInfo getPagingInfo(@ModelAttribute PagingInfo pagingInfo){
-		return replyService.getPagingInfo(pagingInfo);
-	}	
-
+	
 	//작성자 설정
 	private void setWriter(Reply reply, HttpSession session){
 		User login = (User)session.getAttribute(CommonConstants.LOGIN_SESSION);
@@ -93,13 +76,58 @@ public class ReplyController {
 				
 		return request.getSession().getServletContext().getRealPath(fileSeparator+"resources"+fileSeparator+"images");
 	}
+	
+	private List<Integer> getAuthBtnList(int loginNo, List<Reply> replyList){
+		List<Integer> result = new ArrayList<Integer>();
+		for(Reply reply : replyList){
+			if(reply.getWriterNo() == loginNo){
+				result.add(reply.getNo());
+			}
+		}
+		return result;
+	}
+	
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public String list(Model model, HttpSession session){
+		return "reply/list";
+	}
+
+	@RequestMapping(value="/list.json", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getList(PagingInfo pagingInfo, HttpSession session){
+		Map<String, Object> map = new HashMap<String, Object>();
+		User login = (User)session.getAttribute(CommonConstants.LOGIN_SESSION);
+		List<Reply> list = replyService.getList(pagingInfo);
+		
+		if(login == null){
+			map.put("result", false);
+			return map;
+		}
+		
+		map.put("list", list);
+		map.put("loginId", login.getId());
+		map.put("loginEmail", login.getEmail());
+		map.put("authBtnList", getAuthBtnList(login.getNo(), list));
+		map.put("result", true);
+		
+		return map;
+	}
+
+	@RequestMapping(value="/paginginfo.json", method=RequestMethod.POST)
+	@ResponseBody 
+	public PagingInfo getPagingInfo(PagingInfo pagingInfo){
+		
+		return replyService.getPagingInfo(pagingInfo);
+	}	
 
 	@RequestMapping(value="/add.json", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject add(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
 		setWriter(reply, session);
-		reply.setNo(replyService.getLastNo()+1);
+		
+		reply.setNo(replyService.getMaxNo()+1);
+	
 		boolean resultUpload = replyService.uploadImage(reply, getPath(request), getMultipartFile(request));
 		boolean resultAdd = replyService.add(reply);
 		
@@ -115,6 +143,11 @@ public class ReplyController {
 	public ResponseObject update(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
 		setWriter(reply, session);
+		
+		if(!checkAuthReply(reply, session)){
+			return new ResponseObject(false);
+		}
+		
 		boolean resultUpload = replyService.uploadImage(reply, getPath(request), getMultipartFile(request));
 		boolean resultUpdate = replyService.update(reply);	
 		
@@ -126,7 +159,14 @@ public class ReplyController {
 	}	
 
 	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
-	public void delete(@ModelAttribute Reply reply) {
+	@ResponseBody	
+	public ResponseObject delete(Reply reply, HttpSession session) {
+		
+		if(!checkAuthReply(reply, session)){
+			return new ResponseObject(false);
+		}
+		
 		replyService.delete(reply);
+		return new ResponseObject(true);
 	}
 }

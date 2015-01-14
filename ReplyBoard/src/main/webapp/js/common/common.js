@@ -1,6 +1,45 @@
 /**
  * 공통유틸 자바스크립트
  */
+
+Date.prototype.format = function(f) {
+    if (!this.valueOf()) return " ";
+ 
+    var d = this;
+     
+    return f.replace(/(yyyy|MM|dd|HH|hh|mm|ss|)/gi, function($1) {
+        switch ($1) {
+            case "yyyy": return d.getFullYear();
+            case "MM": return (d.getMonth() + 1).zerofill(2);
+            case "dd": return d.getDate().zerofill(2);
+            case "HH": return d.getHours().zerofill(2);
+            case "hh": return ((h = d.getHours() % 12) ? h : 12).zerofill(2);
+            case "mm": return d.getMinutes().zerofill(2);
+            case "ss": return d.getSeconds().zerofill(2);
+            default: return $1;
+        }
+    });
+};
+
+Number.prototype.zerofill = function(length){
+	return this.toString().zerofill(length);
+};
+
+String.prototype.zerofill = function(length){
+	return "0".numfill(length - this.length) + this;
+};
+
+String.prototype.numfill = function(length){
+	var str = '';
+	var i = 0; 
+	
+	while (i < length) { 
+		str += this;
+		i++;
+	} 
+	return str;
+};
+
 $(function(){
 	
 	//ajax error handler
@@ -21,10 +60,10 @@ $(function(){
 		        message = '페이지를 찾을 수 없습니다.';
 		    }
 		    else if (xhr.status === 500) {
-		        message = '내부서버오류 \n';
+		        message = '내부서버오류 ';
 		    }
 		    else {
-		        message = ('Ajax 요청에 알 수 없는 에러가 발생하였습니다.\n');
+		        message = ('Ajax 요청에 알 수 없는 에러가 발생하였습니다.');
 		    }
 		    
 		    alert(message);			
@@ -47,7 +86,7 @@ function setPagingInfo(pageIndex){
 }
 
 //페이징 정보 호출
-function getPagingInfo(pageIndex){
+function getPagingInfo(pageIndex, Obj){
 	var pagingInfo = setPagingInfo(pageIndex);
 	$.ajax({
 		type:"POST",
@@ -61,7 +100,7 @@ function getPagingInfo(pageIndex){
 }
 
 //ajax 페이징
-function makeAjaxPaging(pagingInfo){
+function makeAjaxPaging(pagingInfo, Obj){
 
 	/*
 	1) 현재 index와 pageSize를 서버에 전송한다.
@@ -69,7 +108,7 @@ function makeAjaxPaging(pagingInfo){
 	3) list 조회
 	4) 2),3) 결과 클라이언트에 전송
 	5) 4)을 토대로 페이징 html코드 생성 & 페이지개수가 pageScope를 넘어가면 < > 생성
-	6) 각 페이지버튼마다 click="getList(pageIndex)" 추가
+	6) 각 페이지버튼마다 click="getReplyList(pageIndex)" 추가
 
 	 */
 
@@ -107,25 +146,23 @@ function makeAjaxPaging(pagingInfo){
 	if(totalPageCount > (pageIndex + pageScope - 1)){//현재 페이지범위보다 전체페이지개수가 더 클경우
 		$next.removeClass("disabled");
 		$next.click(function(){
-			makeListAndPaging(lastPageIndex+1);
+			makeListAndPaging(lastPageIndex+1, Obj);
 		});
 	}
 	
 	if(pageIndex > pageScope){//현재페이지가 pageScope 보다 클경우
 		$prev.removeClass("disabled");
 		$prev.click(function(){
-			makeListAndPaging(pageIndex-pageScope);
+			makeListAndPaging(pageIndex-pageScope, Obj);
 		});
 	}
 }
 
-
 //페이징 생성 및 목록출력
-function makeListAndPaging(pageIndex){
-	getPagingInfo(pageIndex);
-	getList(pageIndex);
+function makeListAndPaging(pageIndex, Obj){
+	getPagingInfo(pageIndex, Obj);
+	Obj.get_list(pageIndex);
 }
-
 
 //영문, 숫자만 입력되었는지 체크
 function checkEng(str) {
@@ -138,14 +175,18 @@ function checkEng(str) {
 }
 
 
-//댓글등록시 글자수 제한
+//글자수 제한
 function limitText(limitField, limitCount){
 	if (limitField.value.length > limitCount) {
 		limitField.value = limitField.value.substring(0, limitCount);
-		alert("댓글은 10,000자 이하로만 입력이 가능합니다.");
+		alert(limitCount+"자 이하로만 입력이 가능합니다.");
 	} 
 }
 
-
+//날짜변환
+function getDateTime(dateTime){
+	var dateTime = new Date(dateTime);
+	
+} 
 
 

@@ -5,25 +5,19 @@ import java.util.List;
 import zum.potal.dwlee.vo.User;
 
 public interface UserDao {
+
+	//사용자 조회(id)
+	public User getUser(String id);
 	
-	//ID중복확인
-	public User checkId(User userVO);
-	
-	//로그인
-	public User login(User loginVO);
-	
-	//사용자 목록
-	public List<User> getList();
+	//사용자 조회(id & password)
+	public User getUser(User user);
 	
 	//사용자 등록
-	public void add(User insertVO);
-	
-	//비밀번호 확인
-	public User checkPassword(User userVO);
+	public void add(User user);
 	
 	//회원정보수정
-	public void update(User updateVO);
+	public void update(User user);
 	
 	//회원 탈퇴
-	public void delete(User deleteVO);
+	public void delete(User user);
 }

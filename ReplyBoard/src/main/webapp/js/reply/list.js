@@ -7,7 +7,7 @@ $(function() {
 	$("#pageSize").val('30');
 	
 	//댓글 목록조회
-	makeListAndPaging(activePage.get_index());
+	makeListAndPaging(activePage.get_index(), Reply);
 	
 	//댓글입력 
 	$('#writeBtn').click(function(){
@@ -16,12 +16,12 @@ $(function() {
 	
 	//페이징
 	$("#pagination").on('click','.pageNo',function(){
-		getList(this.id);
+		Reply.get_list(this.id);
 	});
 	
 	//페이징 사이즈 조절
 	$("#pageSize").change(function(){
-		makeListAndPaging(activePage.get_index());
+		makeListAndPaging(activePage.get_index(), Reply);
 	});
 	
 	//비밀번호 확인
@@ -71,8 +71,6 @@ $(function() {
     	$(".openUpdateFormBtn").prop("disabled", false);
     	
     });
-    
-    
 });
 
 
@@ -108,69 +106,99 @@ var activePage = (function(){
 
 
 //댓글 목록 조회
-function getList(pageIndex){
-	var pageIndex=pageIndex;
-	var pagingInfo = setPagingInfo(pageIndex);
-	
-	activePage.set_index(pageIndex);
-	
-	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
+//function Reply.get_list(pageIndex){
+//	var pageIndex=pageIndex;
+//	var pagingInfo = setPagingInfo(pageIndex);
+//	
+//	activePage.set_index(pageIndex);
+//	
+//	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
+//
+//	
+//	$.ajax({
+//		type:"POST",
+//		url:"list.json",
+//		data:pagingInfo,
+//		dataType:"json",
+//		success:function(data){
+//			if(data.result){
+//				$("#loginId").text(data.loginId);
+//				$("#email").val(data.loginEmail);
+//				drawTable(data.list, data.authBtnList);				
+//			}else{
+//				alert("목록을 조회하지 못하였습니다.");
+//			}
+//		}
+//	} );
+//}
 
-	
-	$.ajax({
-		type:"POST",
-		url:"list.json",
-		data:pagingInfo,
-		dataType:"json",
-		success:function(data){
-			if(data.result){
-				$("#loginId").val(data.loginId);
-				$("#email").val(data.loginEmail);
-				drawTable(data.list, data.loginId);				
-			}else{
-				alert("목록을 조회하지 못하였습니다.");
-			}
+var Reply = (function (){
+	return {
+		get_list:function(index){
+			var pageIndex=index;
+			var pagingInfo = setPagingInfo(pageIndex);
+			
+			activePage.set_index(pageIndex);
+			
+			$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
+			
+			$.ajax({
+				type:"POST",
+				url:"list.json",
+				data:pagingInfo,
+				dataType:"json",
+				success:function(data){
+					if(data.result){
+						$("#loginId").text(data.loginId);
+						$("#email").val(data.loginEmail);
+						drawTable(data.list, data.authBtnList);				
+					}else{
+						alert("목록을 조회하지 못하였습니다.");
+					}
+				}
+			} );
 		}
-	} );
-}
+	};
+})();
+
+
 
 //table 생성
-function drawTable(list, loginId) {
+function drawTable(list, authBtnList) {
 	
 	var $tbody = $("#replyList tbody");
 	var row='';
 	
 	$.each(list, function(index, value){
-		row+=drawRow(value);
+		row+=drawRow(value, authBtnList);
 	});
 	
 	$tbody.html('');
 	$tbody.append(row); 
-	
-	//로그인 유저
-	var loginId = loginId;//json 전송받은 로그인 유저	
-	
-	//권한관련
-	$(".authBtn").each(function(){
-		var $e = $(this);
-		var writer = $e.parent().siblings(".writer").text();
-		if(loginId !== writer){
-			$e.addClass("hide");
-		}
-	});
 }
 
 //table row 생성
-function drawRow(rowData) {
+function drawRow(rowData, authBtnList) {
 	var id=rowData.no;
 	var replyId = 'reply'+id;
 	var replyForm = $(".replyForm").html(); //댓글 입력폼
 	var updateForm = $(".updateForm").html(); //수정폼
-
+	var hideFlag = false
+	var hide="hide";
+	
 	var depth = (100-(rowData.depth*3))+"%;";	//들여쓰기
 
     var row='<tr class="inputForm" id="'+replyId+'">';
 	
+	$.each(authBtnList, function(index, value){
+		if(id === value){
+			hideFlag=true;
+		}
+	});
+	if(hideFlag){
+		hide="";
+	}
+    
     if(rowData.imageName!=null){
 		row+='<td align="center"><img src="../resources/images/' + rowData.imageName + '"></td>'; 
 	}else{
@@ -180,11 +208,11 @@ function drawRow(rowData) {
 	row+='<td align="center"><div class="row" style="float:right; width:'+depth+'"><input type="text" class="form-control content" readonly value="'+ rowData.content +'"></div>';
 	row+='<br><div class="row hide updateForm" style="float:right; width:'+depth+'">'+updateForm+'</div>';
 	row+='<div class="row hide addForm" style="float:right; width:'+depth+'">'+replyForm+'</div></td>';
-	row+='<td align="center">' + rowData.modifyDate.substr(0,16) + '</td>';
+	row+='<td align="center">' + new Date(rowData.modifyDate).format("yyyy-MM-dd HH:mm") + '</td>';
 	row+='<td align="center" class="writer">' + rowData.writer + '</td>';
-	row+='<td align="center"><button type="button" class="btn btn-info btn-sm openAddFormBtn" ><span class="glyphicon glyphicon-comment"></span></button></td>';
-	row+='<td align="center"><button type="button" class="btn btn-primary btn-sm authBtn openUpdateFormBtn" ><span class="glyphicon glyphicon-edit "></span></button></td>';
-	row+='<td align="center"><button type="button" class="btn btn-danger btn-sm authBtn deleteReplyBtn" ><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
+	row+='<td align="center"><button type="button" class="btn btn-info btn-sm openAddFormBtn" title="댓글"><span class="glyphicon glyphicon-comment"></span></button></td>';
+	row+='<td align="center"><button type="button" class="btn btn-primary btn-sm openUpdateFormBtn '+hide+'" title="수정"><span class="glyphicon glyphicon-edit "></span></button></td>';
+	row+='<td align="center"><button type="button" class="btn btn-danger btn-sm deleteReplyBtn '+hide+'" title="삭제"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
 	
 	return row;
 }
@@ -232,7 +260,7 @@ function addReplyToAjax(formData){
 			if(data.result){
 				alert("댓글이 등록되었습니다!");
 				resetForm();
-				makeListAndPaging(activePage.get_index());
+				makeListAndPaging(activePage.get_index(), Reply);
 			}else{
 				alert("댓글 등록이 실패하였습니다.");
 			}
@@ -278,7 +306,7 @@ function updateReply(e){
 			if(data.result){
 				alert("댓글이 수정되었습니다!");
 				resetForm();
-				getList(activePage.get_index());
+				Reply.get_list(activePage.get_index());
 			}else{
 				alert("댓글 수정이 실패하였습니다.");
 			}
@@ -310,15 +338,20 @@ function deleteReply(no){
 		data:user,
 		dataType:"json",
 		success:function(data){
-			alert("삭제되었습니다.");
-			getList(activePage.get_index());//active 된 pageIndex
+			if(data.result){
+				alert("삭제되었습니다.");
+				Reply.get_list(activePage.get_index());//active 된 pageIndex				
+			}else{
+				alert("삭제가 실패되었습니다.");
+			}
+
 		}
 	} )
 }
 
 //기존 비밀번호 확인
 function checkPassword(){
-	var id=$("#loginId").val();
+	var id=$("#loginId").text();
 	var password = $("#password").val();
 	var user={
 			id:id,
@@ -349,7 +382,7 @@ function updateUserInfo(){
 		return;
 	}
 	
-	var id=$("#loginId").val();
+	var id=$("#loginId").text();
 	var password=$("#newPassword").val();
 	var confirmPassword=$("#confirmPassword").val();
 	var email=$("#email").val();
@@ -414,23 +447,19 @@ function confirmDeleteUser(){
 
 //탈퇴
 function deleteUser(){
-	var id=$("#loginId").val();
-	
-	var user = {
-			id:id
-	}
-	
 	$.ajax({
 		type:"POST",
 		url:"/user/delete.json",
-		data:user,
 		dataType:"json",
 		success:function(data){
-			alert("탈퇴되었습니다.");
-			location.href="/";
+			if(data.result){
+				alert("탈퇴되었습니다.");
+				location.href="/";				
+			}else{
+				alert("탈퇴가 실패하였습니다.");				
+			}
+
 		}
-	} ).error(function(){
-		alert("탈퇴가 실패하였습니다.");
-	});
+	} );
 }
 

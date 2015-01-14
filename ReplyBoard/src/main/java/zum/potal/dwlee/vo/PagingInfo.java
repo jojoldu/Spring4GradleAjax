@@ -2,7 +2,7 @@ package zum.potal.dwlee.vo;
 
 public class PagingInfo {
 
-	private int pageIndex = 0;// 현재 페이지
+	private int pageIndex = 1;// 현재 페이지
 	private int pageSize = 10;// 한 페이지당 출력된 글 개수
 	private int pageScope = 10; // 한번에 출력될 페이지수
 	private int totalPageCount = 0;// 총 페이지 개수

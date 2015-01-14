@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import zum.potal.dwlee.dao.ReplyDao;
+import zum.potal.dwlee.utils.CommonConstants;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
@@ -19,9 +20,9 @@ import zum.potal.dwlee.vo.Reply;
 public class ReplyDaoImpl implements ReplyDao {
 
 	@Autowired
-	private SessionFactory sessionFactory = null;
+	private SessionFactory sessionFactory;
 
-	protected Session getCurrentSession(){
+	private Session getCurrentSession(){
 		return sessionFactory.getCurrentSession();
 	}
 
@@ -30,21 +31,17 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	public ReplyDaoImpl() {
-		super();
-	}
-
-	public ReplyDaoImpl(SessionFactory SessionFactory) {
-		super();
-		this.sessionFactory = SessionFactory;
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Reply> getList(PagingInfo pagingInfo) {
 		return getCriteria().addOrder(Order.desc("family"))
 				.addOrder(Order.asc("path"))
 				.setFirstResult(pagingInfo.getFirstRow())
 				.setMaxResults(pagingInfo.getPageSize())
+				.add(Restrictions.eq("status",'Y'))
 				.list();
 	}
 
@@ -58,9 +55,13 @@ public class ReplyDaoImpl implements ReplyDao {
 	public void add(Reply reply) {
 		getCurrentSession().save(reply);
 	}
-
+	
+	@Override
 	public Reply getReply(int no){
-		return (Reply)getCriteria().add(Restrictions.eq("no",no)).uniqueResult();
+		return (Reply)getCriteria()
+				.add(Restrictions.eq("no",no))
+				.add(Restrictions.eq("status", 'Y'))
+				.uniqueResult();
 	}
 	
 	@Override
@@ -69,19 +70,12 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 
 	@Override
-	public int getNo() {
+	public int getMaxNo() {
 		int result=0;
 		Object obj = getCriteria().setProjection(Projections.max("no")).uniqueResult();
 		if(obj != null){
 			result = (Integer)obj;
 		}
-		return result;
-	}
-
-	@Override
-	public Reply getParent(int no) {
-		Reply result=null;
-		result=(Reply)getCriteria().add(Restrictions.eq("no",no)).uniqueResult();
 		return result;
 	}
 

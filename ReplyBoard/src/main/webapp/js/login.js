@@ -109,6 +109,7 @@ function checkIdFromDB(user){
 function login(){
 	var $loginId = $("#loginId");
 	var $loginPassword = $("#loginPassword");
+	
 	var login = {
 			id: $loginId.val(),
 			password: $loginPassword.val()
@@ -197,16 +198,16 @@ function resetForm(){
 //회원가입
 function signUp(){
 	
-	var insert=validateObj();
+	var user=validateObj();
 	
-	if(insert === false){
+	if(user === false){
 		return;
 	}
 	
 	$.ajax({
 		type:"POST",
 		url:"user/add.json",
-		data:insert,
+		data:user,
 		dataType:"json",
 		success:function(data){
 			if(data.result){

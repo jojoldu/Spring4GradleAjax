@@ -3,28 +3,31 @@ package zum.potal.dwlee.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import zum.potal.dwlee.controller.ReplyController;
 
 import com.coremedia.iso.Hex;
 
 public class SHA256 {
 
-	public static String encode(String str){
+	private static final Logger logger = LoggerFactory.getLogger(SHA256.class);
+	
+	public static String encode(String password){
 		String SHA = ""; 
-		String salt ="";
+		String salt ="zuminternet-pilot";
 		try{
-			
 			MessageDigest sh = MessageDigest.getInstance("SHA-256"); 
-			salt = RandomStringUtils.randomAscii(20);
 			
-			sh.update((str+salt).getBytes()); 
+			sh.update((password+salt).getBytes()); 
 			byte byteData[] = sh.digest();
 			
 			SHA = Hex.encodeHex(byteData);
 			
 		}catch(NoSuchAlgorithmException e){
-			e.printStackTrace(); 
-			SHA = null; 
+			logger.error("암호화 error : "+e);
+			return ""; 
 		}
 		return SHA;
 	}

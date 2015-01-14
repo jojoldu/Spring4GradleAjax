@@ -19,9 +19,9 @@ import zum.potal.dwlee.vo.User;
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
-	private SessionFactory sessionFactory = null;
+	private SessionFactory sessionFactory;
 
-	protected Session getCurrentSession(){
+	private Session getCurrentSession(){
 		return sessionFactory.getCurrentSession();
 	}
 
@@ -30,57 +30,36 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public UserDaoImpl() {
-		super();
-	}
-
-	public UserDaoImpl(SessionFactory sessionFactory) {
-		super();
-		this.sessionFactory = sessionFactory;
-	}
-
-
-	@Override
-	public User checkId(User userVO){
-		User result=null;
-		result=(User)getCriteria().add(Restrictions.eq("id", userVO.getId())).uniqueResult();
-		return result;
 	}
 
 	@Override
-	public User login(User loginVO){
-		User result=null;
-		result=(User)getCriteria().add(Restrictions.eq("id",loginVO.getId()))
-								  .add(Restrictions.eq("password", loginVO.getPassword()))
-								  .uniqueResult();
-		return result;
+	public User getUser(String id){
+		return (User)getCriteria()
+					.add(Restrictions.eq("id", id))
+					.add(Restrictions.eq("status", 'Y'))
+					.uniqueResult();
+	}
+	
+	@Override
+	public User getUser(User user){
+		return (User)getCriteria().add(Restrictions.eq("id",user.getId()))
+				  .add(Restrictions.eq("password", user.getPassword()))
+				  .add(Restrictions.eq("status", 'Y'))
+				  .uniqueResult();	
 	}
 
 	@Override
-	public List<User> getList(){
-		return getCriteria().list();
+	public void add(User user){
+		getCurrentSession().save(user);
 	}
 
 	@Override
-	public void add(User insertVO){
-		getCurrentSession().save(insertVO);
+	public void update(User user){
+		getCurrentSession().update(user);
 	}
 
 	@Override
-	public User checkPassword(User userVO){
-		User result=null;
-		result=(User)getCriteria().add(Restrictions.eq("id",userVO.getId()))
-								  .add(Restrictions.eq("password", userVO.getPassword()))
-								  .uniqueResult();
-		return result;	
-	}
-
-	@Override
-	public void update(User updateVO){
-		getCurrentSession().update(updateVO);
-	}
-
-	@Override
-	public void delete(User deleteVO){
-		getCurrentSession().delete(deleteVO);
+	public void delete(User user){
+		getCurrentSession().delete(user);
 	}
 }

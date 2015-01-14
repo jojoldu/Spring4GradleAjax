@@ -49,7 +49,7 @@
 							</div>
 							<div class="col-md-6 col-slim-padding">
 								<input type="text" id="id" class="form-control required"
-									placeholder="">
+									placeholder="" onKeyDown="limitText(this,100)">
 							</div>
 							<div class="col-md-1 col-slim-padding">
 								<button class="btn btn-danger" id="checkIdBtn">중복검사</button>
