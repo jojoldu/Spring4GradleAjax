@@ -78,12 +78,17 @@ public class ReplyController {
 	}
 	
 	private List<Integer> getAuthBtnList(int loginNo, List<Reply> replyList){
+		
 		List<Integer> result = new ArrayList<Integer>();
+		
 		for(Reply reply : replyList){
+			
 			if(reply.getWriterNo() == loginNo){
 				result.add(reply.getNo());
 			}
+			
 		}
+		
 		return result;
 	}
 	
@@ -92,9 +97,10 @@ public class ReplyController {
 		return "reply/list";
 	}
 
-	@RequestMapping(value="/list.json", method=RequestMethod.POST)
+	@RequestMapping(value="/list", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getList(PagingInfo pagingInfo, HttpSession session){
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		User login = (User)session.getAttribute(CommonConstants.LOGIN_SESSION);
 		List<Reply> list = replyService.getList(pagingInfo);
@@ -113,14 +119,14 @@ public class ReplyController {
 		return map;
 	}
 
-	@RequestMapping(value="/paginginfo.json", method=RequestMethod.POST)
+	@RequestMapping(value="/paginginfo", method=RequestMethod.POST)
 	@ResponseBody 
 	public PagingInfo getPagingInfo(PagingInfo pagingInfo){
 		
 		return replyService.getPagingInfo(pagingInfo);
 	}	
 
-	@RequestMapping(value="/add.json", method=RequestMethod.POST)
+	@RequestMapping(value="/add", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject add(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
@@ -138,7 +144,7 @@ public class ReplyController {
 		return new ResponseObject(false);
 	}
 
-	@RequestMapping(value="/update.json", method=RequestMethod.POST)
+	@RequestMapping(value="/update", method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject update(Reply reply, HttpSession session, MultipartHttpServletRequest request){
 		
@@ -158,7 +164,7 @@ public class ReplyController {
 		return new ResponseObject(false);
 	}	
 
-	@RequestMapping(value="/delete.json", method=RequestMethod.POST)
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	@ResponseBody	
 	public ResponseObject delete(Reply reply, HttpSession session) {
 		

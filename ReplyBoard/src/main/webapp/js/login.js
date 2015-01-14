@@ -88,7 +88,7 @@ function checkIdFromDB(user){
 	
 	$.ajax({
 		type:"POST",
-		url:"user/check/duplicate-id.json",
+		url:"user/check/duplicate-id",
 		data:user,
 		dataType:"json",		
 		success:function(data){
@@ -117,7 +117,7 @@ function login(){
 	
 	$.ajax({
 		type:"POST",
-		url:"user/login.json",
+		url:"user/login",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -206,7 +206,7 @@ function signUp(){
 	
 	$.ajax({
 		type:"POST",
-		url:"user/add.json",
+		url:"user/add",
 		data:user,
 		dataType:"json",
 		success:function(data){

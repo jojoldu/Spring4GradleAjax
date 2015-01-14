@@ -105,33 +105,6 @@ var activePage = (function(){
 }());
 
 
-//댓글 목록 조회
-//function Reply.get_list(pageIndex){
-//	var pageIndex=pageIndex;
-//	var pagingInfo = setPagingInfo(pageIndex);
-//	
-//	activePage.set_index(pageIndex);
-//	
-//	$('#'+pageIndex).addClass('active');//현재 선택한 페이지번호 활성화
-//
-//	
-//	$.ajax({
-//		type:"POST",
-//		url:"list.json",
-//		data:pagingInfo,
-//		dataType:"json",
-//		success:function(data){
-//			if(data.result){
-//				$("#loginId").text(data.loginId);
-//				$("#email").val(data.loginEmail);
-//				drawTable(data.list, data.authBtnList);				
-//			}else{
-//				alert("목록을 조회하지 못하였습니다.");
-//			}
-//		}
-//	} );
-//}
-
 var Reply = (function (){
 	return {
 		get_list:function(index){
@@ -144,7 +117,7 @@ var Reply = (function (){
 			
 			$.ajax({
 				type:"POST",
-				url:"list.json",
+				url:"list",
 				data:pagingInfo,
 				dataType:"json",
 				success:function(data){
@@ -251,7 +224,7 @@ function addReplyToAjax(formData){
 	
 	$.ajax({
 		type:"POST",
-		url:"add.json",
+		url:"add",
 		data:formData,
 		dataType:"json",
 		processData : false,
@@ -297,7 +270,7 @@ function updateReply(e){
 	
 	$.ajax({
 		type:"POST",
-		url:"update.json",
+		url:"update",
 		data:formData,
 		dataType:"json",
 		processData : false,
@@ -334,7 +307,7 @@ function deleteReply(no){
 	
 	$.ajax({
 		type:"POST",
-		url:"delete.json",
+		url:"delete",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -360,7 +333,7 @@ function checkPassword(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/user/check/password.json",
+		url:"/user/check/password",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -404,7 +377,7 @@ function updateUserInfo(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/user/update.json",
+		url:"/user/update",
 		data:user,
 		dataType:"json",
 		success:function(data){
@@ -424,7 +397,7 @@ function logout(){
 	
 	$.ajax({
 		type:"POST",
-		url:"/user/logout.json",
+		url:"/user/logout",
 		success:function(data){
 			if(data.result){
 				alert("로그아웃 되었습니다.");
@@ -449,7 +422,7 @@ function confirmDeleteUser(){
 function deleteUser(){
 	$.ajax({
 		type:"POST",
-		url:"/user/delete.json",
+		url:"/user/delete",
 		dataType:"json",
 		success:function(data){
 			if(data.result){

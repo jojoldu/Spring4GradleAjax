@@ -19,20 +19,18 @@ public class Interceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
 		String reqUrl = request.getRequestURI().toString();
-		
+		String methodType = request.getMethod();
 		try {
-			if ("/".equals(reqUrl) || (reqUrl != null && reqUrl.matches(".*\\.json"))) { // json 데이터 요청의 경우 통과
-				
+			
+			if("/".equals(reqUrl)){
 				return true;
-			
-			} else {
-			
-				if (request.getSession().getAttribute(CommonConstants.LOGIN_SESSION) == null) {// 세션이 없다면
-					
-					response.sendRedirect("/");
-					return false;
-				}
 			}
+			
+			if("GET".equals(methodType) && request.getSession().getAttribute(CommonConstants.LOGIN_SESSION) == null){
+				response.sendRedirect("/");
+				return false;
+			}
+			
 		} catch (Exception e) {
 			logger.error("인터셉터 오류 메세지: ", e);
 		}
