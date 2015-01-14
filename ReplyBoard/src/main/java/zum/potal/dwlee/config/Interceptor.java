@@ -23,14 +23,6 @@ public class Interceptor extends HandlerInterceptorAdapter {
 		try {
 			if ("/".equals(reqUrl) || (reqUrl != null && reqUrl.matches(".*\\.json"))) { // json 데이터 요청의 경우 통과
 				
-//				String password =(String) request.getParameter("password");
-//				
-//				if("".equals(password)){
-//					return true;
-//				}
-//				
-//				request.setAttribute("password", SHA256.encode(password));
-				
 				return true;
 			
 			} else {
