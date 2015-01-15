@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import zum.potal.dwlee.dao.UserDao;
 import zum.potal.dwlee.service.UserService;
-import zum.potal.dwlee.utils.Utils;
 import zum.potal.dwlee.vo.User;
 
 @Service
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean add(User user)  {
+	public boolean add(	User user)  {
 
 		userDao.add(user);
 		return true;

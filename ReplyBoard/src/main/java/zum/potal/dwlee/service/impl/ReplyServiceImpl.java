@@ -3,7 +3,6 @@ package zum.potal.dwlee.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.tika.Tika;
@@ -18,7 +17,7 @@ import zum.potal.dwlee.controller.ReplyController;
 import zum.potal.dwlee.dao.ReplyDao;
 import zum.potal.dwlee.dao.UserDao;
 import zum.potal.dwlee.service.ReplyService;
-import zum.potal.dwlee.utils.Utils;
+import zum.potal.dwlee.utils.BaseTime;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
@@ -34,6 +33,9 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private BaseTime time;
 
 	@Override
 	@Transactional
@@ -122,9 +124,9 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	@Transactional
 	public boolean add(Reply reply){
-		Timestamp date = Utils.getNowTime();
-		reply.setWriteDate(date);
-		reply.setModifyDate(date);
+		
+		reply.setWriteDate(time.getNowTime());
+		reply.setModifyDate(time.getNowTime());
 		reply.setWriterNo(userDao.getUser(reply.getWriter()).getNo());
 		
 		makeInsertReply(reply);
@@ -136,8 +138,10 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	@Transactional
 	public boolean update(Reply reply) {
+		
 		Reply update = replyDao.getReply(reply.getNo());
-		update.setModifyDate(Utils.getNowTime());
+		
+		update.setModifyDate(time.getNowTime());
 		update.setContent(reply.getContent());
 		update.setImageName(reply.getImageName());
 		

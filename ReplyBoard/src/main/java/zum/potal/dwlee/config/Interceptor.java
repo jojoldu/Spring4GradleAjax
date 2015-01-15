@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import zum.potal.dwlee.utils.CommonConstants;
-import zum.potal.dwlee.utils.SHA256;
-import zum.potal.dwlee.vo.User;
 
 public class Interceptor extends HandlerInterceptorAdapter {
 

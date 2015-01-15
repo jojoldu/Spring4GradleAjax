@@ -1,7 +1,5 @@
 package zum.potal.dwlee.dao;
 
-import java.util.List;
-
 import zum.potal.dwlee.vo.User;
 
 public interface UserDao {

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import zum.potal.dwlee.dao.ReplyDao;
-import zum.potal.dwlee.utils.CommonConstants;
 import zum.potal.dwlee.vo.PagingInfo;
 import zum.potal.dwlee.vo.Reply;
 
