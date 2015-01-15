@@ -99,9 +99,6 @@
 									<input type="password" id="password" class="form-control"
 										placeholder="">
 								</div>
-								<div class="col-md-1 col-slim-padding">
-									<button class="btn btn-danger" id="checkPasswordBtn">비밀번호확인</button>
-								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-3">

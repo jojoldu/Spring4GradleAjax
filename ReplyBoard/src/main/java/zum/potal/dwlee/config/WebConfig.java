@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -90,7 +92,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	}
 
 	@Bean
-	@Scope("prototype")
+	@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public BaseTime time(){
 		BaseTime time = new BaseTime();
 		return time;

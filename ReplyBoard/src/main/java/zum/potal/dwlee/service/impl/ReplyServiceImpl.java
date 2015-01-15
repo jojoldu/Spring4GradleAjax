@@ -2,7 +2,6 @@ package zum.potal.dwlee.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.tika.Tika;
@@ -140,6 +139,10 @@ public class ReplyServiceImpl implements ReplyService {
 	public boolean update(Reply reply) {
 		
 		Reply update = replyDao.getReply(reply.getNo());
+		
+		if(update == null){
+			return false;
+		}
 		
 		update.setModifyDate(time.getNowTime());
 		update.setContent(reply.getContent());

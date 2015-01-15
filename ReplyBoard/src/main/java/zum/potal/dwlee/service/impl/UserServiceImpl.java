@@ -42,7 +42,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean update(User user) {
 		
-		userDao.update(user);
+		User update = userDao.getUser(user);
+		
+		if(update == null){
+			return false;
+		}
+		
+		update.setPassword(user.getPassword());
+		update.setEmail(user.getEmail());
+		
 		return true;
 	}
 

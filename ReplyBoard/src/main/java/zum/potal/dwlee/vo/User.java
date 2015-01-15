@@ -30,6 +30,14 @@ public class User {
 	public User() {
 	}
 	
+	public User(String id, String password) {
+		super();
+		this.id = id;
+		this.password = password;
+	}
+
+
+
 	public int getNo() {
 		return no;
 	}

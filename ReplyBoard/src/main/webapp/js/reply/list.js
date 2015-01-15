@@ -74,20 +74,6 @@ $(function() {
 });
 
 
-//유효한 비밀번호
-var validPassword = (function(){
-	
-	var valid;
-	
-	return {
-		get_valid: function(){
-			return valid;
-		},
-		set_valid: function(v){
-			valid = v;
-		}
-	}
-}());
 
 //활성화된 페이지
 var activePage = (function(){
@@ -317,48 +303,43 @@ function deleteReply(no){
 			}else{
 				alert("삭제가 실패되었습니다.");
 			}
-
 		}
 	} )
 }
 
-//기존 비밀번호 확인
-function checkPassword(){
-	var id=$("#loginId").text();
-	var password = $("#password").val();
-	var user={
-			id:id,
-			password:password
-	}
-	
-	$.ajax({
-		type:"POST",
-		url:"/user/check/password",
-		data:user,
-		dataType:"json",
-		success:function(data){
-			if(data.result){
-				alert("비밀번호가 확인되었습니다.");
-				validPassword.set_valid(true);
-			}else{
-				alert("비밀번호가 잘못되었습니다.");
-			}
-		}
-	} );
-	
-}
+////기존 비밀번호 확인
+//function checkPassword(){
+//	var id=$("#loginId").text();
+//	var password = $("#password").val();
+//	var user={
+//			id:id,
+//			password:password
+//	}
+//	
+//	$.ajax({
+//		type:"POST",
+//		url:"/user/check/password",
+//		data:user,
+//		dataType:"json",
+//		success:function(data){
+//			if(data.result){
+//				alert("비밀번호가 확인되었습니다.");
+//			}else{
+//				alert("비밀번호가 잘못되었습니다.");
+//			}
+//		}
+//	} );
+//	
+//}
 
 //사용자정보 수정
 function updateUserInfo(){
-	if(!validPassword.get_valid()){
-		alert("기존 비밀번호를 정확히 입력해주세요");
-		return;
-	}
 	
-	var id=$("#loginId").text();
-	var password=$("#newPassword").val();
-	var confirmPassword=$("#confirmPassword").val();
-	var email=$("#email").val();
+	var id = $("#loginId").text();
+	var originPassword = $("#password").val();
+	var password = $("#newPassword").val();
+	var confirmPassword = $("#confirmPassword").val();
+	var email = $("#email").val();
 	
 	if(password===""){
 		alert("비밀번호는 공란이 허용되지 않습니다.");
@@ -369,25 +350,24 @@ function updateUserInfo(){
 		return;
 	}
 	
-	var user = {
-			id			:id,
-			password	:password,
-			email		:email
-	}
 	
 	$.ajax({
 		type:"POST",
 		url:"/user/update",
-		data:user,
+		data: {
+			id			   :id,
+			password	   :password,
+			email		   :email,
+			originPassword : originPassword
+		},
 		dataType:"json",
 		success:function(data){
 			if(data.result){
 				alert("회원정보가 수정되었습니다.");
 				$(".close").trigger("click");
 			}else{
-				alert("회원정보수정이 실패 되었습니다.");
+				alert(data.message);
 			}
-			validPassword.set_valid(false);
 		}
 	} );
 }

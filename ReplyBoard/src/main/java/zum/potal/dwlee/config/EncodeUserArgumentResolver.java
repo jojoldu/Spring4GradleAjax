@@ -36,6 +36,11 @@ public class EncodeUserArgumentResolver implements HandlerMethodArgumentResolver
 		while(paramNames.hasMoreElements()){
 			String name = paramNames.nextElement();
 			String value = request.getParameter(name);
+			
+			if(!PropertyUtils.isWriteable(result, name)){
+				continue;
+			}
+			
 			PropertyUtils.setProperty(result, name, value);
 		}
 
